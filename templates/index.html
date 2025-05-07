@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>帝威爾皮件企業有限公司</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- 自訂 CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <!-- Google 字體 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Icon 套件 -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- 🔰 導覽列開始 -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white  custom-navbar">
+    <!-- 改用 .container 讓「帝威爾」文字與下方標題同一條 X 軸 -->
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo-img">
+        <span class="brand-name">帝威爾</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item"><a class="nav-link" href="#">最新消息</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">產品介紹</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">皮包</a></li>
+              <li><a class="dropdown-item" href="#">腰帶</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">品質保證</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">檢驗標準</a></li>
+              <li><a class="dropdown-item" href="#">維修政策</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">製作須知</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">製程說明</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="#">客戶須知</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">聯絡我們</a></li>
+        </ul>
+        <div class="d-flex align-items-center">
+          <a href="https://line.me/R/ti/p/your_line_id" target="_blank" class="btn-line">LINE諮詢</a>
+          <a href="#" class="search-icon ms-3"><i class="fas fa-search"></i></a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <!-- 🔰 導覽列結束 -->
+
+  <!-- 🔽 圖片輪播區開始 -->
+  <div id="diwerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="1000">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+      <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+      <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="{{ url_for('static', filename='images/jimeng1.jpeg') }}" class="d-block carousel-img" alt="Banner">
+      </div>
+      <div class="carousel-item">
+        <img
+          src="{{ url_for('static', filename='images/交屋包1.jpeg') }}"
+          class="d-block carousel-img"
+          alt="交屋包1"
+        >
+      </div>
+      <div class="carousel-item">
+        <img
+          src="{{ url_for('static', filename='images/jimeng2.jpeg') }}"
+          class="d-block carousel-img"
+          alt="Jimeng2"
+        >
+      </div>
+      <div class="carousel-item">
+        <img
+          src="{{ url_for('static', filename='images/交屋包2.jpeg') }}"
+          class="d-block carousel-img"
+          alt="交屋包2"
+        >
+      </div>
+      <div class="carousel-item">
+        <img
+          src="{{ url_for('static', filename='images/jimeng3.jpeg') }}"
+          class="d-block carousel-img"
+          alt="Jimeng3"
+        >
+      </div>
+      <div class="carousel-item">
+        <img
+          src="{{ url_for('static', filename='images/交屋包3.jpeg') }}"
+          class="d-block carousel-img"
+          alt="交屋包3"
+        >
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#diwerCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+      <span class="visually-hidden">上一張</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#diwerCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+      <span class="visually-hidden">下一張</span>
+    </button>
+  </div>
+  <!-- 🔼 圖片輪播區結束 -->
+
+  <!-- 商品推薦區塊 -->
+  <section class="product-recommend">
+    <!-- 同樣用 container 對齊 -->
+    <div class="container">
+      <h2 class="pr-title">商品推薦</h2>
+
+      <!-- 視窗：只露出 5 張 -->
+      <div class="pr-window">
+        <!-- 真正可左右滑動的列表 -->
+        <div class="pr-list">
+          <div class="pr-item">
+            <img
+              src="{{ url_for('static', filename='images/交屋包-商品.png') }}"
+              alt="交屋包-商品"
+            >
+            <h2>交屋包</h2>
+          
+            <p>品質優良,接受獨特設計或logo</p>
+            
+          </div>
+          <div class="pr-item">
+            <img
+              src="{{ url_for('static', filename='images/不織布環保購物袋2.png') }}"
+              alt="不織布提袋"
+            >
+            <h2>不織布提袋</h2>
+          
+            <p>品質優良,接受獨特設計或logo</p>
+            
+          </div>
+          <div class="pr-item">
+            <img src="{{ url_for('static', filename='images/帆布袋2.png') }}" alt="帆布袋">
+            <h2>帆布袋</h2>
+            <p>表面具透氣清爽的良好親膚素材製成。</p>
+          </div>
+          <div class="pr-item">
+            <img src="{{ url_for('static', filename='images/保冷(溫)袋2.png') }}" alt="保冷(溫)袋">
+            <h2>保冷(溫)袋</h2>
+            <p>可360度擺頭，使氣流循環效率更好，也可輔助於室內曬衣。</p>
+          </div>
+          <div class="pr-item">
+            <img src="{{ url_for('static', filename='images/透明袋2.png') }}" alt="透明袋">
+            <h2>透明袋</h2>
+            <p>自由調整拉桿高度，輕鬆省力且止滑鎖設計，防止行李滑動。</p>
+          </div>
+          
+          <div class="pr-item">
+            <img src="{{ url_for('static', filename='images/尼龍手提袋2.png') }}" alt="尼龍手提袋">
+            <h2>不織布提袋</h2>
+            <p>多款精選衣料及生活雜貨商品提供優惠價格！</p>
+          </div>
+          <div class="pr-item">
+            <img src="images/item6.jpg" alt="真皮手提包">
+            <h2>不織布提袋</h2>
+            <p>頂級牛皮製作，兼具優雅與耐用。</p>
+          </div>
+          <div class="pr-item">
+            <img src="images/item7.jpg" alt="自動開收雨傘">
+            <h2>不織布提袋</h2>
+            <p>一鍵自動開合，抗風防水，輕便好攜帶。</p>
+          </div>
+          <div class="pr-item">
+            <img src="images/item8.jpg" alt="旅行防水背包">
+            <h2>不織布提袋</h2>
+            <p>大容量多隔層，防潑水且舒適背負。</p>
+          </div>
+          <div class="pr-item">
+            <img src="images/item9.jpg" alt="智能恆溫水壺">
+            <h2>不織布提袋</h2>
+            <p>內建恆溫控制，隨時享受理想溫度飲品。</p>
+          </div>
+          <div class="pr-item">
+            <img src="images/item10.jpg" alt="護肩電腦包">
+            <h2>不織布提袋</h2>
+            <p>人體工學肩帶，長時間背負也不累。</p>
+          </div>
+          <div class="pr-item">
+            <img src="images/item11.jpg" alt="羊毛保暖圍巾">
+            <h3>羊毛保暖圍巾</h3>
+            <p>柔軟親膚，給你冬日最溫暖的呵護。</p>
+          </div>
+          <div class="pr-item">
+            <img src="images/item12.jpg" alt="折疊便攜椅">
+            <h3>折疊便攜椅</h3>
+            <p>輕量鋁合金結構，戶外野餐／露營好夥伴。</p>
+          </div>
+          <div class="pr-item">
+            <img src="images/item13.jpg" alt="防滑瑜伽墊">
+            <h3>防滑瑜伽墊</h3>
+            <p>高密度材質，舒適且穩定。</p>
+          </div>
+          <div class="pr-item">
+            <img src="images/item14.jpg" alt="兒童學習桌椅組">
+            <h3>兒童學習桌椅組</h3>
+            <p>可調高度＋安全無毒塗料，陪伴成長每一步。</p>
+          </div>
+          <div class="pr-item">
+            <img src="images/item15.jpg" alt="耐重收納籃">
+            <h3>耐重收納籃</h3>
+            <p>堅固耐用，大容量收納好整理。</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 底下進度條 -->
+      <div class="pr-scrollbar">
+        <div class="pr-scrollbar__fill"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 🔽 店鋪位置 區塊開始 -->
+  <section class="find-store py-5">
+    <div class="container">
+      <div class="row align-items-center">
+        <!-- 左側文字 + 按鈕 -->
+        <div class="col-md-6 mb-4 mb-md-0">
+          <h2 class="fs-2 fw-bold mb-3">店鋪位置</h2>
+          <p class="text-muted mb-4">
+            我們的專業顧問將很榮幸於店內接待您，並針對您的送禮需求提供量身定制的建議。
+          </p>
+          <a href="#" class="btn btn-outline-dark btn-lg">
+            店鋪位置 <i class="fas fa-arrow-right ms-2"></i>
+          </a>
+        </div>
+        <!-- 右側圖片 -->
+        <div class="col-md-6 text-center">
+          <img
+          src="{{ url_for('static', filename='images/公司外觀.jpeg') }}"
+            alt="公司外觀"
+            class="img-fluid rounded"
+          >
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- 🔼 店鋪位置 區塊結束 -->
+
+  <!-- 🔽 Footer Images 區塊開始 -->
+  <section class="footer-images py-5">
+    <div class="container d-flex justify-content-between align-items-center">
+      <!-- 左邊圖片 -->
+      <img
+        src="{{ url_for('static', filename='images/樣品下單.png') }}"
+        alt="Footer Left"
+        class="footer-image"
+      >
+      <!-- 右邊圖片 -->
+      <img
+        src="{{ url_for('static', filename='images/客製化.jpeg') }}"
+        alt="Footer Right"
+        class="footer-image"
+      >
+    </div>
+  </section>
+  <!-- 🔼 Footer Images 區塊結束 -->
+
+
+  <!-- 🔽 頁尾 Contact 區塊 開始 -->
+  <footer class="site-footer text-center text-light py-5">
+    <div class="container">
+      <p class="footer-title mb-1">Contact us</p>
+      <p class="footer-phone mb-4">Tel : +886-2-1234-5678</p>
+      <hr class="footer-divider mx-auto mb-4">
+      <p class="footer-title mb-1">交屋手冊、錦盒、鎖牌、化妝包、手提袋、保冰袋、不織布袋、手袋工廠</p>
+      <p class="footer-copy mb-0">© 2025 All Rights Reserved</p>
+    </div>
+  </footer>
+  <!-- 🔼 頁尾 Contact 區塊 結束 -->
+  
+
+
+
+
+
+
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const list = document.querySelector('.pr-list');
+    const fill = document.querySelector('.pr-scrollbar__fill');
+    function updateScrollBar() {
+      const maxScroll = list.scrollWidth - list.clientWidth;
+      const percent   = list.scrollLeft / maxScroll || 0;
+      fill.style.width = (percent * 100) + '%';
+    }
+    list.addEventListener('scroll', updateScrollBar);
+    updateScrollBar();
+  </script>
+</body>
+</html>

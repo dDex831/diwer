@@ -1,0 +1,14 @@
+[
+    {
+        "name": "無線滑鼠",
+        "price": 499,
+        "description": "2.4GHz 無線滑鼠，適用於各種裝置。",
+        "image": "https://example.com/images/mouse.jpg"
+    },
+    {
+        "name": "機械式鍵盤",
+        "price": 1890,
+        "description": "RGB 背光，青軸機械鍵盤。",
+        "image": "https://example.com/images/keyboard.jpg"
+    }
+]
