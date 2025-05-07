@@ -14,13 +14,14 @@ html, body {
   min-height: 56px;
   padding-top: 0.8rem;
   padding-bottom: 0.8rem;
+  
 }
 
 .logo-img {
   height: 60px !important;
   width: auto !important;
   display: block;
-  margin-left: 130px;
+  margin-left: 30px;
 }
 
 .brand-name {
@@ -38,6 +39,7 @@ html, body {
   color: #888 !important;         /* ✅ 灰色文字 */
   margin: 0 25px;                 /* ✅ 水平間距加大，原本是 0 12px */
   transition: color 0.2s ease;
+  margin-left: 10px;
 }
 
 
@@ -88,7 +90,7 @@ html, body {
   color: #000;
 }
 .d-flex.align-items-center {
-  margin-right: 150px;  /* 整體往左移 */
+  margin-right: 50px;  /* 整體往左移 */
 }
 
 
