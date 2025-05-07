@@ -90,6 +90,9 @@ html, body {
 .d-flex.align-items-center {
   margin-right: 50px;  /* 整體往左移 */
 }
+
+
+
 /* 🔼 縮小 carousel 圖片尺寸 */
 /* 1. 先把 carousel-inner / carousel-item 的 overflow 變成 visible */
 
@@ -215,7 +218,7 @@ margin-left: -10%; /* 向左移動一點，讓它置中或留白調整 */
 
 /* Footer Images 區塊 */
 .footer-images {
-  background-color: #f5f5f5;       /* 如果想要底色，或改成你想要的顏色 */
+  background-color: #fff;       /* 如果想要底色，或改成你想要的顏色 */
 }
 
 .footer-images .footer-image {
