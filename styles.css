@@ -1,26 +1,22 @@
-/* 引入字型 */
-body {
+/* === 全站通用 === */
+html, body {
+  margin: 0;
+  padding: 0;
   font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
   background-color: #fff;
-
-}
-html, body {
   overflow-x: hidden;
 }
 
-/* 導覽列基本樣式 */
+/* === 導覽列 === */
 .custom-navbar {
-  background-color: #fff!important;  /* 覆蓋原本的 bg-white */
+  background-color: #fff !important;
   min-height: 56px;
-  padding-top: 0.8rem;
-  padding-bottom: 0.8rem;
-  
+  padding: 0.8rem 0;
 }
 
 .logo-img {
-  height: 60px !important;
-  width: auto !important;
-  display: block;
+  height: 60px;
+  width: auto;
   margin-left: 30px;
 }
 
@@ -28,40 +24,32 @@ html, body {
   font-size: 3rem;
   font-weight: bold;
   color: #333;
-  margin-left: 8px;  /* ✅ 從 30px 改為 8px，使 logo 與字靠近 */
+  margin-left: 8px;
 }
-
-/* 導覽列項目樣式 */
 
 .navbar-nav .nav-link {
   font-size: 1.6rem;
   font-weight: 400;
-  color: #888 !important;         /* ✅ 灰色文字 */
-  margin: 0 25px;                 /* ✅ 水平間距加大，原本是 0 12px */
+  color: #888 !important;
+  margin: 0 15px;
   transition: color 0.2s ease;
-  margin-left: 10px;
 }
 
-
-/* Hover 效果 */
 .navbar-nav .nav-link:hover {
   color: #000 !important;
   text-decoration: underline;
 }
 
-/* Dropdown 選單箭頭 */
 .navbar-nav .dropdown-toggle::after {
   margin-left: 0.3em;
   vertical-align: middle;
 }
 
-/* 下拉選單 */
 .dropdown-menu {
   font-size: 1rem;
   min-width: 160px;
 }
 
-/* LINE 諮詢按鈕 */
 .btn-line {
   background-color: #06C755;
   color: white;
@@ -71,8 +59,7 @@ html, body {
   font-size: 1rem;
   text-decoration: none;
   transition: background-color 0.3s ease;
-
-  margin-left: 5px;  /* ✅ 原本可能是 25px～30px，調小它 */
+  margin-left: 5px;
 }
 
 .btn-line:hover {
@@ -80,191 +67,240 @@ html, body {
   color: white;
 }
 
-/* 搜尋 icon */
 .search-icon {
   font-size: 1.3rem;
   color: #444;
   text-decoration: none;
+  margin-left: 10px;
 }
+
 .search-icon:hover {
   color: #000;
 }
-.d-flex.align-items-center {
-  margin-right: 50px;  /* 整體往左移 */
-}
 
-
-
-/* 🔼 縮小 carousel 圖片尺寸 */
-/* 1. 先把 carousel-inner / carousel-item 的 overflow 變成 visible */
-
+/* === 輪播圖 === */
 #diwerCarousel .carousel-inner,
 #diwerCarousel .carousel-item {
-overflow: visible !important;
+  overflow: visible !important;
 }
 
-/* 圖片寬度放大到 120% 並水平置中 */
 #diwerCarousel .carousel-img {
-display: block;
-width: 80%;        /* 把寬度放到容器的80% */
-height: auto;      /* 自動算高度，維持比例 */
-max-height: 650px; /* 最多不要超過600px 高 */
-margin: 0 auto;    /* 水平置中 */
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: cover;
 }
 
-
-/* carousel indicators 預設圓點（淺灰） */
 #diwerCarousel .carousel-indicators [data-bs-target] {
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: #ccc;    /* 淺灰 */
+  background-color: #ccc;
   border: none;
   opacity: 1;
   transition: background-color 0.2s;
-  margin: 0 6px;             /* 圓點間距 */
+  margin: 0 6px;
 }
 
-/* active 圓點（深灰） */
 #diwerCarousel .carousel-indicators .active {
-  background-color: #555;    /* 深灰 */
+  background-color: #555;
 }
 
-
-/* 整體區塊 */
-
-/* 微調「商品推薦」標題位置 */
+/* === 商品推薦區塊 === */
 .pr-title {
-  margin-left: calc(30px + 60px + 8px); /* =98px */
-  margin-top: 8rem;    /* 如需微調上下間距再改 */
-  margin-bottom: 1.5rem;
+  max-width: calc(215px * 5 + 1rem * 4);  /* 與 .pr-window 同寬 */
+  margin: 8rem auto 1.5rem;
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: left;
 }
-
-
-/* 視窗：只露出 5 張 */
+/* 視窗容器 - 限定寬度只露出 5 張，置中 + 橫向捲動 */
 .pr-window {
-width: calc(215px * 5 + 1rem * 4);
-margin: 0 auto;       /* 置中 */
-overflow-x: auto;
+  width: calc(215px * 5 + 1rem * 4);  /* 5張卡片 + 4個間距 */
+  margin: 0 auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  padding-bottom: 1rem;
 }
 
-
-/* 這裡讓列表 shrink-to-fit 內容 */
 .pr-list {
   display: inline-flex;
   gap: 1rem;
-  /* remove overflow-x, width */
+  flex-wrap: nowrap;
 }
 
-/* 卡片固定寬度 */
 .pr-item {
-  flex: 0 0 auto;
-  width: 215px;
+  flex: 1 1 200px;
+  max-width: 220px;
   background: #fafafa;
   border: 1px solid #eee;
   border-radius: 4px;
   padding: 0.5rem;
   text-align: center;
 }
+
 .pr-item img {
   width: 100%;
   height: auto;
   border-radius: 4px;
 }
-.pr-item h3 { margin: .5rem 0 .3rem; font-size: 1.1rem; }
-.pr-item p  { font-size: .9rem; color: #555; }
 
-/* 1. 不織布提袋：介於 h2 / h3 的字級 */
-.product-recommend .pr-item h2 {
-font-size: 1.4rem;       /* 1.4rem 介於 h3(1.1rem) & h2(2rem) 之間，可自行微調 */
-font-weight: 600;        /* 稍微比普通文字粗一點 */
-margin-bottom: 1rem;   /* 2. 文字與下方段落之間留空 */
-text-align: left;
+.pr-item h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: left;
 }
 
-/* 3. 品質優良… 段落：淺色、略微放大 */
-.product-recommend .pr-item p {
-font-size: 1rem;         /* 放大到 1rem */
-color: #888;             /* 淺灰色 (比原本 #444 再淺一點) */
-text-align: left;
-margin: 0.5rem 0;        /* 上下各 0.5rem 間距，讓段落不緊貼 h2 */
+.pr-item p {
+  font-size: 1rem;
+  color: #888;
+  text-align: left;
+  margin: 0.5rem 0;
 }
 
-/* --- 自訂「店鋪位置」區塊樣式 --- */
+/* === 店鋪位置區塊 === */
 .find-store {
-margin-top: 12rem;       /* 整個區塊往下推 4rem */
-background-color: #f5f5f5;  /* 淺米色底，可自行換色 */
+  margin-top: 12rem;
+  background-color: #f5f5f5;
 }
+
 .find-store h2 {
-color: #333;
+  color: #333;
 }
+
 .find-store p {
-font-size: 1rem;
-line-height: 1.6;
+  font-size: 1rem;
+  line-height: 1.6;
 }
+
 .find-store .btn-outline-dark {
-border-width: 2px;
+  border-width: 2px;
 }
+
 .find-store .container {
-padding-left: calc(30px + 60px + 8px);
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
-/* 放大「店鋪位置」右側圖片 */
 .find-store .row .col-md-6.text-center img {
-width: 115%;       /* 放大到原本的 120% */
-max-width: none;   /* 取消 Bootstrap 預設的 max-width:100% */
-height: auto;      /* 保持比例 */
-margin-left: -10%; /* 向左移動一點，讓它置中或留白調整 */
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-
-/* Footer Images 區塊 */
+/* === Footer Images === */
 .footer-images {
-  background-color: #fff;       /* 如果想要底色，或改成你想要的顏色 */
+  background-color: #fff;
+  padding: 1rem;
+  text-align: center;
 }
 
 .footer-images .footer-image {
-  max-width: 45%;     /* 保留原本你設定的寬度限制 */
+  max-width: 45%;
   height: auto;
-  display: block;
-
-  /* 縮小 20% */
+  display: inline-block;
   transform: scale(0.8);
-  transform-origin: center center;  /* 從中間往四邊縮放 */
+  transform-origin: center;
 }
 
-
-
-/* --- Site Footer --- */
+/* === 頁尾區塊 === */
 .site-footer {
   background-color: #535353;
-  margin-top: 0;        /* 取消白色 gap */
-  padding-top: 10rem;    /* 如果你想要 footer 內部上方留 8rem 空間 */
+  margin-top: 0;
+  padding: 5rem 1rem;
+  color: white;
+  text-align: center;
 }
 
 .site-footer .footer-title {
-font-size: 1.5rem;
-font-weight: 600;
+  font-size: 1.5rem;
+  font-weight: 600;
 }
 
-.site-footer .footer-email {
-font-size: 1rem;
-opacity: 0.8;
+.site-footer .footer-phone,
+.site-footer .footer-copy {
+  font-size: 1rem;
+  opacity: 0.8;
 }
 
 .site-footer .footer-divider {
-width: 80%;
-border: none;
-border-top: 1px solid rgba(255,255,255,0.3);
+  width: 80%;
+  border: none;
+  border-top: 1px solid rgba(255,255,255,0.3);
+  margin: 2rem auto;
 }
 
-.site-footer .footer-logo {
-max-width: 120px;             /* Logo 最大寬度 */
-display: block;
-margin: 0 auto;               /* 置中 */
+/* === 合作品牌區塊 === */
+.partners-section {
+  background-color: #f9f9f9;
+  padding: 4rem 1rem;
 }
 
-.site-footer .footer-copy {
-font-size: 0.875rem;
-opacity: 0.6;
+.section-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.partners-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  align-items: center;
+}
+
+.partner-item {
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.partner-item img {
+  max-width: 100%;
+  height: auto;
+  display: inline-block;
+}
+
+.partner-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* === 響應式調整 === */
+@media (max-width: 768px) {
+  .brand-name {
+    font-size: 2rem;
+  }
+
+  .navbar-nav .nav-link {
+    font-size: 1.2rem;
+    margin: 0 10px;
+  }
+
+  .pr-title {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .footer-images .footer-image {
+    max-width: 100%;
+    transform: scale(1);
+  }
+
+  .find-store .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .pr-item {
+    max-width: 100%;
+  }
 }
