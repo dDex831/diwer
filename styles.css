@@ -317,3 +317,91 @@ html, body {
     max-width: 100%;
   }
 }
+
+
+/* ——— 交屋包描述區調整 ——— */
+.product-detail .description {
+  /* 可視需要再微調整左右邊距 */
+  padding-left: 9.5rem;
+}
+
+/* 1. 調整標題字型與右移 */
+.product-detail .description h1 {
+  color: #737C75;           /* 自訂顏色 */
+  font-size: 4rem;    /* 放大標題字體 */
+  margin-bottom: 2.5rem;/* 同時與 ul 拉開距離（步驟2） */
+  /* 也可以改成 padding-left:1.5rem; 讓文字往右 */
+}
+
+/* 2. 移掉 ul 的預設圓點並拉開間距 */
+.product-detail .description ul {
+  list-style: none;     /* 移除原本圓點 */
+  margin-top: 0;        /* 已由 h1 margin-bottom 處理 */
+  padding-left: 0;      /* 先去掉內縮 */
+}
+
+/* 3. 自訂「項目符號」和右移文字 */
+.product-detail .description ul li {
+  color: #93939B;           /* 自訂顏色 */
+  position: relative;
+  padding-left: 2rem;     /* 根據 dash 寬度微調 */
+  margin-bottom: 0.8rem;
+  font-size: 1.6rem;
+  font-weight: bold;        /* 粗體 */
+  /* 懸掛縮排設定：整個 li 往右 1.8rem，但第一行再往左 1.8rem */
+  margin-left: 1.8rem;
+  text-indent: -1.8rem;
+}
+
+.product-detail .description ul li::before {
+  content: "—  ";            /* Em-Dash + 一個空格 */
+  position: absolute;
+  left: 0;
+  top: 50%;               
+  transform: translateY(-50%);
+  font-size: 1.6rem;        /* 破折號大小 */
+  font-weight: bold;        /* 粗體 */
+  color: #93939B;           /* 自訂顏色 */
+  vertical-align: middle;   /* 跟文字中線對齊 */
+}
+
+/* 改用固定欄寬的 Grid，並置中對齊 */
+.product-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(330px, 1fr));
+  justify-content: start;  /* 或改成 start/space-between 視需求 */
+  gap: 5rem;
+  column-gap: 6rem;  /* 橫向間距 */
+  row-gap: 10rem
+}
+
+/* 圖片撐滿格子，超出部分以 cover 裁切 */
+.product-gallery img {
+  width: 380px;
+  height: 120px;
+  object-fit: contain;       /* 保持比例並填滿方框 */
+  border-radius: 1px;
+}
+/* 本頁專屬樣式 */
+.product-detail { padding: 3rem 0; }
+.product-detail .description { margin-bottom: 12rem; }
+
+/* 調整「更多交屋包示意圖」與圖之間的距離 */
+.product-detail .product-gallery {
+  margin-top: 5rem;  /* 或者調成 3rem，看你想要多大間隔 */
+}
+
+/* 讓 .gallery-pair 這一格內的兩張圖並排、間距一致 */
+.gallery-pair {
+  display: flex;
+  gap: 1rem;           /* 兩圖間距 */
+}
+
+/* 繼承原本的固定大小設定 */
+.gallery-pair img {
+  width: 100%;       /* 充满所在 flex 项的宽度 */
+  width: 260px;        /* 或你想要的寬度 */
+  height: 160px;       /* 或你想要的高度 */
+  object-fit: cover;
+  border-radius: 2px;
+}
