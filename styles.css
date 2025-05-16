@@ -143,9 +143,13 @@ html, body {
 
 .pr-item img {
   width: 100%;
-  height: auto;
-  border-radius: 4px;
+  height: 200px;           /* 或依實際畫面調整 */
+  object-fit: contain;     /* 保持圖片原比例，置中顯示 */
+  border-radius: 0px;
+  background-color: #f8f8f8; /* 可選：補空白背景避免圖片太小不好看 */
+  padding: 1px;              /* 可選：讓圖片有內距感 */
 }
+
 
 .pr-item h2 {
   font-size: 1.4rem;
@@ -159,6 +163,15 @@ html, body {
   color: #888;
   text-align: left;
   margin: 0.5rem 0;
+}
+
+.pr-item-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+.pr-item-link:hover {
+  opacity: 0.9;
 }
 
 /* === 店鋪位置區塊 === */
