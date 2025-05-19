@@ -139,12 +139,15 @@ html, body {
   border-radius: 4px;
   padding: 0.5rem;
   text-align: center;
+  /* 新增：去除底線並沿用文字顏色 */
+  text-decoration: none;
+  color: inherit
 }
 
 .pr-item img {
   width: 100%;
   height: 200px;           /* 或依實際畫面調整 */
-  object-fit: contain;     /* 保持圖片原比例，置中顯示 */
+  object-fit: cover;
   border-radius: 0px;
   background-color: #f8f8f8; /* 可選：補空白背景避免圖片太小不好看 */
   padding: 1px;              /* 可選：讓圖片有內距感 */
@@ -227,6 +230,7 @@ html, body {
   padding: 5rem 1rem;
   color: white;
   text-align: center;
+  margin-top: 8rem;
 }
 
 .site-footer .footer-title {
