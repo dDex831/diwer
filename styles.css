@@ -372,12 +372,60 @@ html, body {
 /* 改用固定欄寬的 Grid，並置中對齊 */
 .product-gallery {
   display: grid;
-  grid-template-columns: repeat(3, minmax(330px, 1fr));
+  grid-template-columns: repeat(3, minmax(250px, 1fr));
   justify-content: start;  /* 或改成 start/space-between 視需求 */
   gap: 5rem;
   column-gap: 6rem;  /* 橫向間距 */
   row-gap: 10rem
 }
+/* 改用固定欄寬的 Grid，並置中對齊 (不織布)*/
+
+.product-gallery-non {
+  display: grid;
+  grid-template-columns: repeat(3, 330px);
+  justify-content: start;  /* 或改成 start/space-between 視需求 */
+  gap: 5rem;
+  column-gap: 6rem;  /* 橫向間距 */
+  /* 整個容器往右推 50px */
+  margin-left: 80px;
+  margin-top: 60px;
+  /* 新增：背景色 + 内边距 */
+  
+
+  row-gap: 10rem;
+  
+}
+
+
+/* 每一格：左右並排 */
+.gallery-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;         /* 圖片和文字間距 */
+}
+
+/* 圖片：維持比例縮放 */
+.gallery-item img {
+  flex-shrink: 0;      /* 不讓圖片因空間不足縮得更小 */
+  width: 120px;        /* 或你想要的固定寬度 */
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #f8f8f8;
+}
+
+/* 說明文字區塊 */
+.gallery-desc {
+  flex: 1;             /* 文字區撐滿剩餘空間 */
+  color: #37613C
+}
+
+.gallery-desc h3 {
+  margin-top: 5rem;
+
+  
+}
+
 
 /* 圖片撐滿格子，超出部分以 cover 裁切 */
 .product-gallery img {
