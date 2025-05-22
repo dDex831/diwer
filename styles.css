@@ -7,11 +7,16 @@ html, body {
   overflow-x: hidden;
 }
 
+
 /* === 導覽列 === */
 .custom-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1030; /* 確保高於其他內容 */
   background-color: #fff !important;
-  min-height: 56px;
-  padding: 0.8rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* 可選：下陰影區隔 */
 }
 
 .logo-img {
@@ -48,6 +53,24 @@ html, body {
 .dropdown-menu {
   font-size: 1rem;
   min-width: 160px;
+  border: none !important;        /* 移除邊框 */
+  background-color: #F2EEED;
+}
+
+.dropdown-menu .dropdown-item {
+  font-size: 1.2rem;               /* ✅ 放大字體 */
+  font-weight: 600;                /* ✅ 字重加粗提升質感 */
+  font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+  padding: 0.75rem 1.5rem;         /* ✅ 增加上下間距更易閱讀 */
+  color: #37613C;                     /* ✅ 深色字體 */
+  transition: all 0.25s ease;      /* ✅ 加入過渡動畫 */
+  letter-spacing: 0.5px;           /* ✅ 字距微調增設計感 */
+}
+
+.dropdown-menu .dropdown-item:hover {
+  background-color: #E6F1ED;       /* ✅ 淡綠色背景 */
+  color: #37613C;                  /* ✅ 深綠字體 */
+  transform: translateX(3.5px);      /* ✅ 滑動時有位移效果 */
 }
 
 .btn-line {
@@ -133,7 +156,7 @@ html, body {
 
 .pr-item {
   flex: 1 1 200px;
-  max-width: 220px;
+  width: 200px;
   background: #fafafa;
   border: 1px solid #eee;
   border-radius: 4px;
@@ -147,10 +170,12 @@ html, body {
 .pr-item img {
   width: 100%;
   height: 200px;           /* 或依實際畫面調整 */
-  object-fit: cover;
+ 
   border-radius: 0px;
   background-color: #f8f8f8; /* 可選：補空白背景避免圖片太小不好看 */
   padding: 1px;              /* 可選：讓圖片有內距感 */
+  backface-visibility: hidden;     /* 減少硬邊閃爍 */
+  transform: translateZ(0);        /* 強制 GPU 加速 */
 }
 
 
@@ -172,6 +197,7 @@ html, body {
   display: block;
   text-decoration: none;
   color: inherit;
+  overflow: hidden;        /* 把多出來的部分隱藏 */
 }
 .pr-item-link:hover {
   opacity: 0.9;
@@ -324,6 +350,10 @@ html, body {
 
 
 /* ——— 交屋包描述區調整 ——— */
+.product-detail {
+  margin-top: 120px; /* ✅ 根據需要調整距離 */
+}
+
 .product-detail .description {
   /* 可視需要再微調整左右邊距 */
   padding-left: 9.5rem;
@@ -378,54 +408,67 @@ html, body {
   align-items: center;
   padding: 2rem 1rem;
 }
-/* 改用固定欄寬的 Grid，並置中對齊 (不織布)*/
 
+/* 外框背景容器（如需背景色） */
+.product-gallery-back {
+  padding: 4rem 0;
+  background-color: #f5f5f5;  /* 可改成 #f9f9f9 視需求 */
+}
+
+/* 圖片區：每列 2 組、間距清晰、置中 */
 .product-gallery-non {
   display: grid;
-  grid-template-columns: repeat(3, 330px);
-  justify-content: start;  /* 或改成 start/space-between 視需求 */
-  gap: 5rem;
-  column-gap: 8rem;  /* 橫向間距 */
-  /* 整個容器往右推 50px */
-  margin-left: 80px;
-  margin-top: 60px;
-  /* 新增：背景色 + 内边距 */
-  
-
-  row-gap: 10rem;
-  
+  grid-template-columns: repeat(2, 1fr);  /* ✅ 每列兩組 */
+  gap: 4rem 6rem;                         /* 上下4rem、左右6rem 間距 */
+  justify-content: center;
+  padding: 0 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 
-/* 每一格：左右並排 */
+/* 每一組項目（圖片 + 描述） */
 .gallery-item {
   display: flex;
-  align-items: flex-start;
-  gap: 1.5rem;         /* 圖片和文字間距 */
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
-/* 圖片：維持比例縮放 */
+/* 圖片放大、保持比例、不裁切 */
 .gallery-item img {
-  flex-shrink: 0;      /* 不讓圖片因空間不足縮得更小 */
-  width: 120px;        /* 或你想要的固定寬度 */
+  width: auto;
   height: auto;
-  object-fit: cover;
-  border-radius: 4px;
-  background: #f8f8f8;
-}
-
-/* 說明文字區塊 */
-.gallery-desc {
-  flex: 1;             /* 文字區撐滿剩餘空間 */
-  color: #37613C
-}
-
-.gallery-desc h3 {
-  margin-top: 5rem;
-
+  max-width: 260px;        /* ✅ 放大圖片尺寸 */
+  max-height: 360px;        /* ✅ 統一高度，讓區塊對齊 */
+  object-fit: cover;    /* ✅ 裁切填滿圖片區，不變形 */
+  border-radius: 3px;
+  background: transparent;
   
 }
 
+/* 型號標題樣式 */
+.gallery-desc h3 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-top: 1rem;
+}
+
+/* RWD：手機顯示單欄 */
+@media (max-width: 768px) {
+  .product-gallery-non {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .gallery-item img {
+    max-width: 90%;
+  }
+
+  .gallery-desc h3 {
+    font-size: 1.3rem;
+  }
+}
 
 /* 圖片撐滿格子，超出部分以 cover 裁切 */
 .product-gallery img {
@@ -461,13 +504,12 @@ html, body {
 
 /* 每張圖都放大、保持比例、不裁切 */
 .gallery-pair img {
-  object-fit: contain;
-  height: auto;
-  border-radius: 4px;
-  background-color: transparent; /* ✅ 背景透明 */
-  box-shadow: none;              /* ✅ 移除陰影 */
-  padding: 0;                    /* ✅ 移除內距 */
-  border: none;                  /* ✅ 保險起見移除邊框 */
+  height: 500px;             /* ✅ 統一高度 */
+  width: auto;               /* 根據圖片比例縮放寬度 */
+  object-fit: contain;       /* 不裁切、完整顯示圖片 */
+  background-color: transparent;
+  border: none;
+  border-radius: 6px;
 }
 
 /* 左圖（第一張）：正常寬度 */
@@ -475,10 +517,14 @@ html, body {
   width: 300px;
  
 }
-
+/* ✅ 每組右邊圖片加高 */
+.product-gallery-non .gallery-item:nth-child(even) img {
+  height: 600px; /* 比左邊圖高一點 */
+}
 /* 右圖（第二張）：加寬顯示 */
 .gallery-pair img:last-child {
   width: 480px;
+
 }
 /* 響應式支援：手機時每張圖上下排列 */
 @media (max-width: 768px) {
