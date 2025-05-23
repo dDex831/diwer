@@ -15,33 +15,34 @@ html, body {
   left: 0;
   width: 100%;
   z-index: 1030; /* 確保高於其他內容 */
-  background-color: #fff !important;
+  background-color: #FAF5EF;
+  border-bottom: 1px solid #EDE3DA;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* 可選：下陰影區隔 */
 }
 
 .logo-img {
   height: 60px;
   width: auto;
-  margin-left: 30px;
+  margin-left: 50px;
 }
 
 .brand-name {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: bold;
   color: #333;
-  margin-left: 8px;
+  margin-left: 15px;
 }
 
 .navbar-nav .nav-link {
-  font-size: 1.6rem;
+  font-size: 1.4rem;
   font-weight: 400;
-  color: #888 !important;
+  color: #4B3B2A !important;
   margin: 0 15px;
   transition: color 0.2s ease;
 }
 
 .navbar-nav .nav-link:hover {
-  color: #000 !important;
+  color: #2E2E1E !important;
   text-decoration: underline;
 }
 
@@ -54,7 +55,7 @@ html, body {
   font-size: 1rem;
   min-width: 160px;
   border: none !important;        /* 移除邊框 */
-  background-color: #F2EEED;
+  background-color: #FAF5EF;
 }
 
 .dropdown-menu .dropdown-item {
@@ -62,14 +63,14 @@ html, body {
   font-weight: 600;                /* ✅ 字重加粗提升質感 */
   font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
   padding: 0.75rem 1.5rem;         /* ✅ 增加上下間距更易閱讀 */
-  color: #37613C;                     /* ✅ 深色字體 */
+  color: #4B3B2A;  /* 或你偏好的深色 */                 
   transition: all 0.25s ease;      /* ✅ 加入過渡動畫 */
   letter-spacing: 0.5px;           /* ✅ 字距微調增設計感 */
 }
 
 .dropdown-menu .dropdown-item:hover {
-  background-color: #E6F1ED;       /* ✅ 淡綠色背景 */
-  color: #37613C;                  /* ✅ 深綠字體 */
+  background-color: #EFE6DC;
+  color: #4B3B2A;                /* ✅ 深綠字體 */
   transform: translateX(3.5px);      /* ✅ 滑動時有位移效果 */
 }
 
@@ -104,9 +105,63 @@ html, body {
   margin-top: -90px; /* 可調整為 -10px、-15px 視覺需求 */
 }
 /* === 輪播圖 === */
-#diwerCarousel .carousel-inner,
-#diwerCarousel .carousel-item {
-  overflow: visible !important;
+/* === 輪播黑色箭頭（無背景，純黑色SVG）=== */
+#diwerCarousel .carousel-control-prev-icon,
+#diwerCarousel .carousel-control-next-icon {
+  background-image: none;
+  background-color: transparent !important;
+  border-radius: 0;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#diwerCarousel .carousel-control-prev-icon::before,
+#diwerCarousel .carousel-control-next-icon::before {
+  content: '';
+  display: block;
+  width: 32px;
+  height: 32px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#diwerCarousel .carousel-control-prev-icon::before {
+  background-image: url("data:image/svg+xml;utf8,<svg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 8L12 16L20 24' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+#diwerCarousel .carousel-control-next-icon::before {
+  background-image: url("data:image/svg+xml;utf8,<svg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M12 8L20 16L12 24' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+}
+#diwerCarousel .carousel-control-prev,
+#diwerCarousel .carousel-control-next {
+  width: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  opacity: 1;
+}
+#diwerCarousel .carousel-control-prev { left: 20px; }
+#diwerCarousel .carousel-control-next { right: 20px; }
+#diwerCarousel .carousel-control-prev:hover,
+#diwerCarousel .carousel-control-next:hover {
+  background: none;
+  box-shadow: none;
+}
+/* RWD：小螢幕箭頭不要超出畫面 */
+@media (max-width: 900px) {
+  #diwerCarousel .carousel-control-prev,
+  #diwerCarousel .carousel-control-next {
+    width: 44px;
+    left: 0 !important;
+    right: 0 !important;
+  }
+}
+
+#diwerCarousel .carousel-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative; /* ✅ 確保箭頭能相對定位 */
 }
 
 #diwerCarousel .carousel-img {
@@ -115,6 +170,11 @@ html, body {
   height: auto;
   max-height: 80vh;
   object-fit: cover;
+  max-width: 1200px;     /* ✅ 限制最大寬度，例如 1200px */
+  margin: 0 auto;        /* ✅ 置中 */
+  border-radius: 8px;    /* ✅ 可選：讓圖片有圓角 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* ✅ 可選：加入陰影區隔 */
+  
 }
 
 #diwerCarousel .carousel-indicators [data-bs-target] {
@@ -130,6 +190,21 @@ html, body {
 
 #diwerCarousel .carousel-indicators .active {
   background-color: #555;
+}
+/* ✅ 限制箭頭不貼邊，跟圖片保持一致寬度 */
+#diwerCarousel .carousel-control-prev,
+#diwerCarousel .carousel-control-next {
+  width: auto;
+  padding: 0 2rem;          /* ✅ 根據需要可調整，例如 2rem = 32px */
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1; /* 確保高於圖片 */
+}
+
+/* ✅ 移除滿版 hover 背景（可選） */
+#diwerCarousel .carousel-control-prev:hover,
+#diwerCarousel .carousel-control-next:hover {
+  background: none;
 }
 
 /* === 商品推薦區塊 === */
@@ -166,7 +241,11 @@ html, body {
   text-align: center;
   /* 新增：去除底線並沿用文字顏色 */
   text-decoration: none;
-  color: inherit
+  color: inherit;
+  /* 新增以下兩行讓內容自動撐開，避免文字溢出 */
+  box-sizing: border-box;
+  min-height: 270px;  /* 你也可以自己調整合適的數字 */
+  overflow: visible;   /* 不要裁掉內容 */
 }
 
 .pr-item img {
@@ -186,6 +265,9 @@ html, body {
   font-weight: 600;
   margin-bottom: 1rem;
   text-align: left;
+  white-space: normal !important;
+  word-break: break-all;  /* 遇到英文或網址也會自動換行，避免爆版 */
+  overflow-wrap: break-word; /* 更現代瀏覽器友好 */
 }
 
 .pr-item p {
@@ -193,6 +275,9 @@ html, body {
   color: #888;
   text-align: left;
   margin: 0.5rem 0;
+  white-space: normal !important;
+  word-break: break-all;  /* 遇到英文或網址也會自動換行，避免爆版 */
+  overflow-wrap: break-word; /* 更現代瀏覽器友好 */
 }
 
 .pr-item-link {
@@ -431,6 +516,7 @@ html, body {
   padding: 0 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  
 }
 
 
@@ -446,12 +532,17 @@ html, body {
 .gallery-item img {
   width: auto;
   height: auto;
-  max-width: 260px;        /* ✅ 放大圖片尺寸 */
-  max-height: 360px;        /* ✅ 統一高度，讓區塊對齊 */
-  object-fit: cover;    /* ✅ 裁切填滿圖片區，不變形 */
-  border-radius: 3px;
-  background: transparent;
-  
+  max-width: 260px;
+  max-height: 360px;
+  object-fit: cover;
+  border-radius: 6px;
+
+  /* ✅ 讓圖片更有浮起感，與背景有區隔 */
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+
+  /* ✅ 給透明背景圖片加點底色，避免浮邊感 */
+  background-color: #fafafa;
+  padding: 4px; /* 內距感覺更柔和 */
 }
 
 /* 型號標題樣式 */
@@ -459,6 +550,7 @@ html, body {
   font-size: 1.5rem;
   color: #333;
   margin-top: 1rem;
+  letter-spacing: 0.5px;
 }
 
 /* RWD：手機顯示單欄 */
