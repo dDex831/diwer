@@ -435,6 +435,9 @@ html, body {
 
 /* 576px 以下：極小螢幕（例如 360px）時才縮到 1rem */
 @media (max-width: 576px) {
+  #diwerCarousel {
+    margin-top: 8rem !important;  /* 或者 3rem，看你想要多少間距 */
+  }
   .find-store h2,
   .find-store p,
   .find-store .btn-outline-dark {
@@ -448,7 +451,8 @@ html, body {
     height: auto !important;
     display: block;                 
     margin: 0 auto;                 /* 置中顯示 */
-    }
+    margin-top: 5rem !important;
+  }
 }
 
 
