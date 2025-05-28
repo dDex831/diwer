@@ -453,6 +453,9 @@ html, body {
       word-break: break-word !important;
       overflow-wrap: break-word !important;
     }
+    .partners-section {
+      margin-top: 7rem !important; /* ⬅️ 調整這裡的距離，例如 4rem 或 64px */
+    }
   }
 @media (max-width: 992px) and (min-width: 576px)  {
   .logo-img {
@@ -500,6 +503,9 @@ html, body {
     /* 把長詞、英文、標點都能適時換行 */
     word-break: break-word !important;
     overflow-wrap: break-word !important;
+  }
+  .partners-section {
+    margin-top: 7rem !important; /* ⬅️ 調整這裡的距離，例如 4rem 或 64px */
   }
 
 }
@@ -631,6 +637,9 @@ html, body {
       /* 把長詞、英文、標點都能適時換行 */
       word-break: break-word !important;
       overflow-wrap: break-word !important;
+    }
+    .partners-section {
+      margin-top: 6rem !important; /* ⬅️ 調整這裡的距離，例如 4rem 或 64px */
     }
 }
 
