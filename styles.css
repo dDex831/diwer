@@ -22,7 +22,7 @@ html, body {
 }
 .logo-img {
   height: 60px; width: auto;
-  margin-left: 50px;
+  margin-left: 120px;
 }
 .brand-name {
   font-family: 'Noto Sans TC',sans-serif;
@@ -92,6 +92,7 @@ html, body {
   background: none !important; padding: 0;
   width: 44px; height: 44px;
   display:flex; align-items:center; justify-content:center;
+  margin-top: 20rem !important;
 }
 #diwerCarousel .carousel-control-prev-icon::before,
 #diwerCarousel .carousel-control-next-icon::before {
@@ -174,7 +175,7 @@ html, body {
 .find-store h2,
 .find-store p,
 .find-store .btn-outline-dark {
-  margin-left:4rem;
+  margin-left:10rem;
 }
 .find-store p { font-size:1rem; line-height:1.6; }
 .find-store .btn-outline-dark { border-width:2px; }
