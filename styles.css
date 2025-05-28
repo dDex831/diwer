@@ -658,45 +658,35 @@ html, body {
 }
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
-  /* 左右欄位為flex，空間分配清楚 */
+  .container {
+    padding-left: 0;
+    max-width: 1200px;  /* 建議加，避免過寬 */
+  }
   .row.align-items-center {
     display: flex;
     align-items: center;
-    gap: 48px; /* 左右欄間隔，可調整 */
+    gap: 120px;   /* 直接設大一點會很明顯！ */
   }
   .description {
     flex: 0 1 520px;
-    max-width: 520px;   /* 控制左欄最大寬，520px~600px建議 */
+    max-width: 520px;
     min-width: 300px;
     margin-left: 0;
-    padding-left: 0;
+    padding-left: 30px;  /* 這裡有縮排效果 */
     text-align: left;
     display: block;
   }
   .description h1 {
     white-space: nowrap;
-    font-size: clamp(1rem, 6vw, 2rem);  /* 標題縮小範圍 */
+    font-size: clamp(1.2rem, 5vw, 2.2rem);
     overflow: visible;
     text-overflow: clip;
     margin-bottom: 2rem;
     text-align: left;
+  }
+  .description ul, .description ul li {
     margin-left: 0;
-    padding-left: -600px;
-  }
-  .description ul {
-    margin-left: -250px;
     padding-left: 0;
-  }
-  .description ul li {
-    white-space: nowrap;
-    font-size: clamp(0.6rem, 1.7vw, 1rem); /* 更保守的縮小，確保一行塞得下 */
-    overflow: visible;
-    text-overflow: clip;
-    text-align: left;
-    margin-left: -250px;
-    padding-left: 0;
-    width: 100%;
-    max-width: 100%;
   }
   .text-center {
     flex: 1 1 0;
@@ -709,11 +699,13 @@ html, body {
     min-width: 340px;
     width: 100%;
     height: auto;
-    margin-left: 200px;
+    /* 如果 gap 夠大這裡 margin-left 可以設 0 */
+    margin-left: 0;
     margin-right: 0;
     display: block;
   }
 }
+
 
 
 
