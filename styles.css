@@ -440,6 +440,15 @@ html, body {
   .find-store .btn-outline-dark {
     margin-left: 1rem !important;
   }
+  /* 小手機時，店鋪位置的圖片不要滿版 */
+  .find-store .col-md-6.text-center img.img-fluid {
+    width: auto !important;         /* 取消 width:100% */
+    max-width: 80% !important;      /* 最多佔容器 80%，自己調整比例 */
+    /* 或用固定 px：max-width: 300px !important; */
+    height: auto !important;
+    display: block;                 
+    margin: 0 auto;                 /* 置中顯示 */
+    }
 }
 
 
