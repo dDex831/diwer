@@ -681,11 +681,11 @@ html, body {
     margin-bottom: 2rem;
     text-align: left;
     margin-left: 0;
-    padding-left: 0;
+    padding-left: 100px;
   }
   .description ul {
     margin-left: 0;
-    padding-left: 0;
+    padding-left: 100px;
   }
   .description ul li {
     white-space: nowrap;
@@ -694,7 +694,7 @@ html, body {
     text-overflow: clip;
     text-align: left;
     margin-left: 0;
-    padding-left: 0;
+    padding-left: 100px;
     width: 100%;
     max-width: 100%;
   }
