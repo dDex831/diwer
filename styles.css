@@ -411,6 +411,20 @@ html, body {
     margin-bottom: 0.6rem;
     margin-left: -1.2rem;
     text-align: left;
+    
+  }
+  
+
+  .pr-window {
+    padding-bottom: 0 !important;  /* 移除滑動區塊底部空間 */
+  }
+  /* ① 縮小「商品推薦」區塊的底部間距 */
+  .product-recommend {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .product-recommend .container {
+    padding-bottom: 0 !important;
   }
   .product-recommend .pr-item {
     /* 確保卡片本身不隱藏多餘內容 */
@@ -427,6 +441,7 @@ html, body {
     word-break: break-word !important;
     overflow-wrap: break-word !important;
   }
+  
   .partners-section {
     margin-top: 7rem !important; /* ⬅️ 調整這裡的距離，例如 4rem 或 64px */
   }
@@ -561,6 +576,22 @@ html, body {
       word-break: break-word !important;
       overflow-wrap: break-word !important;
     }
+    
+  
+    .pr-window {
+      padding-bottom: 0 !important;  /* 移除滑動區塊底部空間 */
+    }
+    /* ① 縮小「商品推薦」區塊的底部間距 */
+    .product-recommend {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+      
+    }
+    .product-recommend .container {
+      padding-bottom: 0 !important;
+    }
+
+    
     .partners-section {
       margin-top: 6rem !important; /* ⬅️ 調整這裡的距離，例如 4rem 或 64px */
     }
