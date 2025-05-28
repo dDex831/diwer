@@ -373,7 +373,7 @@ html, body {
     #diwerCarousel {
       margin-top: 8rem !important;  /* 或者 3rem，看你想要多少間距 */
     }
-  
+    
   
     /* ── 2. 文字貼最左 & 縮小到 320px 上仍可完整閱讀 ── */
     .product-detail .description {
@@ -459,6 +459,19 @@ html, body {
 @media (max-width: 576px) {
   #diwerCarousel {
     margin-top: 8rem !important;  /* 或者 3rem，看你想要多少間距 */
+  }
+  /* ── 1. Logo + 名稱都貼最左 ── */
+  .custom-navbar .navbar-brand {
+    margin-left: 0 !important;
+    padding-left: 1rem;    /* 若要留一點內距再調 */
+  }
+  .custom-navbar .logo-img,
+  .custom-navbar .brand-name {
+    margin-left: 0 !important;
+  }
+  /* 小螢幕也不要讓 brand-name 太大 */
+  .brand-name {
+    font-size: 1.6rem !important;
   }
   .find-store h2,
   .find-store p,
