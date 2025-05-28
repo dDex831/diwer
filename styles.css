@@ -657,7 +657,7 @@ html, body {
   padding-right: -5rem;
 }
 
-@media (min-width: 992px) and (max-width: 1199.98px) {
+@media (min-width: 992px)  {
   .container {
     padding-left: 0;
     max-width: 1200px;  /* 建議加，避免過寬 */
@@ -665,7 +665,7 @@ html, body {
   .row.align-items-center {
     display: flex;
     align-items: center;
-    gap: 120px;   /* 直接設大一點會很明顯！ */
+    gap: 180px;   /* 直接設大一點會很明顯！ */
   }
   .description {
     flex: 0 1 520px;
@@ -703,6 +703,19 @@ html, body {
     margin-left: 0;
     margin-right: 0;
     display: block;
+  }
+  .product-detail .text-center img {
+    /* 1) 用 width: auto 取消 img-fluid 的強制 100% 撐滿 */
+    width: auto !important;
+    /* 2) 仍保留最大寬度不超過父容器 */
+    max-width: 100%;
+    /* 3) 加個你想要的上限，比如 400px */
+    max-width: 400px;
+    max-height: 400px;
+    
+    display: block;
+    margin: 0 auto;  /* 置中 */
+    margin-top: -50px; /* 負值往上調，視需求自己調整 */
   }
 }
 
