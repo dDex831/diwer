@@ -318,6 +318,7 @@ html, body {
    ====================================== */
 @media (min-width: 992px) {
   .container { padding-left:0; max-width:1200px; }
+  
   .row.align-items-center {
     display:flex; align-items:center;
     gap:180px;
@@ -346,6 +347,22 @@ html, body {
     align-self:flex-start;
     max-width:400px; max-height:400px;
     display:block; margin-top:-50px;
+  }
+  /* 讓推薦區的 p 文本自動換行、不裁切 */
+  .product-recommend .pr-item {
+    /* 確保卡片本身不隱藏多餘內容 */
+    overflow: visible !important;
+    /* 依內容高度自動伸長 */
+    min-height: 0 !important;
+    height: auto !important;
+  }
+
+  .product-recommend .pr-item p {
+    /* 允許換行 */
+    white-space: normal !important;
+    /* 把長詞、英文、標點都能適時換行 */
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
   }
 }
 
@@ -448,6 +465,21 @@ html, body {
     .find-store {
       /* 如果要全螢幕都套用 */
       margin-top: 4rem !important;  /* 把原本 12rem → 4rem，自己再微調 */
+    }
+    .product-recommend .pr-item {
+      /* 確保卡片本身不隱藏多餘內容 */
+      overflow: visible !important;
+      /* 依內容高度自動伸長 */
+      min-height: 0 !important;
+      height: auto !important;
+    }
+  
+    .product-recommend .pr-item p {
+      /* 允許換行 */
+      white-space: normal !important;
+      /* 把長詞、英文、標點都能適時換行 */
+      word-break: break-word !important;
+      overflow-wrap: break-word !important;
     }
   }
 
