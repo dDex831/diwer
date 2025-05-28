@@ -460,6 +460,9 @@ html, body {
 
 /* 1. 調整標題字型與右移 */
 .product-detail .description h1 {
+  white-space: nowrap;          /* 不換行 */
+  overflow: hidden;             /* 多餘部分不顯示 */
+  text-overflow: ellipsis;      /* 加上省略號（可選） */
   color: #737C75;           /* 自訂顏色 */
   font-size: 4rem;    /* 放大標題字體 */
   margin-bottom: 2.5rem;/* 同時與 ul 拉開距離（步驟2） */
@@ -484,6 +487,9 @@ html, body {
   /* 懸掛縮排設定：整個 li 往右 1.8rem，但第一行再往左 1.8rem */
   margin-left: 1.8rem;
   text-indent: -1.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .product-detail .description ul li::before {
