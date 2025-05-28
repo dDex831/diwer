@@ -1,724 +1,427 @@
-/* === 全站通用 === */
+/* ======================================
+   1. 基本樣式 (Base Styles)
+   ====================================== */
+
+/* 全站通用 */
 html, body {
   margin: 0;
   padding: 0;
-  font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
+  font-family: 'Noto Sans TC','Microsoft JhengHei',sans-serif;
   background-color: #fff;
   overflow-x: hidden;
 }
 
-
-/* === 導覽列 === */
+/* === 導覽列 Navbar === */
 .custom-navbar {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1030; /* 確保高於其他內容 */
+  top: 0; left: 0;
+  width: 100%; z-index: 1030;
   background-color: #FAF5EF;
   border-bottom: 1px solid #EDE3DA;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* 可選：下陰影區隔 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
-
 .logo-img {
-  height: 60px;
-  width: auto;
+  height: 60px; width: auto;
   margin-left: 50px;
 }
-
 .brand-name {
-  font-family: 'Noto Sans TC', sans-serif;
-  font-size: 3rem;
-  font-weight: bold;
+  font-family: 'Noto Sans TC',sans-serif;
+  font-size: 3rem; font-weight: bold;
   color: #333;
   margin-left: 15px;
 }
-/* 服務簡介與合作品牌字體為 Helvetica Neue */
-.navbar-nav .nav-link[href*="SEC"],
-.navbar-nav .nav-link[href*="partners.html"],
-.navbar-nav .dropdown-menu .dropdown-item {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-}
-
 .navbar-nav .nav-link {
-  font-size: 1.4rem;
-  font-weight: 400;
+  font-size: 1.4rem; font-weight: 400;
   color: #4B3B2A !important;
-  margin: 0 15px;
-  transition: color 0.2s ease;
+  margin: 0 15px; transition: color .2s;
 }
-
 .navbar-nav .nav-link:hover {
   color: #2E2E1E !important;
   text-decoration: underline;
 }
-
-.navbar-nav .dropdown-toggle::after {
-  margin-left: 0.3em;
-  vertical-align: middle;
+/* Helvetica Neue only on 特定項目 */
+.navbar-nav .nav-link[href*="SEC"],
+.navbar-nav .nav-link[href*="partners.html"],
+.navbar-nav .dropdown-menu .dropdown-item {
+  font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;
 }
 
+/* 下拉選單 Dropdown */
 .dropdown-menu {
-  font-size: 1rem;
-  min-width: 160px;
-  border: none !important;        /* 移除邊框 */
+  font-size: 1rem; min-width: 160px;
+  border: none !important;
   background-color: #FAF5EF;
 }
-
 .dropdown-menu .dropdown-item {
-  font-size: 1.2rem;               /* ✅ 放大字體 */
-  font-weight: 600;                /* ✅ 字重加粗提升質感 */
-  font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif;
-  padding: 0.75rem 1.5rem;         /* ✅ 增加上下間距更易閱讀 */
-  color: #4B3B2A;  /* 或你偏好的深色 */                 
-  transition: all 0.25s ease;      /* ✅ 加入過渡動畫 */
-  letter-spacing: 0.5px;           /* ✅ 字距微調增設計感 */
+  font-family: 'Noto Sans TC','Microsoft JhengHei',sans-serif;
+  font-size: 1.2rem; font-weight: 600;
+  padding: .75rem 1.5rem;
+  color: #4B3B2A;
+  letter-spacing: .5px;
+  transition: all .25s;
 }
-
 .dropdown-menu .dropdown-item:hover {
   background-color: #EFE6DC;
-  color: #4B3B2A;                /* ✅ 深綠字體 */
-  transform: translateX(3.5px);      /* ✅ 滑動時有位移效果 */
+  transform: translateX(3.5px);
 }
 
+/* LINE 按鈕 & 搜尋圖示 */
 .btn-line {
-  background-color: #06C755;
-  color: white;
-  font-weight: bold;
-  border-radius: 6px;
-  padding: 6px 18px;
-  font-size: 1rem;
+  background-color: #06C755; color: #fff;
+  font-weight: bold; border-radius: 6px;
+  padding: 6px 18px; font-size: 1rem;
   text-decoration: none;
-  transition: background-color 0.3s ease;
   margin-left: 5px;
+  transition: background-color .3s;
 }
-
-.btn-line:hover {
-  background-color: #04a64c;
-  color: white;
-}
-
+.btn-line:hover { background-color: #04a64c; }
 .search-icon {
-  font-size: 1.3rem;
-  color: #444;
-  text-decoration: none;
-  margin-left: 10px;
+  font-size: 1.3rem; color: #444;
+  margin-left: 10px; transition: color .2s;
+}
+.search-icon:hover { color: #000; }
+
+/* 共用 img-fluid 調整 (若你全站皆需) */
+.img-fluid.rounded {
+  margin-top: -90px;  /* 視需求微調 */
 }
 
-.search-icon:hover {
-  color: #000;
-}
-.img-fluid.rounded {
-  margin-top: -90px; /* 可調整為 -10px、-15px 視覺需求 */
-}
-/* === 輪播圖 === */
-/* === 輪播黑色箭頭（無背景，純黑色SVG）=== */
+/* === 輪播 Carousel === */
 #diwerCarousel .carousel-control-prev-icon,
 #diwerCarousel .carousel-control-next-icon {
-  background-image: none;
-  background-color: transparent !important;
-  border-radius: 0;
-  padding: 0;
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: none !important; padding: 0;
+  width: 44px; height: 44px;
+  display:flex; align-items:center; justify-content:center;
 }
 #diwerCarousel .carousel-control-prev-icon::before,
 #diwerCarousel .carousel-control-next-icon::before {
-  content: '';
-  display: block;
-  width: 32px;
-  height: 32px;
-  background-repeat: no-repeat;
-  background-position: center;
+  content: ''; display: block;
+  width: 32px; height: 32px;
+  background-repeat: no-repeat; background-position: center;
 }
 #diwerCarousel .carousel-control-prev-icon::before {
-  background-image: url("data:image/svg+xml;utf8,<svg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M20 8L12 16L20 24' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg … ←省略… />");
 }
 #diwerCarousel .carousel-control-next-icon::before {
-  background-image: url("data:image/svg+xml;utf8,<svg width='32' height='32' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'><path d='M12 8L20 16L12 24' stroke='black' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg … ←省略… />");
 }
 #diwerCarousel .carousel-control-prev,
 #diwerCarousel .carousel-control-next {
-  width: 80px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 2;
+  width: 80px; top: 50%;
+  transform: translateY(-50%); z-index: 2;
   opacity: 1;
 }
-#diwerCarousel .carousel-control-prev { left: 20px; }
-#diwerCarousel .carousel-control-next { right: 20px; }
-#diwerCarousel .carousel-control-prev:hover,
-#diwerCarousel .carousel-control-next:hover {
-  background: none;
-  box-shadow: none;
+#diwerCarousel .carousel-inner {
+  max-width: 1200px; margin: 0 auto;
+  position: relative;
 }
-/* RWD：小螢幕箭頭不要超出畫面 */
-@media (max-width: 900px) {
+#diwerCarousel .carousel-img {
+  display: block; width: 100%; height: auto;
+  max-width: 1200px; max-height: 90vh;
+  object-fit: cover; margin: 0 auto;
+  border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+}
+@media (max-width:900px) {
   #diwerCarousel .carousel-control-prev,
   #diwerCarousel .carousel-control-next {
-    width: 44px;
-    left: 0 !important;
-    right: 0 !important;
+    width: 44px; left:0!important; right:0!important;
   }
 }
 
-#diwerCarousel .carousel-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  position: relative; /* ✅ 確保箭頭能相對定位 */
-}
-
-#diwerCarousel .carousel-img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-height: 90vh;
-  object-fit: cover;
-  max-width: 1200px;     /* ✅ 限制最大寬度，例如 1200px */
-  margin: 0 auto;        /* ✅ 置中 */
-  border-radius: 8px;    /* ✅ 可選：讓圖片有圓角 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* ✅ 可選：加入陰影區隔 */
-  
-}
-
-#diwerCarousel .carousel-indicators [data-bs-target] {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background-color: #ccc;
-  border: none;
-  opacity: 1;
-  transition: background-color 0.2s;
-  margin: 0 6px;
-}
-
-#diwerCarousel .carousel-indicators .active {
-  background-color: #555;
-}
-/* ✅ 限制箭頭不貼邊，跟圖片保持一致寬度 */
-#diwerCarousel .carousel-control-prev,
-#diwerCarousel .carousel-control-next {
-  width: auto;
-  padding: 0 2rem;          /* ✅ 根據需要可調整，例如 2rem = 32px */
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1; /* 確保高於圖片 */
-}
-
-/* ✅ 移除滿版 hover 背景（可選） */
-#diwerCarousel .carousel-control-prev:hover,
-#diwerCarousel .carousel-control-next:hover {
-  background: none;
-}
-
-/* === 商品推薦區塊 === */
+/* === 商品推薦區塊 Product Recommendations === */
 .pr-title {
-  max-width: calc(215px * 5 + 1rem * 4);  /* 與 .pr-window 同寬 */
+  max-width: calc(215px*5 + 1rem*4);
   margin: 8rem auto 1.5rem;
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 2rem; font-weight: bold;
   text-align: left;
 }
-/* 視窗容器 - 限定寬度只露出 5 張，置中 + 橫向捲動 */
 .pr-window {
-  width: calc(215px * 5 + 1rem * 4);  /* 5張卡片 + 4個間距 */
-  margin: 0 auto;
-  overflow-x: auto;
-  overflow-y: hidden;
-  white-space: nowrap;
-  padding-bottom: 1rem;
+  width: calc(215px*5 + 1rem*4);
+  margin:0 auto; overflow-x:auto; overflow-y:hidden;
+  white-space:nowrap; padding-bottom:1rem;
 }
-
-.pr-list {
-  display: inline-flex;
-  gap: 1rem;
-  flex-wrap: nowrap;
-}
-
+.pr-list { display:inline-flex; gap:1rem; }
 .pr-item {
-  flex: 1 1 200px;
-  width: 200px;
-  background: #fafafa;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  padding: 0.5rem;
-  text-align: center;
-  /* 新增：去除底線並沿用文字顏色 */
-  text-decoration: none;
-  color: inherit;
-  /* 新增以下兩行讓內容自動撐開，避免文字溢出 */
-  box-sizing: border-box;
-  min-height: 270px;  /* 你也可以自己調整合適的數字 */
-  overflow: visible;   /* 不要裁掉內容 */
+  flex:1 1 200px; width:200px;
+  background:#fafafa; border:1px solid #eee;
+  border-radius:4px; padding:.5rem;
+  text-decoration:none; color:inherit;
+  box-sizing:border-box; min-height:270px;
 }
-
 .pr-item img {
-  width: 100%;
-  height: 200px;           /* 或依實際畫面調整 */
- 
-  border-radius: 0px;
-  background-color: #f8f8f8; /* 可選：補空白背景避免圖片太小不好看 */
-  padding: 1px;              /* 可選：讓圖片有內距感 */
-  backface-visibility: hidden;     /* 減少硬邊閃爍 */
-  transform: translateZ(0);        /* 強制 GPU 加速 */
+  width:100%; height:200px;
+  background:#f8f8f8; padding:1px;
+  border-radius:0; backface-visibility:hidden;
+  transform:translateZ(0);
 }
-
-
 .pr-item h2 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 1rem;
-  text-align: left;
-  white-space: normal !important;
-  word-break: break-all;  /* 遇到英文或網址也會自動換行，避免爆版 */
-  overflow-wrap: break-word; /* 更現代瀏覽器友好 */
+  font-size:1.4rem; font-weight:600;
+  margin-bottom:1rem; text-align:left;
+  word-break:break-all;
 }
-
 .pr-item p {
-  font-size: 1rem;
-  color: #888;
-  text-align: left;
-  margin: 0.5rem 0;
-  white-space: normal !important;
-  word-break: break-all;  /* 遇到英文或網址也會自動換行，避免爆版 */
-  overflow-wrap: break-word; /* 更現代瀏覽器友好 */
+  font-size:1rem; color:#888;
+  text-align:left; margin:.5rem 0;
+  word-break:break-all;
 }
+.pr-item-link { display:block; overflow:hidden; }
+.pr-item-link:hover { opacity:.9; }
 
-.pr-item-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  overflow: hidden;        /* 把多出來的部分隱藏 */
-}
-.pr-item-link:hover {
-  opacity: 0.9;
-}
-
-/* === 店鋪位置區塊 === */
+/* === 店鋪位置 Find Store === */
 .find-store {
-  margin-top: 12rem;
-  background-color: #f5f5f5;
+  margin-top:12rem; background:#f5f5f5;
 }
-
-.find-store h2 {
-  color: #333;
-  margin-left: 4rem;
-}
-
-.find-store p {
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-left: 4rem;
-}
-
+.find-store h2,
+.find-store p,
 .find-store .btn-outline-dark {
-  border-width: 2px;
-  margin-left: 4rem;
+  margin-left:4rem;
 }
-
-.find-store .container {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-
+.find-store p { font-size:1rem; line-height:1.6; }
+.find-store .btn-outline-dark { border-width:2px; }
+.find-store .container { padding:0 1.5rem; }
 .find-store .col-md-6.text-center img {
-  max-height: 450px;       /* ✅ 更合理高度，例如 260px~300px 可依需求調整 */
-  width: auto;
-  object-fit: contain;
-  display: block;
-  margin: 0 auto;
-  border-radius: 8px;
-  max-width: 100%;         /* 避免寬度爆框 */
+  max-height:450px; width:auto;
+  display:block; margin:0 auto;
+  object-fit:contain; border-radius:8px;
 }
-/* === Footer Images === */
+
+/* === Footer Images & Footer === */
 .footer-images {
-  background-color: #fff;
-  padding: 1rem;
-  text-align: center;
+  background:#fff; padding:1rem; text-align:center;
 }
-
 .footer-images .footer-image {
-  max-width: 45%;
-  height: auto;
-  display: inline-block;
-  transform: scale(0.8);
-  transform-origin: center;
+  max-width:45%; height:auto;
+  display:inline-block;
+  transform:scale(.8); transform-origin:center;
 }
-
-/* === 頁尾區塊 === */
 .site-footer {
-  background-color: #535353;
-  margin-top: 0;
-  padding: 5rem 1rem;
-  color: white;
-  text-align: center;
-  margin-top: 8rem;
+  background:#535353; color:#fff;
+  padding:5rem 1rem; margin-top:8rem;
+  text-align:center;
 }
-
-.site-footer .footer-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-}
-
+.site-footer .footer-title { font-size:1.5rem; font-weight:600; }
 .site-footer .footer-phone,
-.site-footer .footer-copy {
-  font-size: 1rem;
-  opacity: 0.8;
-}
-
+.site-footer .footer-copy { font-size:1rem; opacity:.8; }
 .site-footer .footer-divider {
-  width: 80%;
-  border: none;
-  border-top: 1px solid rgba(255,255,255,0.3);
-  margin: 2rem auto;
+  width:80%; border:none;
+  border-top:1px solid rgba(255,255,255,.3);
+  margin:2rem auto;
 }
 
-/* === 合作品牌區塊 === */
-.partners-section {
-  background-color: #f9f9f9;
-  padding: 4rem 1rem;
-}
-
+/* === 合作品牌 Partners === */
+.partners-section { background:#f9f9f9; padding:4rem 1rem; }
 .section-title {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-  margin-bottom: 2rem;
+  font-size:2.5rem; font-weight:bold;
+  color:#333; text-align:center; margin-bottom:2rem;
 }
-
 .partners-grid {
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  align-items: center;
+  display:grid; gap:2rem;
+  grid-template-columns:repeat(auto-fit, minmax(120px,1fr));
 }
-
 .partner-item {
-  padding: 1rem;
-  background: #fff;
-  border-radius: 8px;
-  text-align: center;
-  transition: transform 0.3s, box-shadow 0.3s;
+  background:#fff; padding:1rem;
+  border-radius:8px; text-align:center;
+  transition:transform .3s, box-shadow .3s;
 }
-
-.partner-item img {
-  max-width: 100%;
-  height: auto;
-  display: inline-block;
-}
-
+.partner-item img { max-width:100%; height:auto; }
 .partner-item:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform:translateY(-5px);
+  box-shadow:0 4px 12px rgba(0,0,0,.1);
 }
 
-/* === 響應式調整 === */
-@media (max-width: 768px) {
-  .brand-name {
-    font-size: 2rem;
-  }
-
-  .navbar-nav .nav-link {
-    font-size: 1.2rem;
-    margin: 0 10px;
-  }
-
-  .pr-title {
-    margin-left: 0;
-    text-align: center;
-  }
-
-  .footer-images .footer-image {
-    max-width: 100%;
-    transform: scale(1);
-  }
-
-  .find-store .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .pr-item {
-    max-width: 100%;
-  }
-}
-
-
-/* ——— 交屋包描述區調整 ——— */
+/* === 交屋包描述 Product Detail Base === */
 .product-detail {
-  margin-top: 120px; /* ✅ 根據需要調整距離 */
+  margin-top:120px; padding:3rem 0;
 }
-
 .product-detail .description {
-  /* 可視需要再微調整左右邊距 */
-  padding-left: 9.5rem;
+  padding-left:9.5rem;
+  margin-bottom:12rem;
 }
-
-/* 1. 調整標題字型與右移 */
 .product-detail .description h1 {
-  white-space: nowrap;          /* 不換行 */
-  overflow: hidden;             /* 多餘部分不顯示 */
-  text-overflow: ellipsis;      /* 加上省略號（可選） */
-  color: #737C75;           /* 自訂顏色 */
-  font-size: 4rem;    /* 放大標題字體 */
-  margin-bottom: 2.5rem;/* 同時與 ul 拉開距離（步驟2） */
-  /* 也可以改成 padding-left:1.5rem; 讓文字往右 */
+  white-space:nowrap; overflow:hidden;
+  text-overflow:ellipsis;
+  color:#737C75; font-size:4rem;
+  margin-bottom:2.5rem;
 }
-
-/* 2. 移掉 ul 的預設圓點並拉開間距 */
 .product-detail .description ul {
-  list-style: none;     /* 移除原本圓點 */
-  margin-top: 0;        /* 已由 h1 margin-bottom 處理 */
-  padding-left: 0;      /* 先去掉內縮 */
+  list-style:none; margin-top:0; padding-left:0;
 }
-
-/* 3. 自訂「項目符號」和右移文字 */
 .product-detail .description ul li {
-  white-space: nowrap;
-  color: #93939B;           /* 自訂顏色 */
-  position: relative;
-  padding-left: 2rem;     /* 根據 dash 寬度微調 */
-  margin-bottom: 0.8rem;
-  font-size: 1.6rem;
-  font-weight: bold;        /* 粗體 */
-  /* 懸掛縮排設定：整個 li 往右 1.8rem，但第一行再往左 1.8rem */
-  margin-left: 1.8rem;
-  text-indent: -1.8rem;
-  line-height: 1.8;
-  
-  
+  position:relative; padding-left:2rem;
+  margin-left:1.8rem; text-indent:-1.8rem;
+  margin-bottom:.8rem;
+  font-size:1.6rem; font-weight:bold;
+  line-height:1.8; white-space:nowrap;
+  color:#93939B;
 }
-
 .product-detail .description ul li::before {
-  content: "";
-  display: inline-block;
-  width: 1em;
-  height: 4px;
-  background: #93939B;
-  border-radius: 2px;
-  margin-right: 0.6em;
-  vertical-align: middle;
+  content:""; display:inline-block;
+  width:1em; height:4px;
+  background:#93939B; border-radius:2px;
+  margin-right:.6em; vertical-align:middle;
 }
 
-
-/* 外層容器改為垂直排列，置中顯示每組圖片 */
+/* === 產品示意圖 Gallery === */
 .product-gallery {
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;                /* 每組圖片間距 */
-  align-items: center;
-  padding: 2rem 1rem;
+  display:flex; flex-direction:column;
+  gap:4rem; align-items:center; padding:2rem 1rem;
 }
-
-/* 外框背景容器（如需背景色） */
 .product-gallery-back {
-  padding: 4rem 0;
-  background-color: #f5f5f5;  /* 可改成 #f9f9f9 視需求 */
+  padding:4rem 0; background:#f5f5f5;
 }
-
-/* 圖片區：每列 2 組、間距清晰、置中 */
 .product-gallery-non {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);  /* ✅ 每列兩組 */
-  gap: 4rem 6rem;                         /* 上下4rem、左右6rem 間距 */
-  justify-content: center;
-  padding: 0 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-  
+  display:grid; grid-template-columns:repeat(2,1fr);
+  gap:4rem 6rem; justify-content:center;
+  padding:0 2rem; max-width:1200px; margin:0 auto;
 }
-
-
-/* 每一組項目（圖片 + 描述） */
 .gallery-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+  display:flex; flex-direction:column;
+  align-items:center; text-align:center;
 }
-
-/* 圖片放大、保持比例、不裁切 */
 .gallery-item img {
-  width: auto;
-  height: auto;
-  max-width: 260px;
-  max-height: 360px;
-  object-fit: cover;
-  border-radius: 6px;
-
-  /* ✅ 讓圖片更有浮起感，與背景有區隔 */
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-
-  /* ✅ 給透明背景圖片加點底色，避免浮邊感 */
-  background-color: #fafafa;
-  padding: 4px; /* 內距感覺更柔和 */
+  width:auto; height:auto;
+  max-width:260px; max-height:360px;
+  object-fit:cover; border-radius:6px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.05);
+  background:#fafafa; padding:4px;
 }
-
-/* 型號標題樣式 */
 .gallery-desc h3 {
-  font-size: 1.5rem;
-  color: #333;
-  margin-top: 1rem;
-  letter-spacing: 0.5px;
+  font-size:1.5rem; color:#333;
+  margin-top:1rem; letter-spacing:.5px;
 }
-
-/* RWD：手機顯示單欄 */
-@media (max-width: 768px) {
-  .product-gallery-non {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-
-  .gallery-item img {
-    max-width: 90%;
-  }
-
-  .gallery-desc h3 {
-    font-size: 1.3rem;
-  }
-}
-
-/* 圖片撐滿格子，超出部分以 cover 裁切 */
-.product-gallery img {
-  width: 380px;
-  height: 120px;
-  object-fit: contain;       /* 保持比例並填滿方框 */
-  border-radius: 1px;
-}
-/* 本頁專屬樣式 */
-.product-detail { padding: 3rem 0; }
-.product-detail .description { margin-bottom: 12rem; }
-
-/* 調整「更多交屋包示意圖」與圖之間的距離 */
+/* 更多交屋包示意圖 */
 .product-detail .product-gallery {
-  margin-top: 5rem;  /* 或者調成 3rem，看你想要多大間隔 */
+  margin-top:5rem;
 }
-
-/* 每組圖片獨立一行，包在統一背景區塊中 */
+/* gallery-pair */
 .gallery-pair {
-  display: flex;
-  gap: 2rem;
-  justify-content: center;
-  background-color: #f5f5f5;   /* 統一背景色 */
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-  width: 100%;
-  max-width: 1500px;          /* 可依需要調整最大寬度 */
-  /* ✅ 加上左右外距，讓它不要太緊靠邊 */
-  margin-left: auto;
-  margin-right: auto;
+  display:flex; gap:2rem;
+  justify-content:center;
+  background:#f5f5f5; padding:2rem;
+  border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.05);
+  width:100%; max-width:1500px;
+  margin:0 auto;
 }
-
-/* 每張圖都放大、保持比例、不裁切 */
 .gallery-pair img {
-  height: 500px;             /* ✅ 統一高度 */
-  width: auto;               /* 根據圖片比例縮放寬度 */
-  object-fit: contain;       /* 不裁切、完整顯示圖片 */
-  background-color: transparent;
-  border: none;
-  border-radius: 6px;
+  object-fit:contain; background:transparent;
+  border-radius:6px; width:auto; height:500px;
 }
-
-/* 左圖（第一張）：正常寬度 */
-.gallery-pair img:first-child {
-  width: 300px;
- 
-}
-/* ✅ 每組右邊圖片加高 */
+.gallery-pair img:first-child { width:300px; }
+.gallery-pair img:last-child  { width:480px; }
 .product-gallery-non .gallery-item:nth-child(even) img {
-  height: 600px; /* 比左邊圖高一點 */
-}
-/* 右圖（第二張）：加寬顯示 */
-.gallery-pair img:last-child {
-  width: 480px;
-
-}
-/* 響應式支援：手機時每張圖上下排列 */
-@media (max-width: 768px) {
-  .gallery-pair {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .gallery-pair img {
-    width: 90%;
-  }
+  height:600px;
 }
 
-/* ✅ 僅針對「保冷袋」頁面使用，讓左右區塊更靠近 */
-.page-coolerbag .product-detail .row > .description,
-.page-coolerbag .product-detail .row > .text-center {
-  padding-left: -5rem;
-  padding-right: -5rem;
-}
-
-@media (min-width: 992px)  {
-  .container {
-    padding-left: 0;
-    max-width: 1200px;  /* 建議加，避免過寬 */
-  }
+/* ======================================
+   2. 桌／平板 覆寫 (>=992px)
+   ====================================== */
+@media (min-width: 992px) {
+  .container { padding-left:0; max-width:1200px; }
   .row.align-items-center {
-    display: flex;
-    align-items: center;
-    gap: 180px;   /* 直接設大一點會很明顯！ */
+    display:flex; align-items:center;
+    gap:180px;
   }
   .description {
-    flex: 0 1 520px;
-    max-width: 520px;
-    min-width: 300px;
-    margin-left: 0;
-    padding-left: 30px;  /* 這裡有縮排效果 */
-    text-align: left;
-    display: block;
+    flex:0 1 520px; max-width:520px;
+    min-width:300px; margin-left:0;
+    padding-left:30px; text-align:left;
   }
   .description h1 {
-    white-space: nowrap;
-    font-size: clamp(1.2rem, 5vw, 2.2rem);
-    overflow: visible;
-    text-overflow: clip;
-    margin-bottom: 2rem;
-    text-align: left;
+    white-space:nowrap;
+    font-size:clamp(1.2rem,5vw,2.2rem);
+    margin-bottom:2rem;
   }
   .description ul, .description ul li {
-    margin-left: 0;
-    padding-left: 0;
+    margin-left:0; padding-left:0;
   }
   .text-center {
-    flex: 1 1 0;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
+    flex:1 1 0; display:flex;
+    justify-content:flex-start;
+    align-items:flex-start;  /* 垂直靠上 */
   }
-  .text-center img {
-    max-width: 560px;
-    min-width: 340px;
-    width: 100%;
-    height: auto;
-    /* 如果 gap 夠大這裡 margin-left 可以設 0 */
-    margin-left: 0;
-    margin-right: 0;
-    display: block;
-  }
+  /* product-detail 圖片上移 & 限制尺寸 */
   .product-detail .text-center img {
-    /* 1) 用 width: auto 取消 img-fluid 的強制 100% 撐滿 */
-    width: auto !important;
-    /* 2) 仍保留最大寬度不超過父容器 */
-    max-width: 100%;
-    /* 3) 加個你想要的上限，比如 400px */
-    max-width: 400px;
-    max-height: 400px;
-    
-    display: block;
-    margin: 0 auto;  /* 置中 */
-    margin-top: -50px; /* 負值往上調，視需求自己調整 */
+    width:auto !important; margin:0;
+    align-self:flex-start;
+    max-width:400px; max-height:400px;
+    display:block; margin-top:-50px;
   }
 }
 
+/* ======================================
+   3. 手機端 覆寫 (<=991px) ← 最下方
+   ====================================== */
+   @media (max-width: 991px) {
+    /* ── 1. Logo + 名稱都貼最左 ── */
+    .custom-navbar .navbar-brand {
+      margin-left: 0 !important;
+      padding-left: 1rem;    /* 若要留一點內距再調 */
+    }
+    .custom-navbar .logo-img,
+    .custom-navbar .brand-name {
+      margin-left: 0 !important;
+    }
+    /* 小螢幕也不要讓 brand-name 太大 */
+    .brand-name {
+      font-size: 1.6rem !important;
+    }
+  
+    /* ── 2. 文字貼最左 & 縮小到 320px 上仍可完整閱讀 ── */
+    .product-detail .description {
+      padding-left: 0 !important;
+      margin-left: 0 !important;
+    }
+    .product-detail .description h1 {
+      white-space: normal !important;   /* 允許換行 */
+      overflow: visible !important;
+      font-size: 1.6rem !important;     /* 320px 螢幕上約 1.6rem 才不會切字 */
+      line-height: 1.3;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+    .product-detail .description ul li {
+      font-size: 1rem !important;       /* li 約 1rem 就能清晰閱讀 */
+      line-height: 1.4;
+      margin-bottom: 0.6rem;
+      text-align: left;
+    }
+  
+    /* ── 3. 圖片一律不超出螢幕、一列一張 ── */
+    /* 文字區旁圖 */
+    .product-detail .text-center img,
+    /* gallery */
+    .gallery-item img,
+    .gallery-pair img {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      object-fit: contain;
+    }
+    /* 單欄排版 */
+    .product-gallery-non,
+    .gallery-pair {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+    /* 讓所有 container 在這個區塊都撐滿寬度、不要有 max-width */
+    .custom-navbar .container,
+    .find-store .container {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      margin: 0 auto !important;
+    }
 
-
-
+    /* 再把 row/col 的預設左右內外距都清掉 */
+    .find-store .row {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    .find-store .col-md-6 {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+  }
+  
