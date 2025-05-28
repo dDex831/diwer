@@ -657,7 +657,6 @@ html, body {
   padding-right: -5rem;
 }
 
-/* 讓h1在寬螢幕永遠單行，字體自動縮小，不會出現... */
 @media (min-width: 992px) {
   .description {
     max-width: 100%;
@@ -670,14 +669,16 @@ html, body {
   .description ul li {
     white-space: nowrap;
     width: 100%;
-    /* 防止內容溢出欄位 */
     font-size: min(4rem, calc(3vw + 1rem), calc(100vw / 30));
     line-height: 1.2;
-    /* 不出現 ... 只縮字體 */
     text-overflow: clip;
     overflow: hidden;
+    text-align: left;      /* 👈 這行讓字體靠左 */
+    margin-left: 0;        /* 確保沒有偏移 */
+    padding-left: 0;       /* 確保沒有偏移 */
   }
 }
+
 
 /* 在手機與小螢幕回復自動換行 */
 @media (max-width: 991px) {
