@@ -408,23 +408,7 @@ html, body {
     }
   
     /* ── 3. 圖片一律不超出螢幕、一列一張 ── */
-    /* 文字區旁圖 */
-    .product-detail .text-center img,
-    /* gallery */
-    .gallery-item img,
-    .gallery-pair img {
-      width: 100% !important;
-      max-width: 100% !important;
-      height: auto !important;
-      object-fit: contain;
-    }
-    /* 單欄排版 */
-    .product-gallery-non,
-    .gallery-pair {
-      display: grid !important;
-      grid-template-columns: 1fr !important;
-      gap: 1rem !important;
-    }
+    
     /* 讓所有 container 在這個區塊都撐滿寬度、不要有 max-width */
     .custom-navbar .container,
     .find-store .container {
