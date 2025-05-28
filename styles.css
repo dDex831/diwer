@@ -705,8 +705,8 @@ html, body {
     align-items: center;
   }
   .text-center img {
-    max-width: 360px;
-    min-width: 140px;
+    max-width: 560px;
+    min-width: 340px;
     width: 100%;
     height: auto;
     margin-left: 200px;
