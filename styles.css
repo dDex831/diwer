@@ -656,3 +656,32 @@ html, body {
   padding-left: -5rem;
   padding-right: -5rem;
 }
+
+/* 讓h1在寬螢幕永遠單行，字體自動縮小，不會出現... */
+@media (min-width: 992px) { /* 筆電桌機等大螢幕 */
+  .description h1 {
+    white-space: nowrap;
+    overflow: visible;     /* 不要 ... */
+    text-overflow: unset;  /* 不要 ... */
+    font-size: clamp(2rem, 5vw, 4rem); /* 根據螢幕大小縮放 */
+    width: 100%;
+    display: block;
+  }
+  .description ul li {
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: unset;
+    font-size: clamp(1rem, 2vw, 1.6rem); /* 根據螢幕自動縮小 */
+    width: 100%;
+    display: block;
+  }
+}
+
+/* 在手機與小螢幕回復自動換行 */
+@media (max-width: 991px) {
+  .description h1,
+  .description ul li {
+    white-space: normal;
+    font-size: 2rem; /* 手機看起來不要太大 */
+  }
+}
