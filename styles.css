@@ -657,7 +657,7 @@ html, body {
   padding-right: -5rem;
 }
 
-@media (min-width: 992px) {
+@media (min-width: 992px) and (max-width: 1199.98px) {
   /* 左右欄位為flex，空間分配清楚 */
   .row.align-items-center {
     display: flex;
@@ -681,10 +681,10 @@ html, body {
     margin-bottom: 2rem;
     text-align: left;
     margin-left: 0;
-    padding-left: -300px;
+    padding-left: -600px;
   }
   .description ul {
-    margin-left: -50px;
+    margin-left: -150px;
     padding-left: 0;
   }
   .description ul li {
@@ -693,7 +693,7 @@ html, body {
     overflow: visible;
     text-overflow: clip;
     text-align: left;
-    margin-left: -50px;
+    margin-left: -150px;
     padding-left: 0;
     width: 100%;
     max-width: 100%;
