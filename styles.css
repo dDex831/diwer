@@ -27,10 +27,17 @@ html, body {
 }
 
 .brand-name {
-  font-size: 2.5rem;
+  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 3rem;
   font-weight: bold;
   color: #333;
   margin-left: 15px;
+}
+/* 服務簡介與合作品牌字體為 Helvetica Neue */
+.navbar-nav .nav-link[href*="SEC"],
+.navbar-nav .nav-link[href*="partners.html"],
+.navbar-nav .dropdown-menu .dropdown-item {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
 .navbar-nav .nav-link {
