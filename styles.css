@@ -168,7 +168,7 @@ html, body {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 80vh;
+  max-height: 90vh;
   object-fit: cover;
   max-width: 1200px;     /* ✅ 限制最大寬度，例如 1200px */
   margin: 0 auto;        /* ✅ 置中 */
