@@ -675,7 +675,7 @@ html, body {
   }
   .description h1 {
     white-space: nowrap;
-    font-size: clamp(2rem, 6vw, 4rem);  /* 標題縮小範圍 */
+    font-size: clamp(1rem, 6vw, 4rem);  /* 標題縮小範圍 */
     overflow: visible;
     text-overflow: clip;
     margin-bottom: 2rem;
@@ -684,16 +684,16 @@ html, body {
     padding-left: -600px;
   }
   .description ul {
-    margin-left: -150px;
+    margin-left: -250px;
     padding-left: 0;
   }
   .description ul li {
     white-space: nowrap;
-    font-size: clamp(1rem, 1.7vw, 1.35rem); /* 更保守的縮小，確保一行塞得下 */
+    font-size: clamp(0.6rem, 1.7vw, 1.35rem); /* 更保守的縮小，確保一行塞得下 */
     overflow: visible;
     text-overflow: clip;
     text-align: left;
-    margin-left: -150px;
+    margin-left: -250px;
     padding-left: 0;
     width: 100%;
     max-width: 100%;
