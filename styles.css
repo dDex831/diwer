@@ -658,24 +658,24 @@ html, body {
 }
 
 @media (min-width: 992px) {
+  /* 左右欄位為flex，空間分配清楚 */
   .row.align-items-center {
     display: flex;
     align-items: center;
-    /* 下面這行可以加寬間距，如果圖片太擠可適度調大 */
-    gap: 36px;
+    gap: 48px; /* 左右欄間隔，可調整 */
   }
   .description {
-    flex: 0 1 520px; /* 最大寬度520px，依你畫面微調 */
-    max-width: 520px;
-    min-width: 320px;
+    flex: 0 1 520px;
+    max-width: 520px;   /* 控制左欄最大寬，520px~600px建議 */
+    min-width: 300px;
     margin-left: 0;
     padding-left: 0;
     text-align: left;
-    /* 不要置中，左靠 */
+    display: block;
   }
   .description h1 {
     white-space: nowrap;
-    font-size: clamp(2rem, 8vw, 4rem); /* 8vw 可根據字數調整大一點 */
+    font-size: clamp(2rem, 6vw, 4rem);  /* 標題縮小範圍 */
     overflow: visible;
     text-overflow: clip;
     margin-bottom: 2rem;
@@ -689,28 +689,31 @@ html, body {
   }
   .description ul li {
     white-space: nowrap;
-    font-size: clamp(1.2rem, 3vw, 1.6rem);
+    font-size: clamp(1rem, 1.7vw, 1.35rem); /* 更保守的縮小，確保一行塞得下 */
     overflow: visible;
     text-overflow: clip;
     text-align: left;
     margin-left: 0;
     padding-left: 0;
+    width: 100%;
+    max-width: 100%;
   }
   .text-center {
     flex: 1 1 0;
     display: flex;
-    justify-content: flex-start;  /* 圖片貼欄內最左側 */
+    justify-content: flex-start;
     align-items: center;
   }
   .text-center img {
-    max-width: 360px; /* 控制右圖最大寬度，不會被左欄壓到 */
-    min-width: 160px;
+    max-width: 360px;
+    min-width: 140px;
     width: 100%;
     height: auto;
-    margin-left: 0;
+    margin-left: 60px;
     margin-right: 0;
     display: block;
   }
 }
+
 
 
