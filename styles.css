@@ -470,6 +470,19 @@ html, body {
     margin: 0 auto;                 /* 置中顯示 */
     margin-top: 5rem !important;
   }
+  /* Footer Images：一張圖一排 */
+  .footer-images .container {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center;     /* 如果要置中 */
+    gap: 1.5rem;              /* 圖片之間的間距，可調 */
+  }
+  .footer-images .footer-image {
+    /* 讓圖片不撐滿太寬，可以調 max-width */
+    width: auto !important;
+    max-width: 400px;         /* 自己決定上限 */
+    height: auto !important;
+  }
 }
 
 
