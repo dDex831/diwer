@@ -369,7 +369,7 @@ html, body {
 /* ======================================
    3. 手機端 覆寫 (<=991px) ← 最下方
    ====================================== */
-   @media (max-width: 992px) {
+   @media (min-width: 992px) {
     #diwerCarousel {
       margin-top: 8rem !important;  /* 或者 3rem，看你想要多少間距 */
     }
