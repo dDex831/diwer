@@ -352,6 +352,9 @@ html, body {
    3. 手機端 覆寫 (<=991px) ← 最下方
    ====================================== */
    @media (max-width: 991px) {
+    #diwerCarousel {
+      margin-top: 8rem !important;  /* 或者 3rem，看你想要多少間距 */
+    }
     /* ── 1. Logo + 名稱都貼最左 ── */
     .custom-navbar .navbar-brand {
       margin-left: 0 !important;
@@ -430,6 +433,20 @@ html, body {
     .find-store p,
     .find-store .btn-outline-dark {
       margin-left:4rem;
+    }
+    /* ① 縮小「商品推薦」區塊的底部間距 */
+    .product-recommend {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+    .product-recommend .container {
+      padding-bottom: 0 !important;
+    }
+
+    /* ② 縮小「店鋪位置」區塊的上方間距 */
+    .find-store {
+      /* 如果要全螢幕都套用 */
+      margin-top: 4rem !important;  /* 把原本 12rem → 4rem，自己再微調 */
     }
   }
 
