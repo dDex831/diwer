@@ -577,7 +577,7 @@ html, body {
     /* gallery */
     .gallery-item img,
     .gallery-pair img {
-      margin-top: 0.2rem;
+      margin-top: -2.2rem;
       width: 100% !important;
       max-width: 100% !important;
       height: auto !important;
