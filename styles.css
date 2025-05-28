@@ -454,6 +454,9 @@ html, body {
       overflow-wrap: break-word !important;
     }
   }
+@media (max-width: 992px) and (min-width: 576px)  {
+
+}
 
 /* 576px 以下：極小螢幕（例如 360px）時才縮到 1rem */
 @media (max-width: 576px) {
@@ -501,6 +504,51 @@ html, body {
     max-width: 400px;         /* 自己決定上限 */
     height: auto !important;
   }
+  /* ── 3. 圖片一律不超出螢幕、一列一張 ── */
+    /* 文字區旁圖 */
+    .product-detail .text-center img,
+    /* gallery */
+    .gallery-item img,
+    .gallery-pair img {
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      object-fit: contain;
+    }
+    /* 單欄排版 */
+    .product-gallery-non,
+    .gallery-pair {
+      display: grid !important;
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+    /* 讓所有 container 在這個區塊都撐滿寬度、不要有 max-width */
+    .custom-navbar .container,
+    .find-store .container {
+      position: relative !important;
+      width: 100vw !important;               /* 撐滿整個視窗 */
+      max-width: none !important;            /* 取消 bootstrap container 的 max-width */
+      margin-left: calc(50% - 50vw) !important; /* 貼齊左邊 */
+      margin-right: calc(50% - 50vw) !important;/* 貼齊右邊(可不用) */
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+
+    /* 再把 row/col 的預設左右內外距都清掉 */
+    .find-store .row {
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+    .find-store .col-md-6 {
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+    }
+    /* 再把 h2、p、按鈕的 margin-left:4rem 統統清掉 */
+    .find-store h2,
+    .find-store p,
+    .find-store .btn-outline-dark {
+      margin-left:4rem;
+    }
 }
 
 
