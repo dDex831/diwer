@@ -478,6 +478,7 @@ html, body {
 
 /* 3. 自訂「項目符號」和右移文字 */
 .product-detail .description ul li {
+  white-space: nowrap;
   color: #93939B;           /* 自訂顏色 */
   position: relative;
   padding-left: 2rem;     /* 根據 dash 寬度微調 */
@@ -487,21 +488,20 @@ html, body {
   /* 懸掛縮排設定：整個 li 往右 1.8rem，但第一行再往左 1.8rem */
   margin-left: 1.8rem;
   text-indent: -1.8rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.8;
+  
+  
 }
 
 .product-detail .description ul li::before {
-  content: "—  ";            /* Em-Dash + 一個空格 */
-  position: absolute;
-  left: 0;
-  top: 50%;               
-  transform: translateY(-50%);
-  font-size: 1.6rem;        /* 破折號大小 */
-  font-weight: bold;        /* 粗體 */
-  color: #93939B;           /* 自訂顏色 */
-  vertical-align: middle;   /* 跟文字中線對齊 */
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 4px;
+  background: #93939B;
+  border-radius: 2px;
+  margin-right: 0.6em;
+  vertical-align: middle;
 }
 
 
