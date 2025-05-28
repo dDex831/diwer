@@ -429,9 +429,20 @@ html, body {
     .find-store h2,
     .find-store p,
     .find-store .btn-outline-dark {
-      margin-left: 0 !important;
+      margin-left:4rem;
     }
   }
+
+/* 576px 以下：極小螢幕（例如 360px）時才縮到 1rem */
+@media (max-width: 576px) {
+  .find-store h2,
+  .find-store p,
+  .find-store .btn-outline-dark {
+    margin-left: 1rem !important;
+  }
+}
+
+
 
   /* 放在所有 Bootstrap 以及你其他 media query 之後 */
 
