@@ -521,7 +521,7 @@ html, body {
     /* gallery */
     .gallery-item img,
     .gallery-pair img {
-      margin-top: -3rem;
+      margin-top: 0 !important;
       width: 100% !important;
       max-width: 100% !important;
       height: auto !important;
