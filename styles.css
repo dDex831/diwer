@@ -10,6 +10,37 @@ html, body {
   background-color: #fff;
   overflow-x: hidden;
 }
+/* ========= 1. Base Styles（放在 Bootstrap 後面） ========= */
+
+/* 1.1 強制讓輪播區一定往下 8rem */
+#diwerCarousel {
+  margin-top: 8rem !important;
+  overflow: hidden;        /* 隱藏超過圓角以外的區域 */
+}
+
+/* 1.2 讓輪播圖在任何尺寸都維持「100% 寬度 + contain」 */
+/* 2. 原本針對 <img class="carousel-img"> 的設定，保留 border-radius */
+#diwerCarousel .carousel-img {
+  display: block;
+  width: 100% !important;
+  height: auto !important;
+  max-width: 100% !important;
+  object-fit: contain !important;
+  margin: 0 auto !important;
+  border-radius: 8px;                    /* 圓角 8px */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  max-height: 740px !important;          /* 圖片最多 740px 高 */
+}
+
+/* 如果你還想把箭頭圖示大小或位置也跟小螢幕一樣，可同理把那幾行也搬出來 */
+
+#diwerCarousel .carousel-control-prev,
+#diwerCarousel .carousel-control-next {
+  width: 44px !important;  /* 跟小螢幕保持一樣 */
+  top: 0;                  /* 視需求調整 */
+  /* 其他你在 576px 裡面設定的屬性… */
+}
+
 
 /* === 導覽列 Navbar === */
 .custom-navbar {
