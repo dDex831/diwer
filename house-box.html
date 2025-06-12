@@ -125,13 +125,18 @@
   </main>
 
   <!-- Footer（與首頁相同） -->
-  <footer class="site-footer text-center text-light py-5">
-    <div class="container">
-      <p class="footer-title mb-1">Contact us</p>
-      <p class="footer-phone mb-4">Tel : 02-2285-3388</p>
-      <hr class="footer-divider mx-auto mb-4" />
-      <p class="footer-title mb-1">交屋手冊、錦盒、鎖牌、化妝包、手提袋、保冰袋、不織布袋、手袋工廠</p>
-      <p class="footer-copy mb-0">© 2025 All Rights Reserved</p>
+  <footer class="site-footer">
+    <div class="container-fluid bg-dark py-5 px-0">
+      <div class="container d-flex flex-column align-items-center text-center">
+        <h5 class="mb-1 fs-2">Contact us</h5>        <!-- 原本是 fs-5，改成 fs-2 -->
+        <p class="mb-4 fs-5">Tel : 02-2285-3388</p>   <!-- 原本可能是 fs-6，改成 fs-5 -->
+        <hr class="border-light opacity-25 w-75 my-4" />
+        <p class="mb-1 fs-5">
+          交屋手冊、錦盒、鎖牌、化妝包、手提袋、保冰袋、不織布袋、手袋工廠
+        </p>
+        <p class="mb-0 fs-6">© 2025 All Rights Reserved</p>  <!-- 最小也可以用 fs-6 -->
+      </div>
+      
     </div>
   </footer>
 

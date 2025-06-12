@@ -8,7 +8,6 @@ html, body {
   padding: 0;
   font-family: 'Noto Sans TC','Microsoft JhengHei',sans-serif;
   background-color: #fff;
-  overflow-x: hidden;
 }
 /* ========= 1. Base Styles（放在 Bootstrap 後面） ========= */
 
@@ -153,6 +152,7 @@ html, body {
   object-fit: cover; margin: 0 auto;
   border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.05);
 }
+
 @media (max-width:900px) {
   #diwerCarousel .carousel-control-prev,
   #diwerCarousel .carousel-control-next {
@@ -227,6 +227,7 @@ html, body {
   transform:scale(.8); transform-origin:center;
 }
 .site-footer {
+  
   background:#535353; color:#fff;
   padding:5rem 1rem; margin-top:8rem;
   text-align:center;
@@ -239,6 +240,12 @@ html, body {
   border-top:1px solid rgba(255,255,255,.3);
   margin:2rem auto;
 }
+/* 你自己定義內層最大寬度 */
+.site-footer .footer-inner {
+  max-width: 50000px;   /* 依需求 */
+  margin: 0 auto;
+}
+
 
 /* === 合作品牌 Partners === */
 .partners-section { background:#f9f9f9; padding:4rem 1rem; margin-top: 80px; /* ← 加這行讓合作品牌圖片不會被導覽列擋住 */}
@@ -278,19 +285,24 @@ html, body {
 .product-detail .description ul {
   list-style:none; margin-top:0; padding-left:0;
 }
+
 .product-detail .description ul li {
-  position:relative; padding-left:2rem;
-  margin-left:1.8rem; text-indent:-1.8rem;
-  margin-bottom:.8rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  white-space: normal;
   font-size:1.6rem; font-weight:bold;
   line-height:1.8; white-space:nowrap;
   color:#93939B;
+  padding-left: 2.2rem;  /* ✅ 讓整行右移 */
+  white-space: normal;   /* ✅ 避免 IE/Edge 強制不換行造成溢出 */
 }
+
 .product-detail .description ul li::before {
-  content:""; display:inline-block;
-  width:1em; height:4px;
-  background:#93939B; border-radius:2px;
-  margin-right:.6em; vertical-align:middle;
+  content: "–";
+  display: inline-block;
+  color: #93939B;
+  vertical-align:middle;
 }
 
 /* === 產品示意圖 Gallery === */
@@ -313,7 +325,7 @@ html, body {
 .gallery-item img {
   width:auto; height:auto;
   max-width:260px; max-height:360px;
-  object-fit:cover; border-radius:6px;
+  object-fit: contain; /* 保持圖片比例且不變形 */; border-radius:6px;
   box-shadow:0 2px 12px rgba(0,0,0,0.05);
   background:#fafafa; padding:4px;
 }
@@ -338,11 +350,6 @@ html, body {
   object-fit:contain; background:transparent;
   border-radius:6px; width:auto; height:500px;
 }
-.gallery-pair img:first-child { width:300px; }
-.gallery-pair img:last-child  { width:480px; }
-.product-gallery-non .gallery-item:nth-child(even) img {
-  height:600px;
-}
 
 /* ======================================
    2. 桌／平板 覆寫 (>=992px)
@@ -352,17 +359,19 @@ html, body {
       padding-left: 0;
       max-width: 1200px;
     }
+    
   
     .row.align-items-center {
       display: flex;
       align-items: center;
-      gap: 180px;
+      
     }
   
+    
     .description {
-      flex: 0 1 520px;
-      max-width: 520px;
-      min-width: 300px;
+      flex: 0 0 60%;
+      max-width: 60%;
+      min-width: 0;
       margin-left: 0;
       padding-left: 30px;
       text-align: left;
@@ -383,7 +392,8 @@ html, body {
     }
   
     .text-center {
-      flex: 1 1 0;
+      flex: 0 0 40%;
+      max-width: 40%;
       display: flex;
       justify-content: flex-start;
       align-items: flex-start;
@@ -393,8 +403,8 @@ html, body {
       width: auto !important;
       margin: 0;
       align-self: flex-start;
-      max-width: 400px;
-      max-height: 400px;
+      max-width: 100%;     /* 不限制圖片寬度 */
+      max-height: 400px;   /* 可保留圖片最大高度 */
       display: block;
       margin-top: -50px;
       top:   -70px;   /* 向上 50px */
@@ -412,6 +422,9 @@ html, body {
       word-break: break-word !important;
       overflow-wrap: break-word !important;
     }
+   
+   
+    
   }
 @media (max-width: 992px) and (min-width: 576px)  {
   .logo-img {
@@ -632,7 +645,13 @@ html, body {
   }
 }
 
-
+@media (max-width: 799px) {
+  .product-gallery-non {
+    grid-template-columns: 1fr !important; /* 一欄 */
+    gap: 2rem 0 !important;                /* 垂直間距 */
+    justify-items: center;                /* 圖片置中 */
+  }
+}
 
   /* 放在所有 Bootstrap 以及你其他 media query 之後 */
 
@@ -666,4 +685,31 @@ html, body {
   padding-right: 0 !important;
 }
 
-  
+/* styles.css 最後面 */
+.site-footer .container-fluid {
+  background-color: #535353;  /* 你的灰底 */
+}
+.site-footer .container {
+  max-width: 1200px;  /* 你要的最大寬度 */
+  margin: 0 auto;
+}
+
+.site-footer .bg-dark {
+  background-color: #535353 !important;
+}
+
+/* 確保標題與段落都是 block-level */
+.site-footer h5,
+.site-footer p {
+  display: block !important;
+  color: #fff !important;
+  white-space: normal !important;   /* 允許換行 */
+}
+
+/* 分隔線寬度、顏色、透明度 */
+.site-footer hr {
+  display: block !important;
+  width: 75% !important;            /* 視覺上不需要全寬 */
+  border-top: 0.5px solid rgba(255,255,255,0.25) !important;
+  margin: 1.5rem 0 !important;
+}
