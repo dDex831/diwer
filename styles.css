@@ -716,7 +716,7 @@ html, body {
 }
 
 .product-detail .description h1 {
-  font-size: 6rem  !important;        /* 举例 */
+  font-size: 5.5rem  !important;        /* 举例 */
   color: #123456;
   position: relative;
   left:     -2rem !important;  /* ← 向左移 10rem */
