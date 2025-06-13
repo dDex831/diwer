@@ -222,9 +222,10 @@ html, body {
   background:#fff; padding:1rem; text-align:center;
 }
 .footer-images .footer-image {
-  max-width:45%; height:auto;
-  display:inline-block;
-  transform:scale(.8); transform-origin:center;
+  max-width: 50px !important;
+  width: auto     !important;
+  
+  transform: none !important;
 }
 .site-footer {
   
@@ -720,4 +721,13 @@ html, body {
   color: #123456;
   position: relative;
   left:     -2rem !important;  /* ← 向左移 10rem */
+}
+
+/* styles.css 最末尾 */
+.footer-images-web .footer-image {
+  width: 480px       !important;  /* 直接定死宽度 */
+  height: auto       !important;  /* 等比例缩放 */
+  max-width: none    !important;  /* 取消任何 max-width 限制 */
+  transform: none    !important;  /* 移除之前可能的 scale() */
+  margin: 0 0.5rem   !important;  /* 间隔微调 */
 }
