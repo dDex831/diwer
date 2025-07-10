@@ -293,24 +293,31 @@
             </div>
             <div class="swiper-slide outdoor-item">
               <div class="outdoor-img-wrapper">
-                <img src="images-web/戶外折疊椅2.png" alt="戶外折疊椅" class="zoomable-img" />
+                <img src="images-web/旅行洗洗漱杯.png" alt="旅行洗洗漱杯"class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
-              <h2>戶外折疊椅</h2>
+              <h2>旅行洗洗漱杯</h2>
             </div>
             <div class="swiper-slide outdoor-item">
               <div class="outdoor-img-wrapper">
-                <img src="images-web/戶外折疊椅1.png" alt="戶外折疊椅" class="zoomable-img" />
+                <img src="images-web/水杯A.png" alt="水杯A" class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
-              <h2>戶外折疊椅</h2>
+              <h2>水杯A</h2>
             </div>
             <div class="swiper-slide outdoor-item">
               <div class="outdoor-img-wrapper">
-                <img src="images-web/戶外折疊椅3.png" alt="戶外折疊椅" class="zoomable-img" />
+                <img src="images-web/水杯B.png" alt="水杯B" class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
-              <h2>戶外折疊椅</h2>
+              <h2>水杯B</h2>
+            </div>
+            <div class="swiper-slide outdoor-item">
+              <div class="outdoor-img-wrapper">
+                <img src="images-web/水杯C.png" alt="水杯C" class="zoomable-img" />
+              </div>
+              <hr class="outdoor-divider" />
+              <h2>水杯C</h2>
             </div>
             <div class="swiper-slide outdoor-item">
               <div class="outdoor-img-wrapper">
@@ -416,23 +423,23 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        new Swiper(".mySwiper", {
-          slidesPerView: 2.5,
-          spaceBetween: 20,
-          pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-          },
-          breakpoints: {
-            768: {
-              slidesPerView: 3.5,
+        document.querySelectorAll('.outdoor-swiper').forEach((swiperContainer) => {
+          new Swiper(swiperContainer, {
+            slidesPerView: 2.5,
+            spaceBetween: 20,
+            freeMode: true,
+            navigation: {
+              nextEl: swiperContainer.querySelector('.swiper-button-next'),
+              prevEl: swiperContainer.querySelector('.swiper-button-prev')
             },
-            992: {
-              slidesPerView: 4.5,
+            breakpoints: {
+              768: { slidesPerView: 3.5 },
+              992: { slidesPerView: 4.5 },
             },
-          },
+          });
         });
       });
+
     </script>
 
     <!-- 平滑滾動效果 -->
