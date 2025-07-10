@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="styles.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700&display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <style>
       body {
@@ -221,42 +221,42 @@
         <h1 class="outdoor-title">戶外用品推薦</h1>
         <div class="swiper outdoor-swiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/帳篷1.png" alt="帳篷" class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
               <h2>帳篷</h2>
             </div>
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/月亮椅.png" alt="月亮椅" class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
               <h2>月亮椅</h2>
             </div>
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/戶外折疊椅2.png" alt="戶外折疊椅" class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
               <h2>戶外折疊椅</h2>
             </div>
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/戶外折疊椅1.png" alt="戶外折疊椅" class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
               <h2>戶外折疊椅</h2>
             </div>
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/戶外折疊椅3.png" alt="戶外折疊椅" class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
               <h2>戶外折疊椅</h2>
             </div>
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/棒球.png" alt="棒球" class="zoomable-img" />
               </div>
@@ -277,49 +277,49 @@
         <h1 class="outdoor-title">杯子推薦</h1>
         <div class="swiper outdoor-swiper">
           <div class="swiper-wrapper">
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/玻璃杯.png" alt="帳篷" class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
               <h2>玻璃杯</h2>
             </div>
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/咖啡玻璃杯.png" alt="咖啡玻璃杯"class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
               <h2>咖啡玻璃杯</h2>
             </div>
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/旅行洗洗漱杯.png" alt="旅行洗洗漱杯"class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
               <h2>旅行洗洗漱杯</h2>
             </div>
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/水杯A.png" alt="水杯A" class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
               <h2>水杯A</h2>
             </div>
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/水杯B.PNG" alt="水杯B" class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
               <h2>水杯B</h2>
             </div>
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/水杯C.PNG" alt="水杯C" class="zoomable-img" />
               </div>
               <hr class="outdoor-divider" />
               <h2>水杯C</h2>
             </div>
-            <div class="swiper-slide outdoor-item">
+            <div class="swiper-slide outdoor-item" data-aos="fade-up">
               <div class="outdoor-img-wrapper">
                 <img src="images-web/棒球.png" alt="棒球" class="zoomable-img" />
               </div>
@@ -448,6 +448,13 @@
         scroll-behavior: smooth;
       }
     </style>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+      AOS.init({
+        duration: 800,    // 動畫持續時間 (ms)
+        once: true        // 滑進畫面只動一次
+      });
+    </script>
 
    
   </body>
