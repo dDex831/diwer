@@ -54,6 +54,10 @@ html, body {
   height: 60px; width: auto;
   margin-left: 100px;
 }
+.logohao {
+  height: 60px; width: auto;
+ 
+}
 .brand-name {
   font-family: 'Noto Sans TC',sans-serif;
   font-size: 3rem; font-weight: bold;
@@ -433,6 +437,10 @@ html, body {
     height: 60px; width: auto;
     margin-left: 60px;
   }
+  .logohao {
+    height: 60px; width: auto;
+   
+  }
   .brand-name {
     font-family: 'Noto Sans TC',sans-serif;
     font-size: 3rem; font-weight: bold;
@@ -510,6 +518,10 @@ html, body {
   .custom-navbar .logo-img,
   .custom-navbar .brand-name {
     margin-left: 0 !important;
+  }
+  .logohao {
+    height: 60px; width: auto;
+   
   }
   /* 小螢幕也不要讓 brand-name 太大 */
   .brand-name {
@@ -839,4 +851,25 @@ html, body {
   z-index: 9999;
   display: none;
   cursor: zoom-out;
+}
+
+/* 導覽列樣式：浩軒風格 */
+.haoxuan-navbar {
+  background-color: #f6f1ee; /* 背景色與 Logo 相近 */
+}
+
+.haoxuan-navbar .nav-link {
+  color: #333;
+}
+
+.haoxuan-navbar .nav-link:hover {
+  color: #e29c89; /* 主色 hover */
+}
+
+.haoxuan-navbar .btn-line {
+  background-color: #e29c89;
+  color: white;
+}
+.haoxuan-navbar .btn-line:hover {
+  background-color: #c8806f;
 }
