@@ -185,6 +185,7 @@ html, body {
   background:#f8f8f8; padding:1px;
   border-radius:0; backface-visibility:hidden;
   transform:translateZ(0);
+  object-fit: contain;   /* 保持完整比例清晰呈現 */
 }
 .pr-item h2 {
   font-size:1.4rem; font-weight:600;
@@ -730,4 +731,112 @@ html, body {
   max-width: none    !important;  /* 取消任何 max-width 限制 */
   transform: none    !important;  /* 移除之前可能的 scale() */
   margin: 0 0.5rem   !important;  /* 间隔微调 */
+}
+
+
+/* === 商品推薦步驟圓點樣式（戶外風） === */
+/* 商品名稱置中 */
+.outdoor-section {
+  padding: 40px 0;
+}
+
+.outdoor-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.outdoor-title {
+  text-align: left;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.outdoor-item {
+  max-width: 200px;
+  margin: auto;
+  background: #fff;
+  border: 1px solid #ccc; /* ✅ 加上灰色邊框 */
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* ✅ 增加陰影深度 */
+  text-align: center;
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+.outdoor-item:hover {
+  border-color: #666; /* 滑過時框線變深 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.outdoor-img-wrapper {
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.outdoor-img-wrapper img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.outdoor-item h2 {
+  font-size: 16px;
+  margin: 0;
+  color: #000;
+}
+.zoom-overlay {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.zoom-overlay.show {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  display: flex; /* 放這裡才不會 transition 無效 */
+}
+
+.zoomable-img {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 200%;
+  transition: background-position 0.1s ease;
+}
+
+.zoomable-img::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: 200%; /* 放大倍數 */
+  transform: scale(1);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.zoomable-img:hover::after {
+  opacity: 1;
+}
+
+.zoom-preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: 50%;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: 9999;
+  display: none;
+  cursor: zoom-out;
 }
