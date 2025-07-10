@@ -84,8 +84,14 @@
             </li>
             <li class="nav-item px-2"><a class="nav-link" href="partners.html">合作品牌</a></li>
             <li class="nav-item px-2">
-              <a href="https://line.me/R/ti/p/@851akusw" target="_blank" class="btn-line">LINE諮詢</a>
+              <div class="d-flex align-items-center gap-2">
+                <a href="https://line.me/R/ti/p/@851akusw" target="_blank" class="btn btn-success">LINE諮詢</a>
+                <button class="btn btn-dark" id="export-pdf">下載商品型錄</button>
+              </div>
             </li>
+            
+            
+            
             <li class="nav-item px-2">
               <a href="#" class="nav-link"><i class="fas fa-search"></i></a>
             </li>
@@ -216,121 +222,122 @@
     </div>
     <!-- 🔼 圖片輪播區結束 -->
     <!-- 商品推薦區塊 -->
-    <section class="outdoor-section">
-      <div class="outdoor-container">
-        <h1 class="outdoor-title">戶外用品推薦</h1>
-        <div class="swiper outdoor-swiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/帳篷1.png" alt="帳篷" class="zoomable-img" />
+    <div id="pdf-catalog">
+      <section class="outdoor-section">
+        <div class="outdoor-container">
+          <h1 class="outdoor-title">戶外用品推薦</h1>
+          <div class="swiper outdoor-swiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/帳篷1.png" alt="帳篷" class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>帳篷</h2>
               </div>
-              <hr class="outdoor-divider" />
-              <h2>帳篷</h2>
-            </div>
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/月亮椅.png" alt="月亮椅" class="zoomable-img" />
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/月亮椅.png" alt="月亮椅" class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>月亮椅</h2>
               </div>
-              <hr class="outdoor-divider" />
-              <h2>月亮椅</h2>
-            </div>
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/戶外折疊椅2.png" alt="戶外折疊椅" class="zoomable-img" />
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/戶外折疊椅2.png" alt="戶外折疊椅" class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>戶外折疊椅</h2>
               </div>
-              <hr class="outdoor-divider" />
-              <h2>戶外折疊椅</h2>
-            </div>
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/戶外折疊椅1.png" alt="戶外折疊椅" class="zoomable-img" />
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/戶外折疊椅1.png" alt="戶外折疊椅" class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>戶外折疊椅</h2>
               </div>
-              <hr class="outdoor-divider" />
-              <h2>戶外折疊椅</h2>
-            </div>
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/戶外折疊椅3.png" alt="戶外折疊椅" class="zoomable-img" />
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/戶外折疊椅3.png" alt="戶外折疊椅" class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>戶外折疊椅</h2>
               </div>
-              <hr class="outdoor-divider" />
-              <h2>戶外折疊椅</h2>
-            </div>
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/棒球.png" alt="棒球" class="zoomable-img" />
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/棒球.png" alt="棒球" class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>棒球</h2>
               </div>
-              <hr class="outdoor-divider" />
-              <h2>棒球</h2>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    
-    
-
-
-    <section class="outdoor-section">
-      <div class="outdoor-container">
-        <h1 class="outdoor-title">杯子推薦</h1>
-        <div class="swiper outdoor-swiper">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/玻璃杯.png" alt="帳篷" class="zoomable-img" />
-              </div>
-              <hr class="outdoor-divider" />
-              <h2>玻璃杯</h2>
-            </div>
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/咖啡玻璃杯.png" alt="咖啡玻璃杯"class="zoomable-img" />
-              </div>
-              <hr class="outdoor-divider" />
-              <h2>咖啡玻璃杯</h2>
-            </div>
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/旅行洗洗漱杯.png" alt="旅行洗洗漱杯"class="zoomable-img" />
-              </div>
-              <hr class="outdoor-divider" />
-              <h2>旅行洗洗漱杯</h2>
-            </div>
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/水杯A.png" alt="水杯A" class="zoomable-img" />
-              </div>
-              <hr class="outdoor-divider" />
-              <h2>水杯A</h2>
-            </div>
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/水杯B.PNG" alt="水杯B" class="zoomable-img" />
-              </div>
-              <hr class="outdoor-divider" />
-              <h2>水杯B</h2>
-            </div>
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/水杯C.PNG" alt="水杯C" class="zoomable-img" />
-              </div>
-              <hr class="outdoor-divider" />
-              <h2>水杯C</h2>
-            </div>
-            <div class="swiper-slide outdoor-item" data-aos="fade-up">
-              <div class="outdoor-img-wrapper">
-                <img src="images-web/棒球.png" alt="棒球" class="zoomable-img" />
-              </div>
-              <hr class="outdoor-divider" />
-              <h2>棒球</h2>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+      
+      
+      
 
+
+      <section class="outdoor-section">
+        <div class="outdoor-container">
+          <h1 class="outdoor-title">杯子推薦</h1>
+          <div class="swiper outdoor-swiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/玻璃杯.png" alt="帳篷" class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>玻璃杯</h2>
+              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/咖啡玻璃杯.png" alt="咖啡玻璃杯"class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>咖啡玻璃杯</h2>
+              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/旅行洗洗漱杯.png" alt="旅行洗洗漱杯"class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>旅行洗洗漱杯</h2>
+              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/水杯A.png" alt="水杯A" class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>水杯A</h2>
+              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/水杯B.PNG" alt="水杯B" class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>水杯B</h2>
+              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/水杯C.PNG" alt="水杯C" class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>水杯C</h2>
+              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/棒球.png" alt="棒球" class="zoomable-img" />
+                </div>
+                <hr class="outdoor-divider" />
+                <h2>棒球</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
     
 
     <!-- 頁尾 Contact 區塊 -->
@@ -453,6 +460,22 @@
       AOS.init({
         duration: 800,    // 動畫持續時間 (ms)
         once: true        // 滑進畫面只動一次
+      });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+      document.getElementById("export-pdf").addEventListener("click", function () {
+        const element = document.getElementById("pdf-catalog");
+    
+        const opt = {
+          margin: 0.5,
+          filename: '商品型錄.pdf',
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+        };
+    
+        html2pdf().from(element).set(opt).save();
       });
     </script>
 
