@@ -43,6 +43,33 @@
       }
     </style>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', async () => {
+        const LIFF_ID = '2007748054-9bD5ZjXA';  // 你的 LIFF ID
+        await liff.init({ liffId: LIFF_ID });
+        // （以下僅在按「傳到 LINE 好友」的時候才要求登入）
+        document.getElementById('send-line').addEventListener('click', async () => {
+          if (!liff.isLoggedIn()) { 
+            liff.login(); 
+            return; 
+          }
+          const list = JSON.parse(localStorage.getItem('wishlist')||'[]');
+          if (!list.length) return alert('心願單為空！');
+          const messages = list.map(item => ({
+            type: 'image',
+            originalContentUrl: item.url,
+            previewImageUrl:    item.url
+          }));
+          try {
+            await liff.shareTargetPicker(messages);
+          } catch (e) {
+            console.error(e);
+            alert('分享失敗：' + e.message);
+          }
+        });
+        // —— 其他和 swiper、wish list、html2pdf 的程式保持不變 —— 
+      });
+    </script>
     
 
   </head>
