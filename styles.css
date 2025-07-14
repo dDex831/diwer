@@ -873,4 +873,43 @@ html, body {
 .haoxuan-navbar .btn-line:hover {
   background-color: #c8806f;
 }
+/* toast.css */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  padding: 0.8em 1.2em;
+  border-radius: 4px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.3s, transform 0.3s;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
 
+
+/* 讓按鈕和文字在同一行，並在文字右側稍微留一點間距 */
+.outdoor-title {
+  justify-content: center;   /* 置中 flex 內容 */
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1rem;
+}
+.btn-wishlist {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #B6C2D9;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+/* active 時加深顏色 */
+.btn-wishlist.active i {
+  color: #B6C2D9;
+}

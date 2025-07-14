@@ -147,16 +147,20 @@
           <h1 class="outdoor-title">餐具推薦</h1>
           <div class="swiper outdoor-swiper">
             <div class="swiper-wrapper">
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/餐具A.png" class="zoomable-img" alt="餐具A"></div><hr><h2>餐具A</h2></div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/餐具B.png" class="zoomable-img" alt="餐具B"></div><hr><h2>餐具B</h2></div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/咖啡玻璃杯.png" class="zoomable-img" alt="咖啡玻璃杯"></div><hr><h2>咖啡玻璃杯</h2></div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/旅行洗洗漱杯.png" class="zoomable-img" alt="旅行洗洗漱杯"></div><hr><h2>旅行洗洗漱杯</h2></div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯A.png" class="zoomable-img" alt="水杯A"></div><hr><h2>水杯A</h2></div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯B.PNG" class="zoomable-img" alt="水杯B"></div><hr><h2>水杯B</h2></div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯C.PNG" class="zoomable-img" alt="水杯C"></div><hr><h2>水杯C</h2></div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/玻璃杯.png" class="zoomable-img" alt="玻璃杯"></div><hr><h2>玻璃杯</h2></div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯D.png" class="zoomable-img" alt="水杯D"></div><hr><h2>水杯D</h2></div>
-            
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryA" data-name="餐具A">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/餐具A.png" class="zoomable-img" alt="餐具A">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  餐具A
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/餐具C.png" class="zoomable-img" alt="餐具C"></div><hr><h2>餐具C</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/餐具D.png" class="zoomable-img" alt="餐具D"></div><hr><h2>餐具D</h2></div>
             </div>
           </div>
         </div>
@@ -165,6 +169,19 @@
 
     <!-- 放大預覽的動態 DIV -->
     <div class="zoom-preview"></div>
+    <!-- Toast 通知（放在 body 最底，下同） -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index:1055">
+      <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+          <strong class="me-auto">系統通知</strong>
+          <small class="text-muted">現在</small>
+          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">已加入心願單！</div>
+      </div>
+    </div>
+    <!-- 傳送到 LINE 按鈕 -->
+    <a id="send-line" class="btn btn-success" target="_blank">傳送到 LINE</a>
 
     <!-- 頁尾 -->
     <footer class="site-footer">
@@ -187,48 +204,25 @@
 
     <!-- 主 JS -->
     <script>
-      // 1. 存放所有 Swiper 實例
-      let swiperInstances = [];
-    
-      document.addEventListener("DOMContentLoaded", () => {
-        // 2. 動態填入「產品目錄」
-        const dropdown = document.getElementById("product-dropdown");
-        document.querySelectorAll(".outdoor-title").forEach((title, i) => {
-          const id = `section-${i}`;
+      document.addEventListener('DOMContentLoaded', () => {
+        // 1. 自動填「產品目錄」
+        const dropdown = document.getElementById('product-dropdown');
+        document.querySelectorAll('.outdoor-title').forEach((title, idx) => {
+          const id = `section-${idx}`;
           title.id = id;
-          const li = document.createElement("li");
-          const a = document.createElement("a");
-          a.className = "dropdown-item";
-          a.href = `#${id}`;
-          a.textContent = title.textContent.replace("推薦", "").trim();
+          const li = document.createElement('li');
+          const a  = document.createElement('a');
+          a.className = 'dropdown-item';
+          a.href      = `#${id}`;
+          a.textContent = title.textContent.replace('推薦','').trim();
           li.appendChild(a);
           dropdown.appendChild(li);
         });
     
-        // 3. Zoom 放大預覽
-        const zoomPreview = document.querySelector(".zoom-preview");
-        document.querySelectorAll(".zoomable-img").forEach(img => {
-          img.style.cursor = "zoom-in";
-          img.addEventListener("click", e => {
-            const { left, top, width, height } = img.getBoundingClientRect();
-            zoomPreview.style.backgroundImage = `url(${img.src})`;
-            zoomPreview.style.backgroundPosition = 
-              `${((e.clientX - left) / width)*100}% ${((e.clientY - top)/height)*100}%`;
-            zoomPreview.style.display = "block";
-          });
-        });
-        zoomPreview.addEventListener("mousemove", e => {
-          const x = (e.clientX / window.innerWidth)*100;
-          const y = (e.clientY / window.innerHeight)*100;
-          zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
-        });
-        zoomPreview.addEventListener("click", () => {
-          zoomPreview.style.display = "none";
-        });
-    
-        // 4. Swiper + AOS 初始化
-        document.querySelectorAll(".outdoor-swiper").forEach(sw => {
-          const s = new Swiper(sw, {
+        // 2. Swiper + AOS 初始化
+        const swiperInstances = [];
+        document.querySelectorAll('.outdoor-swiper').forEach(container => {
+          const swiper = new Swiper(container, {
             slidesPerView: 2.5,
             spaceBetween: 20,
             freeMode: true,
@@ -237,51 +231,126 @@
               992: { slidesPerView: 4.5 }
             }
           });
-          swiperInstances.push(s);
+          swiperInstances.push(swiper);
         });
         AOS.init({ duration: 800, once: true });
     
-        // 5. html2pdf 匯出
-        document.getElementById("export-pdf").addEventListener("click", async () => {
-          // (1) 停用現有 Swiper
-          swiperInstances.forEach(sw => sw.destroy(true, true));
-          swiperInstances = [];
+        // 3. 放大預覽
+        const zoomPreview = document.querySelector('.zoom-preview');
+        document.querySelectorAll('.zoomable-img').forEach(img => {
+          img.style.cursor = 'zoom-in';
+          img.addEventListener('click', e => {
+            const { left, top, width, height } = img.getBoundingClientRect();
+            const xPct = ((e.clientX - left) / width) * 100;
+            const yPct = ((e.clientY - top ) / height) * 100;
+            zoomPreview.style.backgroundImage    = `url(${img.src})`;
+            zoomPreview.style.backgroundPosition = `${xPct}% ${yPct}%`;
+            zoomPreview.style.display            = 'block';
+          });
+        });
+        zoomPreview.addEventListener('mousemove', e => {
+          const x = (e.clientX / window.innerWidth) * 100;
+          const y = (e.clientY / window.innerHeight)* 100;
+          zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
+        });
+        zoomPreview.addEventListener('click', () => zoomPreview.style.display = 'none');
     
-          // (2) 加 PDF 排版用 class
-          document.body.classList.add("pdf-grid");
+        // 4. 心願單邏輯 + Toast + 傳送 LINE
+        let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        function refreshWishlistUI() {
+          document.querySelectorAll('.btn-wishlist').forEach(btn => {
+            const item = btn.closest('.outdoor-item');
+            const id   = item.dataset.id;
+            const inList = wishlist.some(x => x.id === id);
+            btn.classList.toggle('active', inList);
+            const icon = btn.querySelector('i');
+            icon.classList.toggle('fas', inList);
+            icon.classList.toggle('far', !inList);
+          });
+        }
+         refreshWishlistUI();
     
-          // (3) 等待所有圖片載入
-          const orig = document.getElementById("pdf-catalog");
-          await Promise.all(Array.from(orig.querySelectorAll("img")).map(img =>
-            img.complete ? Promise.resolve() : new Promise(r => img.onload = r)
+        // 初始化 Toast
+        const toastEl = document.getElementById('liveToast');
+        const bsToast = new bootstrap.Toast(toastEl);
+        function showWishlistToast(msg) {
+          toastEl.querySelector('.toast-body').textContent = msg;
+          bsToast.show();
+        }
+    
+        // 綁定心願單按鈕
+        document.querySelectorAll('.btn-wishlist').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const item = btn.closest('.outdoor-item');
+            const id   = item.dataset.id;
+            const name = item.dataset.name;
+            const url  = item.querySelector('img.zoomable-img').src;
+
+            const idx = wishlist.findIndex(x => x.id === id);
+            if (idx > -1) {
+              // 已在心願單，移除
+              wishlist.splice(idx, 1);
+            } else {
+              // 不在，加入
+              wishlist.push({ id, name, url });
+            }
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            refreshWishlistUI();
+          });
+          const sendLineBtn = document.getElementById("send-line");
+          sendLineBtn.addEventListener("click", () => {
+            const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
+            if (!wishlist.length) {
+              alert("心願單為空！");
+              return;
+            }
+            const text = "我的心願單：\n"
+              + wishlist.map(i => `– ${i.name} ${i.url||""}`).join("\n");
+
+            const textEncoded = encodeURIComponent(text);
+            let lineDeepLink;
+            if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+              lineDeepLink = `line://msg/text/${textEncoded}`;
+            } else {
+              lineDeepLink = `https://line.me/R/msg/text/?${textEncoded}`;
+            }
+            window.location.href = lineDeepLink;
+          });
+
+        });
+          
+        // 5. 匯出 PDF
+        document.getElementById('export-pdf').addEventListener('click', async () => {
+          // 停用 Swiper
+          swiperInstances.forEach(sw => sw.destroy(true,true));
+          // 套用 PDF 格式
+          document.body.classList.add('pdf-grid');
+          // 等所有圖片載入
+          const orig = document.getElementById('pdf-catalog');
+          await Promise.all(Array.from(orig.querySelectorAll('img')).map(img =>
+            img.complete ? Promise.resolve() : new Promise(r=>img.onload=r)
           ));
-    
-          // (4) 產生並下載 PDF
+          // 產 PDF
           await html2pdf().set({
             margin: 0.5,
-            filename: "商品型錄.pdf",
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: false, allowTaint: true },
-            jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
-          }).from(orig).save();
-    
-          // (5) 移除 PDF 排版 class 並重啟 Swiper
-          document.body.classList.remove("pdf-grid");
-          document.querySelectorAll(".outdoor-swiper").forEach(container => {
-            const s = new Swiper(container, {
-              slidesPerView: 2.5,
-              spaceBetween: 20,
-              freeMode: true,
-              breakpoints: {
-                768: { slidesPerView: 3.5 },
-                992: { slidesPerView: 4.5 }
-              }
+            filename: '商品型錄.pdf',
+            image: { type:'jpeg', quality:0.98 },
+            html2canvas: { scale:2, useCORS:false, allowTaint:true },
+            jsPDF: { unit:'in', format:'a4', orientation:'portrait' }
+          })
+          .from(orig).save();
+          // 還原
+          document.body.classList.remove('pdf-grid');
+          document.querySelectorAll('.outdoor-swiper').forEach(container => {
+            const sw = new Swiper(container, {
+              slidesPerView: 2.5, spaceBetween:20, freeMode:true,
+              breakpoints:{768:{slidesPerView:3.5},992:{slidesPerView:4.5}}
             });
-            swiperInstances.push(s);
+            swiperInstances.push(sw);
           });
         });
       });
-    </script>
+      </script>
     
   </body>
 </html>
