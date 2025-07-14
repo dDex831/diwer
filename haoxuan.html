@@ -19,36 +19,20 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <style>
       body { background-color: #f6f1ee; }
-      
-      /* 放大容器遮罩 */
-      .zoom-overlay {
+
+      /* 放大預覽的動態 div */
+      .zoom-preview {
         position: fixed;
         top: 0; left: 0;
-        width:100%; height:100%;
-        background: rgba(0,0,0,0.7);
-        display: none;          /* 預設隱藏 */
-        justify-content: center;
-        align-items: center;
+        width: 100%; height: 100%;
+        background-repeat: no-repeat;
+        background-size:50%;  /* 放大 2 倍 */
+        display: none;
+        cursor: zoom-out;
         z-index: 9999;
       }
-      .zoom-overlay.active {     /* active 時顯示 */
-        display: flex;
-      }
-      .zoom-image {
-        max-width: 90%;
-        max-height: 90%;
-        object-fit: contain;
-        box-shadow: 0 0 15px rgba(255,255,255,0.4);
-      }
-      .zoom-overlay .close-btn {
-        position: absolute;
-        top: 2%; right: 2%;
-        font-size: 2rem;
-        color: white;
-        cursor: pointer;
-      }
 
-      /* PDF 專用排版 */
+      /* PDF 專用排版 (若你未使用可移除) */
       .pdf-grid .outdoor-swiper { overflow: visible !important; height: auto !important; }
       .pdf-grid .swiper-wrapper { display: grid !important; grid-template-columns: repeat(6, 1fr) !important; grid-auto-rows: auto !important; gap: 10px !important; overflow: visible !important; width: 100% !important; }
       /* 只在 PDF 時套用 */
@@ -57,9 +41,9 @@
         transform: scale(0.9);
         transform-origin: top ;
       }
-
     </style>
   </head>
+
   <body>
     <!-- 導覽列 -->
     <nav class="navbar navbar-expand-lg haoxuan-navbar">
@@ -75,7 +59,9 @@
           <ul class="navbar-nav align-items-center">
             <li class="nav-item dropdown px-2">
               <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">產品目錄</a>
-              <ul class="dropdown-menu" id="product-dropdown"></ul>
+              <ul class="dropdown-menu" id="product-dropdown">
+                <!-- JS 會自動填入 -->
+              </ul>
             </li>
             <li class="nav-item px-2"><a class="nav-link" href="partners.html">合作品牌</a></li>
             <li class="nav-item px-2">
@@ -89,11 +75,12 @@
         </div>
       </div>
     </nav>
+
     <!-- 圖片輪播 -->
     <div class="container my-4">
       <div id="diwerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="false">
         <div class="carousel-indicators">
-          <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+          <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="0" class="active"></button>
           <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="1"></button>
           <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="2"></button>
           <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="3"></button>
@@ -101,12 +88,12 @@
           <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="5"></button>
         </div>
         <div class="carousel-inner">
-          <div class="carousel-item active"><img src="images-web/禮品1.2.png" class="d-block carousel-img" alt=""></div>
-          <div class="carousel-item"><img src="images-web/禮品9.png" class="d-block carousel-img" alt=""></div>
-          <div class="carousel-item"><img src="images-web/禮品6.1.png" class="d-block carousel-img" alt=""></div>
-          <div class="carousel-item"><img src="images-web/禮品5.1.png" class="d-block carousel-img" alt=""></div>
-          <div class="carousel-item"><img src="images-web/禮品8.1.png" class="d-block carousel-img" alt=""></div>
-          <div class="carousel-item"><img src="images-web/禮品10.png" class="d-block carousel-img" alt=""></div>
+          <div class="carousel-item active"><img src="images-web/禮品1.2.png" class="d-block w-100" alt=""></div>
+          <div class="carousel-item"><img src="images-web/禮品9.png" class="d-block w-100" alt=""></div>
+          <div class="carousel-item"><img src="images-web/禮品6.1.png" class="d-block w-100" alt=""></div>
+          <div class="carousel-item"><img src="images-web/禮品5.1.png" class="d-block w-100" alt=""></div>
+          <div class="carousel-item"><img src="images-web/禮品8.1.png" class="d-block w-100" alt=""></div>
+          <div class="carousel-item"><img src="images-web/禮品10.png" class="d-block w-100" alt=""></div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#diwerCarousel" data-bs-slide="prev">
           <span class="carousel-control-prev-icon"></span><span class="visually-hidden">上一張</span>
@@ -116,6 +103,7 @@
         </button>
       </div>
     </div>
+
     <!-- 商品推薦 -->
     <div id="pdf-catalog">
       <!-- 戶外用品推薦 -->
@@ -148,16 +136,36 @@
               <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯B.PNG" class="zoomable-img" alt="水杯B"></div><hr><h2>水杯B</h2></div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯C.PNG" class="zoomable-img" alt="水杯C"></div><hr><h2>水杯C</h2></div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/玻璃杯.png" class="zoomable-img" alt="玻璃杯"></div><hr><h2>玻璃杯</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯D.png" class="zoomable-img" alt="水杯D"></div><hr><h2>水杯D</h2></div>
+            
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="outdoor-section">
+        <div class="outdoor-container">
+          <h1 class="outdoor-title">餐具推薦</h1>
+          <div class="swiper outdoor-swiper">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/餐具A.png" class="zoomable-img" alt="餐具A"></div><hr><h2>餐具A</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/餐具B.png" class="zoomable-img" alt="餐具B"></div><hr><h2>餐具B</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/咖啡玻璃杯.png" class="zoomable-img" alt="咖啡玻璃杯"></div><hr><h2>咖啡玻璃杯</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/旅行洗洗漱杯.png" class="zoomable-img" alt="旅行洗洗漱杯"></div><hr><h2>旅行洗洗漱杯</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯A.png" class="zoomable-img" alt="水杯A"></div><hr><h2>水杯A</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯B.PNG" class="zoomable-img" alt="水杯B"></div><hr><h2>水杯B</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯C.PNG" class="zoomable-img" alt="水杯C"></div><hr><h2>水杯C</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/玻璃杯.png" class="zoomable-img" alt="玻璃杯"></div><hr><h2>玻璃杯</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯D.png" class="zoomable-img" alt="水杯D"></div><hr><h2>水杯D</h2></div>
+            
             </div>
           </div>
         </div>
       </section>
     </div>
-      <!-- 放大預覽 Overlay -->
-    <div class="zoom-overlay" id="zoom-overlay">
-      <span class="close-btn">&times;</span>
-      <img class="zoom-image" src="" alt="放大圖片預覽">
-    </div>
+
+    <!-- 放大預覽的動態 DIV -->
+    <div class="zoom-preview"></div>
+
     <!-- 頁尾 -->
     <footer class="site-footer">
       <div class="container-fluid bg-dark py-5 px-0">
@@ -170,62 +178,110 @@
         </div>
       </div>
     </footer>
+
     <!-- 依賴 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
     <!-- 主 JS -->
     <script>
+      // 1. 存放所有 Swiper 實例
       let swiperInstances = [];
-      document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('.outdoor-swiper').forEach(container => {
-          const swiper = new Swiper(container, {
-            slidesPerView: 2.5, spaceBetween: 20, freeMode: true,
-            breakpoints: { 768: { slidesPerView: 3.5 }, 992: { slidesPerView: 4.5 } }
+    
+      document.addEventListener("DOMContentLoaded", () => {
+        // 2. 動態填入「產品目錄」
+        const dropdown = document.getElementById("product-dropdown");
+        document.querySelectorAll(".outdoor-title").forEach((title, i) => {
+          const id = `section-${i}`;
+          title.id = id;
+          const li = document.createElement("li");
+          const a = document.createElement("a");
+          a.className = "dropdown-item";
+          a.href = `#${id}`;
+          a.textContent = title.textContent.replace("推薦", "").trim();
+          li.appendChild(a);
+          dropdown.appendChild(li);
+        });
+    
+        // 3. Zoom 放大預覽
+        const zoomPreview = document.querySelector(".zoom-preview");
+        document.querySelectorAll(".zoomable-img").forEach(img => {
+          img.style.cursor = "zoom-in";
+          img.addEventListener("click", e => {
+            const { left, top, width, height } = img.getBoundingClientRect();
+            zoomPreview.style.backgroundImage = `url(${img.src})`;
+            zoomPreview.style.backgroundPosition = 
+              `${((e.clientX - left) / width)*100}% ${((e.clientY - top)/height)*100}%`;
+            zoomPreview.style.display = "block";
           });
-          swiperInstances.push(swiper);
+        });
+        zoomPreview.addEventListener("mousemove", e => {
+          const x = (e.clientX / window.innerWidth)*100;
+          const y = (e.clientY / window.innerHeight)*100;
+          zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
+        });
+        zoomPreview.addEventListener("click", () => {
+          zoomPreview.style.display = "none";
+        });
+    
+        // 4. Swiper + AOS 初始化
+        document.querySelectorAll(".outdoor-swiper").forEach(sw => {
+          const s = new Swiper(sw, {
+            slidesPerView: 2.5,
+            spaceBetween: 20,
+            freeMode: true,
+            breakpoints: {
+              768: { slidesPerView: 3.5 },
+              992: { slidesPerView: 4.5 }
+            }
+          });
+          swiperInstances.push(s);
         });
         AOS.init({ duration: 800, once: true });
-      });
-      document.getElementById('export-pdf').addEventListener('click', async () => {
-        // 1. 停用 Swiper
-        swiperInstances.forEach(sw => sw.destroy(true, true)); swiperInstances = [];
-        // 2. 加 PDF 排版 class
-        document.body.classList.add('pdf-grid');
-        // 3. 等待圖片載入
-        const orig = document.getElementById('pdf-catalog');
-        await Promise.all(Array.from(orig.querySelectorAll('img')).map(img => img.complete ? Promise.resolve() : new Promise(r => img.onload = r)));
-        // 4. 產生 PDF
-        await html2pdf().set({ margin: 0.5, filename: '商品型錄.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: false, allowTaint: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(orig).save();
-        // 5. 移除 PDF 排版 class 並重啟 Swiper
-        document.body.classList.remove('pdf-grid');
-        document.querySelectorAll('.outdoor-swiper').forEach(container => {
-          const swiper = new Swiper(container, { slidesPerView: 2.5, spaceBetween: 20, freeMode: true, breakpoints: { 768: { slidesPerView: 3.5 }, 992: { slidesPerView: 4.5 } } });
-          swiperInstances.push(swiper);
-        });
-      });
-      // Zoom overlay
-      document.addEventListener('DOMContentLoaded', () => {
-        const overlay  = document.getElementById('zoom-overlay');
-        const zoomImg  = overlay.querySelector('.zoom-image');
-        const closeBtn = overlay.querySelector('.close-btn');
-
-        document.querySelectorAll('.zoomable-img').forEach(img => {
-          img.style.cursor = 'zoom-in';
-          img.addEventListener('click', () => {
-            zoomImg.src = img.src;
-            overlay.classList.add('active');
+    
+        // 5. html2pdf 匯出
+        document.getElementById("export-pdf").addEventListener("click", async () => {
+          // (1) 停用現有 Swiper
+          swiperInstances.forEach(sw => sw.destroy(true, true));
+          swiperInstances = [];
+    
+          // (2) 加 PDF 排版用 class
+          document.body.classList.add("pdf-grid");
+    
+          // (3) 等待所有圖片載入
+          const orig = document.getElementById("pdf-catalog");
+          await Promise.all(Array.from(orig.querySelectorAll("img")).map(img =>
+            img.complete ? Promise.resolve() : new Promise(r => img.onload = r)
+          ));
+    
+          // (4) 產生並下載 PDF
+          await html2pdf().set({
+            margin: 0.5,
+            filename: "商品型錄.pdf",
+            image: { type: "jpeg", quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: false, allowTaint: true },
+            jsPDF: { unit: "in", format: "a4", orientation: "portrait" }
+          }).from(orig).save();
+    
+          // (5) 移除 PDF 排版 class 並重啟 Swiper
+          document.body.classList.remove("pdf-grid");
+          document.querySelectorAll(".outdoor-swiper").forEach(container => {
+            const s = new Swiper(container, {
+              slidesPerView: 2.5,
+              spaceBetween: 20,
+              freeMode: true,
+              breakpoints: {
+                768: { slidesPerView: 3.5 },
+                992: { slidesPerView: 4.5 }
+              }
+            });
+            swiperInstances.push(s);
           });
-        });
-
-        closeBtn.addEventListener('click', () => {
-          overlay.classList.remove('active');
-        });
-        overlay.addEventListener('click', e => {
-          if (e.target === overlay) overlay.classList.remove('active');
         });
       });
     </script>
+    
   </body>
 </html>
