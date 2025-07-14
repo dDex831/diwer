@@ -207,97 +207,96 @@
     <!-- 主 JS -->
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
-        // ←─── 1. 換成你的 LIFF ID
+        // 0. 載入 LIFF SDK，並填上你的 LIFF ID
         const LIFF_ID = '2007748054-9bD5ZjXA';
         await liff.init({ liffId: LIFF_ID });
-
-        // 2. 自動填「產品目錄」
+      
+        
+      
+        // ─── 2. 動態填「產品目錄」
         const dropdown = document.getElementById('product-dropdown');
         document.querySelectorAll('.outdoor-title').forEach((title, idx) => {
           const id = `section-${idx}`;
           title.id = id;
           const li = document.createElement('li');
           const a  = document.createElement('a');
-          a.className    = 'dropdown-item';
-          a.href         = `#${id}`;
-          a.textContent  = title.textContent.replace('推薦','').trim();
+          a.className   = 'dropdown-item';
+          a.href        = `#${id}`;
+          a.textContent = title.textContent.replace('推薦','').trim();
           li.appendChild(a);
           dropdown.appendChild(li);
         });
-
-        // 3. Swiper + AOS 初始化
+      
+        // ─── 3. Swiper + AOS 初始化（跟你原本一模一樣）
         const swiperInstances = [];
         document.querySelectorAll('.outdoor-swiper').forEach(container => {
-          const swiper = new Swiper(container, {
+          const sw = new Swiper(container, {
             slidesPerView: 2.5,
             spaceBetween: 20,
             freeMode: true,
-            breakpoints: {
-              768: { slidesPerView: 3.5 },
-              992: { slidesPerView: 4.5 }
-            }
+            breakpoints: { 768:{slidesPerView:3.5}, 992:{slidesPerView:4.5} }
           });
-          swiperInstances.push(swiper);
+          swiperInstances.push(sw);
         });
-        AOS.init({ duration: 800, once: true });
-
-        // 4. 放大預覽
+        AOS.init({ duration:800, once:true });
+      
+        // ─── 4. 放大預覽（你的原本邏輯）
         const zoomPreview = document.querySelector('.zoom-preview');
         document.querySelectorAll('.zoomable-img').forEach(img => {
           img.style.cursor = 'zoom-in';
           img.addEventListener('click', e => {
             const { left, top, width, height } = img.getBoundingClientRect();
-            const xPct = ((e.clientX - left) / width) * 100;
-            const yPct = ((e.clientY - top)  / height)* 100;
+            const xPct = ((e.clientX - left)/width)*100;
+            const yPct = ((e.clientY - top)/height)*100;
             zoomPreview.style.backgroundImage    = `url(${img.src})`;
             zoomPreview.style.backgroundPosition = `${xPct}% ${yPct}%`;
             zoomPreview.style.display            = 'block';
           });
         });
         zoomPreview.addEventListener('mousemove', e => {
-          const x = (e.clientX / window.innerWidth)  * 100;
-          const y = (e.clientY / window.innerHeight) * 100;
+          const x = (e.clientX / window.innerWidth)*100;
+          const y = (e.clientY / window.innerHeight)*100;
           zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
         });
         zoomPreview.addEventListener('click', () => zoomPreview.style.display = 'none');
-
-        // 5. 心願單邏輯
-        let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      
+        // ─── 5. 心願單邏輯
+        let wishlist = JSON.parse(localStorage.getItem('wishlist')||'[]');
         function refreshWishlistUI() {
           document.querySelectorAll('.btn-wishlist').forEach(btn => {
             const item   = btn.closest('.outdoor-item');
             const inList = wishlist.some(x => x.id === item.dataset.id);
             btn.classList.toggle('active', inList);
-            const icon  = btn.querySelector('i');
+            const icon = btn.querySelector('i');
             icon.classList.toggle('fas', inList);
             icon.classList.toggle('far', !inList);
           });
         }
         refreshWishlistUI();
-
         document.querySelectorAll('.btn-wishlist').forEach(btn => {
           btn.addEventListener('click', () => {
             const item = btn.closest('.outdoor-item');
             const { id, name } = item.dataset;
             const url          = item.querySelector('img.zoomable-img').src;
-            const idx          = wishlist.findIndex(x => x.id === id);
-
-            if (idx > -1) wishlist.splice(idx, 1);
-            else            wishlist.push({ id, name, url });
-
+            const idx          = wishlist.findIndex(x => x.id===id);
+            if (idx>-1) wishlist.splice(idx,1);
+            else        wishlist.push({ id, name, url });
             localStorage.setItem('wishlist', JSON.stringify(wishlist));
             refreshWishlistUI();
           });
         });
-
-        // 6. LIFF 分享到 LINE 好友（只傳圖片）
+      
+        // ─── 6. LIFF 分享到 LINE （只傳圖片）
         document.getElementById('send-line').addEventListener('click', async () => {
-          const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
-          if (!list.length) {
-            alert('心願單為空！');
-            return;
+          // ─── 如果還沒登入，就導到 LINE 的登入流程
+          if (!liff.isLoggedIn()) {
+            liff.login();
+            return; // 等使用者登入完才繼續下面邏輯
           }
-          // 準備所有圖片訊息
+          const list = JSON.parse(localStorage.getItem('wishlist')||'[]');
+          if (!list.length) {
+            return alert('心願單為空！');
+          }
           const messages = list.map(item => ({
             type: 'image',
             originalContentUrl: item.url,
@@ -306,18 +305,18 @@
           try {
             await liff.shareTargetPicker(messages);
           } catch (err) {
-            console.error(err);
-            alert('傳送失敗：' + err.message);
+            console.error('分享失敗', err);
+            alert('分享失敗：'+err.message);
           }
         });
-
-        // 7. 匯出 PDF（維持原本 html2pdf 邏輯）
+      
+        // ─── 7. 匯出 PDF（維持你現有的 html2pdf 邏輯）  
         document.getElementById('export-pdf').addEventListener('click', async () => {
-          swiperInstances.forEach(sw => sw.destroy(true,true));
+          swiperInstances.forEach(sw=>sw.destroy(true,true));
           document.body.classList.add('pdf-grid');
           const orig = document.getElementById('pdf-catalog');
-          await Promise.all(Array.from(orig.querySelectorAll('img')).map(img =>
-            img.complete ? Promise.resolve() : new Promise(r => img.onload = r)
+          await Promise.all(Array.from(orig.querySelectorAll('img')).map(img=>
+            img.complete?Promise.resolve():new Promise(r=>img.onload=r)
           ));
           await html2pdf().set({
             margin:      0.5,
@@ -325,21 +324,20 @@
             image:       { type:'jpeg', quality:0.98 },
             html2canvas: { scale:2, useCORS:false, allowTaint:true },
             jsPDF:       { unit:'in', format:'a4', orientation:'portrait' }
-          })
-          .from(orig).save();
+          }).from(orig).save();
           document.body.classList.remove('pdf-grid');
           document.querySelectorAll('.outdoor-swiper').forEach(container => {
             const sw = new Swiper(container, {
-              slidesPerView: 2.5, spaceBetween:20, freeMode:true,
+              slidesPerView:2.5, spaceBetween:20, freeMode:true,
               breakpoints:{768:{slidesPerView:3.5},992:{slidesPerView:4.5}}
             });
             swiperInstances.push(sw);
           });
         });
-
+      
       }); // end DOMContentLoaded
-    </script>
-
+      </script>
+      
     
   </body>
 </html>
