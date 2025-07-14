@@ -42,6 +42,7 @@
         transform-origin: top ;
       }
     </style>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   </head>
 
   <body>
@@ -181,7 +182,7 @@
       </div>
     </div>
     <!-- 傳送到 LINE 按鈕 -->
-    <a id="send-line" class="btn btn-success" target="_blank">傳送到 LINE</a>
+    <a id="send-line" class="btn btn-success" target="_blank">傳到 LINE 好友</a>
 
     <!-- 頁尾 -->
     <footer class="site-footer">
@@ -202,24 +203,29 @@
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
+  
     <!-- 主 JS -->
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        // 1. 自動填「產品目錄」
+      document.addEventListener('DOMContentLoaded', async () => {
+        // ←─── 1. 換成你的 LIFF ID
+        const LIFF_ID = '你的-LIFF-ID-放這裡';
+        await liff.init({ liffId: LIFF_ID });
+
+        // 2. 自動填「產品目錄」
         const dropdown = document.getElementById('product-dropdown');
         document.querySelectorAll('.outdoor-title').forEach((title, idx) => {
           const id = `section-${idx}`;
           title.id = id;
           const li = document.createElement('li');
           const a  = document.createElement('a');
-          a.className = 'dropdown-item';
-          a.href      = `#${id}`;
-          a.textContent = title.textContent.replace('推薦','').trim();
+          a.className    = 'dropdown-item';
+          a.href         = `#${id}`;
+          a.textContent  = title.textContent.replace('推薦','').trim();
           li.appendChild(a);
           dropdown.appendChild(li);
         });
-    
-        // 2. Swiper + AOS 初始化
+
+        // 3. Swiper + AOS 初始化
         const swiperInstances = [];
         document.querySelectorAll('.outdoor-swiper').forEach(container => {
           const swiper = new Swiper(container, {
@@ -234,112 +240,93 @@
           swiperInstances.push(swiper);
         });
         AOS.init({ duration: 800, once: true });
-    
-        // 3. 放大預覽
+
+        // 4. 放大預覽
         const zoomPreview = document.querySelector('.zoom-preview');
         document.querySelectorAll('.zoomable-img').forEach(img => {
           img.style.cursor = 'zoom-in';
           img.addEventListener('click', e => {
             const { left, top, width, height } = img.getBoundingClientRect();
             const xPct = ((e.clientX - left) / width) * 100;
-            const yPct = ((e.clientY - top ) / height) * 100;
+            const yPct = ((e.clientY - top)  / height)* 100;
             zoomPreview.style.backgroundImage    = `url(${img.src})`;
             zoomPreview.style.backgroundPosition = `${xPct}% ${yPct}%`;
             zoomPreview.style.display            = 'block';
           });
         });
         zoomPreview.addEventListener('mousemove', e => {
-          const x = (e.clientX / window.innerWidth) * 100;
-          const y = (e.clientY / window.innerHeight)* 100;
+          const x = (e.clientX / window.innerWidth)  * 100;
+          const y = (e.clientY / window.innerHeight) * 100;
           zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
         });
         zoomPreview.addEventListener('click', () => zoomPreview.style.display = 'none');
-    
-        // 4. 心願單邏輯 + Toast + 傳送 LINE
+
+        // 5. 心願單邏輯
         let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
         function refreshWishlistUI() {
           document.querySelectorAll('.btn-wishlist').forEach(btn => {
-            const item = btn.closest('.outdoor-item');
-            const id   = item.dataset.id;
-            const inList = wishlist.some(x => x.id === id);
+            const item   = btn.closest('.outdoor-item');
+            const inList = wishlist.some(x => x.id === item.dataset.id);
             btn.classList.toggle('active', inList);
-            const icon = btn.querySelector('i');
+            const icon  = btn.querySelector('i');
             icon.classList.toggle('fas', inList);
             icon.classList.toggle('far', !inList);
           });
         }
-         refreshWishlistUI();
-    
-        // 初始化 Toast
-        const toastEl = document.getElementById('liveToast');
-        const bsToast = new bootstrap.Toast(toastEl);
-        function showWishlistToast(msg) {
-          toastEl.querySelector('.toast-body').textContent = msg;
-          bsToast.show();
-        }
-    
-        // 綁定心願單按鈕
+        refreshWishlistUI();
+
         document.querySelectorAll('.btn-wishlist').forEach(btn => {
           btn.addEventListener('click', () => {
             const item = btn.closest('.outdoor-item');
-            const id   = item.dataset.id;
-            const name = item.dataset.name;
-            const url  = item.querySelector('img.zoomable-img').src;
+            const { id, name } = item.dataset;
+            const url          = item.querySelector('img.zoomable-img').src;
+            const idx          = wishlist.findIndex(x => x.id === id);
 
-            const idx = wishlist.findIndex(x => x.id === id);
-            if (idx > -1) {
-              // 已在心願單，移除
-              wishlist.splice(idx, 1);
-            } else {
-              // 不在，加入
-              wishlist.push({ id, name, url });
-            }
+            if (idx > -1) wishlist.splice(idx, 1);
+            else            wishlist.push({ id, name, url });
+
             localStorage.setItem('wishlist', JSON.stringify(wishlist));
             refreshWishlistUI();
           });
-          const sendLineBtn = document.getElementById("send-line");
-          sendLineBtn.addEventListener("click", () => {
-            const wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
-            if (!wishlist.length) {
-              alert("心願單為空！");
-              return;
-            }
-            const text = "我的心願單：\n"
-              + wishlist.map(i => `– ${i.name} ${i.url||""}`).join("\n");
-
-            const textEncoded = encodeURIComponent(text);
-            let lineDeepLink;
-            if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-              lineDeepLink = `line://msg/text/${textEncoded}`;
-            } else {
-              lineDeepLink = `https://line.me/R/msg/text/?${textEncoded}`;
-            }
-            window.location.href = lineDeepLink;
-          });
-
         });
-          
-        // 5. 匯出 PDF
+
+        // 6. LIFF 分享到 LINE 好友（只傳圖片）
+        document.getElementById('send-line').addEventListener('click', async () => {
+          const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
+          if (!list.length) {
+            alert('心願單為空！');
+            return;
+          }
+          // 準備所有圖片訊息
+          const messages = list.map(item => ({
+            type: 'image',
+            originalContentUrl: item.url,
+            previewImageUrl:    item.url
+          }));
+          try {
+            await liff.shareTargetPicker(messages);
+          } catch (err) {
+            console.error(err);
+            alert('傳送失敗：' + err.message);
+          }
+        });
+
+        // 7. 匯出 PDF（維持原本 html2pdf 邏輯）
         document.getElementById('export-pdf').addEventListener('click', async () => {
-          // 停用 Swiper
           swiperInstances.forEach(sw => sw.destroy(true,true));
-          // 套用 PDF 格式
           document.body.classList.add('pdf-grid');
-          // 等所有圖片載入
           const orig = document.getElementById('pdf-catalog');
           await Promise.all(Array.from(orig.querySelectorAll('img')).map(img =>
-            img.complete ? Promise.resolve() : new Promise(r=>img.onload=r)
+            img.complete ? Promise.resolve() : new Promise(r => img.onload = r)
           ));
-          // 產 PDF
           await html2pdf().set({
-            margin: 0.5,
-            filename: '商品型錄.pdf',
-            image: { type:'jpeg', quality:0.98 },
+            margin:      0.5,
+            filename:    '商品型錄.pdf',
+            image:       { type:'jpeg', quality:0.98 },
             html2canvas: { scale:2, useCORS:false, allowTaint:true },
-            jsPDF: { unit:'in', format:'a4', orientation:'portrait' }
+            jsPDF:       { unit:'in', format:'a4', orientation:'portrait' }
           })
           .from(orig).save();
-          // 還原
           document.body.classList.remove('pdf-grid');
           document.querySelectorAll('.outdoor-swiper').forEach(container => {
             const sw = new Swiper(container, {
@@ -349,8 +336,10 @@
             swiperInstances.push(sw);
           });
         });
-      });
-      </script>
+
+      }); // end DOMContentLoaded
+    </script>
+
     
   </body>
 </html>
