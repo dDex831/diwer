@@ -18,69 +18,64 @@
     <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
     <style>
-      body {
-      background-color: #f6f1ee;
-      }
+      body { background-color: #f6f1ee; }
+      
       /* 放大容器遮罩 */
       .zoom-overlay {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        display: none;
+        top: 0; left: 0;
+        width:100%; height:100%;
+        background: rgba(0,0,0,0.7);
+        display: none;          /* 預設隱藏 */
         justify-content: center;
         align-items: center;
         z-index: 9999;
       }
-    
+      .zoom-overlay.active {     /* active 時顯示 */
+        display: flex;
+      }
       .zoom-image {
         max-width: 90%;
         max-height: 90%;
         object-fit: contain;
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        box-shadow: 0 0 15px rgba(255,255,255,0.4);
       }
-    
-      .zoom-overlay:target {
-        display: flex;
-      }
-    
       .zoom-overlay .close-btn {
         position: absolute;
-        top: 2%;
-        right: 2%;
+        top: 2%; right: 2%;
         font-size: 2rem;
         color: white;
         cursor: pointer;
       }
+
+      /* PDF 專用排版 */
+      .pdf-grid .outdoor-swiper { overflow: visible !important; height: auto !important; }
+      .pdf-grid .swiper-wrapper { display: grid !important; grid-template-columns: repeat(6, 1fr) !important; grid-auto-rows: auto !important; gap: 10px !important; overflow: visible !important; width: 100% !important; }
+      /* 只在 PDF 時套用 */
+      .pdf-grid #pdf-catalog {
+        /* 縮小到 80% 大小，依照需求調整 0.7~0.9 */
+        transform: scale(0.9);
+        transform-origin: top ;
+      }
+
     </style>
-    
   </head>
-  
   <body>
-    <!-- 🔰 導覽列開始 -->
+    <!-- 導覽列 -->
     <nav class="navbar navbar-expand-lg haoxuan-navbar">
       <div class="container justify-content-between">
         <a class="navbar-brand d-flex align-items-center" href="#">
           <img src="images-web/浩軒13.6.png" alt="Logo" class="logohao" />
           <span class="brand-name ms-2">浩軒</span>
         </a>
-    
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
-    
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
           <ul class="navbar-nav align-items-center">
             <li class="nav-item dropdown px-2">
-              <!-- ✅ 改名稱為產品目錄 -->
               <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">產品目錄</a>
-              
-              <!-- ✅ 改為可由 JS 填入清單 -->
-              <ul class="dropdown-menu" id="product-dropdown">
-                <!-- JS 動態插入 outdoor-title 對應項目 -->
-              </ul>
+              <ul class="dropdown-menu" id="product-dropdown"></ul>
             </li>
             <li class="nav-item px-2"><a class="nav-link" href="partners.html">合作品牌</a></li>
             <li class="nav-item px-2">
@@ -89,396 +84,148 @@
                 <button class="btn btn-dark" id="export-pdf">下載商品型錄</button>
               </div>
             </li>
-            
-            
-            
-            <li class="nav-item px-2">
-              <a href="#" class="nav-link"><i class="fas fa-search"></i></a>
-            </li>
+            <li class="nav-item px-2"><a href="#" class="nav-link"><i class="fas fa-search"></i></a></li>
           </ul>
         </div>
       </div>
     </nav>
-    
-    
-    <!-- 🔰 導覽列結束 -->
-
-    <!-- 🔽 圖片輪播區開始 -->
+    <!-- 圖片輪播 -->
     <div class="container my-4">
-      <div
-        id="diwerCarousel"
-        class="carousel slide"
-        data-bs-ride="carousel"
-        data-bs-interval="5000"
-        data-bs-pause="false"
-      >
+      <div id="diwerCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000" data-bs-pause="false">
         <div class="carousel-indicators">
-          <button
-            type="button"
-            data-bs-target="#diwerCarousel"
-            data-bs-slide-to="0"
-            class="active"
-            aria-current="true"
-            aria-label="Slide 1"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#diwerCarousel"
-            data-bs-slide-to="1"
-            aria-label="Slide 2"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#diwerCarousel"
-            data-bs-slide-to="2"
-            aria-label="Slide 3"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#diwerCarousel"
-            data-bs-slide-to="3"
-            aria-label="Slide 4"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#diwerCarousel"
-            data-bs-slide-to="4"
-            aria-label="Slide 5"
-          ></button>
-          <button
-            type="button"
-            data-bs-target="#diwerCarousel"
-            data-bs-slide-to="5"
-            aria-label="Slide 6"
-          ></button>
+          <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+          <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="1"></button>
+          <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="2"></button>
+          <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="3"></button>
+          <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="4"></button>
+          <button type="button" data-bs-target="#diwerCarousel" data-bs-slide-to="5"></button>
         </div>
         <div class="carousel-inner">
-          <div class="carousel-item active">
-          
-            <img
-              src="images-web/禮品1.2.png"
-              class="d-block carousel-img"
-              alt="Jimeng2"
-            />
-          </div>
-          <div class="carousel-item">
-            <img
-              src="images-web/禮品9.png"
-              class="d-block carousel-img"
-              alt="交屋包2"
-            />
-          </div>
-          <div class="carousel-item">
-            <img
-              src="images-web/禮品6.1.png"
-              class="d-block carousel-img"
-              alt="Jimeng3"
-            />
-          </div>
-          <div class="carousel-item">
-            <img
-              src="images-web/禮品5.1.png"
-              class="d-block carousel-img"
-              alt="交屋包3"
-            />
-          </div>
-          <div class="carousel-item ">
-            <!-- 直接指向 D:\Diwer\images-web\jimeng1.jpeg -->
-            <img
-              src="images-web/禮品8.1.png"
-              class="d-block carousel-img"
-              alt="Banner"
-            />
-          </div>
-          <div class="carousel-item">
-            <!-- 直接指向 D:\Diwer\images-web\jimeng1.jpeg -->
-            <img
-              src="images-web/禮品10.png"
-              class="d-block carousel-img"
-              alt="Banner"
-            />
-          </div>
-
+          <div class="carousel-item active"><img src="images-web/禮品1.2.png" class="d-block carousel-img" alt=""></div>
+          <div class="carousel-item"><img src="images-web/禮品9.png" class="d-block carousel-img" alt=""></div>
+          <div class="carousel-item"><img src="images-web/禮品6.1.png" class="d-block carousel-img" alt=""></div>
+          <div class="carousel-item"><img src="images-web/禮品5.1.png" class="d-block carousel-img" alt=""></div>
+          <div class="carousel-item"><img src="images-web/禮品8.1.png" class="d-block carousel-img" alt=""></div>
+          <div class="carousel-item"><img src="images-web/禮品10.png" class="d-block carousel-img" alt=""></div>
         </div>
-        <button
-          class="carousel-control-prev"
-          type="button"
-          data-bs-target="#diwerCarousel"
-          data-bs-slide="prev"
-        >
-          <span class="carousel-control-prev-icon"></span>
-          <span class="visually-hidden">上一張</span>
+        <button class="carousel-control-prev" type="button" data-bs-target="#diwerCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon"></span><span class="visually-hidden">上一張</span>
         </button>
-        <button
-          class="carousel-control-next"
-          type="button"
-          data-bs-target="#diwerCarousel"
-          data-bs-slide="next"
-        >
-          <span class="carousel-control-next-icon"></span>
-          <span class="visually-hidden">下一張</span>
+        <button class="carousel-control-next" type="button" data-bs-target="#diwerCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon"></span><span class="visually-hidden">下一張</span>
         </button>
       </div>
     </div>
-    <!-- 🔼 圖片輪播區結束 -->
-    <!-- 商品推薦區塊 -->
+    <!-- 商品推薦 -->
     <div id="pdf-catalog">
+      <!-- 戶外用品推薦 -->
       <section class="outdoor-section">
         <div class="outdoor-container">
           <h1 class="outdoor-title">戶外用品推薦</h1>
           <div class="swiper outdoor-swiper">
             <div class="swiper-wrapper">
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/帳篷1.png" alt="帳篷" class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>帳篷</h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/月亮椅.png" alt="月亮椅" class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>月亮椅</h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/戶外折疊椅2.png" alt="戶外折疊椅" class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>戶外折疊椅</h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/戶外折疊椅1.png" alt="戶外折疊椅" class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>戶外折疊椅</h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/戶外折疊椅3.png" alt="戶外折疊椅" class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>戶外折疊椅</h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/棒球.png" alt="棒球" class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>棒球</h2>
-              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/帳篷1.png" class="zoomable-img" alt="帳篷"></div><hr><h2>帳篷</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/月亮椅.png" class="zoomable-img" alt="月亮椅"></div><hr><h2>月亮椅</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/戶外折疊椅2.png" class="zoomable-img" alt="戶外折疊椅"></div><hr><h2>戶外折疊椅</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/戶外折疊椅1.png" class="zoomable-img" alt="戶外折疊椅"></div><hr><h2>戶外折疊椅</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/戶外折疊椅3.png" class="zoomable-img" alt="戶外折疊椅"></div><hr><h2>戶外折疊椅</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/棒球.png" class="zoomable-img" alt="棒球"></div><hr><h2>棒球</h2></div>
             </div>
           </div>
         </div>
       </section>
-      
-      
-      
-
-
+      <!-- 杯子推薦 -->
       <section class="outdoor-section">
         <div class="outdoor-container">
           <h1 class="outdoor-title">杯子推薦</h1>
           <div class="swiper outdoor-swiper">
             <div class="swiper-wrapper">
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/玻璃杯.png" alt="帳篷" class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>玻璃杯</h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/咖啡玻璃杯.png" alt="咖啡玻璃杯"class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>咖啡玻璃杯</h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/旅行洗洗漱杯.png" alt="旅行洗洗漱杯"class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>旅行洗洗漱杯</h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/水杯A.png" alt="水杯A" class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>水杯A</h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/水杯B.PNG" alt="水杯B" class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>水杯B</h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/水杯C.PNG" alt="水杯C" class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>水杯C</h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/棒球.png" alt="棒球" class="zoomable-img" />
-                </div>
-                <hr class="outdoor-divider" />
-                <h2>棒球</h2>
-              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/冰壩杯.png" class="zoomable-img" alt="冰壩杯"></div><hr><h2>冰壩杯</h2></div>
+              
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/咖啡玻璃杯.png" class="zoomable-img" alt="咖啡玻璃杯"></div><hr><h2>咖啡玻璃杯</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/旅行洗洗漱杯.png" class="zoomable-img" alt="旅行洗洗漱杯"></div><hr><h2>旅行洗洗漱杯</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯A.png" class="zoomable-img" alt="水杯A"></div><hr><h2>水杯A</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯B.PNG" class="zoomable-img" alt="水杯B"></div><hr><h2>水杯B</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/水杯C.PNG" class="zoomable-img" alt="水杯C"></div><hr><h2>水杯C</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/玻璃杯.png" class="zoomable-img" alt="玻璃杯"></div><hr><h2>玻璃杯</h2></div>
             </div>
           </div>
         </div>
       </section>
     </div>
-    
-
-    <!-- 頁尾 Contact 區塊 -->
+      <!-- 放大預覽 Overlay -->
+    <div class="zoom-overlay" id="zoom-overlay">
+      <span class="close-btn">&times;</span>
+      <img class="zoom-image" src="" alt="放大圖片預覽">
+    </div>
+    <!-- 頁尾 -->
     <footer class="site-footer">
       <div class="container-fluid bg-dark py-5 px-0">
         <div class="container d-flex flex-column align-items-center text-center">
-          <h5 class="mb-1 fs-2">Contact us</h5>        <!-- 原本是 fs-5，改成 fs-2 -->
-          <p class="mb-4 fs-5">Tel : 02-2285-3388</p>   <!-- 原本可能是 fs-6，改成 fs-5 -->
+          <h5 class="mb-1 fs-2">Contact us</h5>
+          <p class="mb-4 fs-5">Tel : 02-2285-3388</p>
           <hr class="border-light opacity-25 w-75 my-4" />
-          <p class="mb-1 fs-5">
-            交屋手冊、錦盒、鎖牌、化妝包、帆布袋、保冰袋、不織布袋、手提袋工廠
-          </p>
-          <p class="mb-0 fs-6">© 2025 All Rights Reserved</p>  <!-- 最小也可以用 fs-6 -->
+          <p class="mb-1 fs-5">交屋手冊、錦盒、鎖牌、化妝包、帆布袋、保冰袋、不織布袋、手提袋工廠</p>
+          <p class="mb-0 fs-6">© 2025 All Rights Reserved</p>
         </div>
-        
       </div>
     </footer>
-    
-    
-    <!-- Bootstrap JS -->
+    <!-- 依賴 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- 主功能 JS -->
-    <script>
-      // 商品滑動條邏輯
-      const list = document.querySelector('.pr-list');
-      const fill = document.querySelector('.pr-scrollbar__fill');
-      function updateScrollBar() {
-        const maxScroll = list.scrollWidth - list.clientWidth;
-        const percent = list.scrollLeft / maxScroll || 0;
-        fill.style.width = percent * 100 + '%';
-      }
-      if (list && fill) {
-        list.addEventListener('scroll', updateScrollBar);
-        updateScrollBar(); // 初始化時更新
-      }
-
-      document.addEventListener("DOMContentLoaded", function () {
-        // ✅ 放大預覽功能
-        const zoomPreview = document.createElement("div");
-        zoomPreview.className = "zoom-preview";
-        document.body.appendChild(zoomPreview);
-
-        document.querySelectorAll(".zoomable-img").forEach((img) => {
-          img.style.cursor = "zoom-in";
-
-          img.addEventListener("click", function (e) {
-            const rect = img.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
-
-            zoomPreview.style.backgroundImage = `url(${img.src})`;
-            zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
-            zoomPreview.style.display = "block";
-          });
-        });
-
-        zoomPreview.addEventListener("mousemove", function (e) {
-          const x = (e.clientX / window.innerWidth) * 100;
-          const y = (e.clientY / window.innerHeight) * 100;
-          zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
-        });
-
-        zoomPreview.addEventListener("click", function () {
-          zoomPreview.style.display = "none";
-        });
-
-        // ✅ 自動建立「產品目錄」清單 + 錨點跳轉
-        const dropdown = document.getElementById("product-dropdown");
-        const titles = document.querySelectorAll(".outdoor-title");
-
-        titles.forEach((title, index) => {
-          const cleanText = title.textContent.replace("推薦", "").trim();
-          const sectionId = `section-${index}`;
-          title.id = sectionId;
-
-          const li = document.createElement("li");
-          const a = document.createElement("a");
-          a.className = "dropdown-item";
-          a.href = `#${sectionId}`;
-          a.textContent = cleanText;
-
-          li.appendChild(a);
-          dropdown.appendChild(li);
-        });
-      });
-    </script>
-
-    <!-- Swiper 輪播 -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- 主 JS -->
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        document.querySelectorAll('.outdoor-swiper').forEach((swiperContainer) => {
-          new Swiper(swiperContainer, {
-            slidesPerView: 2.5,
-            spaceBetween: 20,
-            freeMode: true,
-            navigation: {
-              nextEl: swiperContainer.querySelector('.swiper-button-next'),
-              prevEl: swiperContainer.querySelector('.swiper-button-prev')
-            },
-            breakpoints: {
-              768: { slidesPerView: 3.5 },
-              992: { slidesPerView: 4.5 },
-            },
+      let swiperInstances = [];
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.outdoor-swiper').forEach(container => {
+          const swiper = new Swiper(container, {
+            slidesPerView: 2.5, spaceBetween: 20, freeMode: true,
+            breakpoints: { 768: { slidesPerView: 3.5 }, 992: { slidesPerView: 4.5 } }
           });
+          swiperInstances.push(swiper);
+        });
+        AOS.init({ duration: 800, once: true });
+      });
+      document.getElementById('export-pdf').addEventListener('click', async () => {
+        // 1. 停用 Swiper
+        swiperInstances.forEach(sw => sw.destroy(true, true)); swiperInstances = [];
+        // 2. 加 PDF 排版 class
+        document.body.classList.add('pdf-grid');
+        // 3. 等待圖片載入
+        const orig = document.getElementById('pdf-catalog');
+        await Promise.all(Array.from(orig.querySelectorAll('img')).map(img => img.complete ? Promise.resolve() : new Promise(r => img.onload = r)));
+        // 4. 產生 PDF
+        await html2pdf().set({ margin: 0.5, filename: '商品型錄.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: false, allowTaint: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } }).from(orig).save();
+        // 5. 移除 PDF 排版 class 並重啟 Swiper
+        document.body.classList.remove('pdf-grid');
+        document.querySelectorAll('.outdoor-swiper').forEach(container => {
+          const swiper = new Swiper(container, { slidesPerView: 2.5, spaceBetween: 20, freeMode: true, breakpoints: { 768: { slidesPerView: 3.5 }, 992: { slidesPerView: 4.5 } } });
+          swiperInstances.push(swiper);
         });
       });
+      // Zoom overlay
+      document.addEventListener('DOMContentLoaded', () => {
+        const overlay  = document.getElementById('zoom-overlay');
+        const zoomImg  = overlay.querySelector('.zoom-image');
+        const closeBtn = overlay.querySelector('.close-btn');
 
-    </script>
+        document.querySelectorAll('.zoomable-img').forEach(img => {
+          img.style.cursor = 'zoom-in';
+          img.addEventListener('click', () => {
+            zoomImg.src = img.src;
+            overlay.classList.add('active');
+          });
+        });
 
-    <!-- 平滑滾動效果 -->
-    <style>
-      html {
-        scroll-behavior: smooth;
-      }
-    </style>
-    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-    <script>
-      AOS.init({
-        duration: 800,    // 動畫持續時間 (ms)
-        once: true        // 滑進畫面只動一次
+        closeBtn.addEventListener('click', () => {
+          overlay.classList.remove('active');
+        });
+        overlay.addEventListener('click', e => {
+          if (e.target === overlay) overlay.classList.remove('active');
+        });
       });
     </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script>
-      document.getElementById("export-pdf").addEventListener("click", function () {
-        const element = document.getElementById("pdf-catalog");
-    
-        const opt = {
-          margin: 0.5,
-          filename: '商品型錄.pdf',
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2 },
-          jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-        };
-    
-        html2pdf().from(element).set(opt).save();
-      });
-    </script>
-
-   
   </body>
 </html>
