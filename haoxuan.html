@@ -189,8 +189,41 @@
                   </button>
                 </h2>
               </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/餐具C.png" class="zoomable-img" alt="餐具C"></div><hr><h2>餐具C</h2></div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"><div class="outdoor-img-wrapper"><img src="images-web/餐具D.png" class="zoomable-img" alt="餐具D"></div><hr><h2>餐具D</h2></div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryB" data-name="餐具B">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/餐具B.png" class="zoomable-img" alt="餐具B">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  餐具B
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryC" data-name="餐具C">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/餐具C.png" class="zoomable-img" alt="餐具C">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  餐具C
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div><div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具D">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/餐具D.png" class="zoomable-img" alt="餐具D">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  餐具D
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
             </div>
           </div>
         </div>
@@ -317,27 +350,33 @@
       
         // ─── 6. LIFF 分享到 LINE （只傳圖片）
         document.getElementById('send-line').addEventListener('click', async () => {
-          // ─── 如果還沒登入，就導到 LINE 的登入流程
-          if (!liff.isLoggedIn()) {
-            liff.login();
-            return; // 等使用者登入完才繼續下面邏輯
-          }
           const list = JSON.parse(localStorage.getItem('wishlist')||'[]');
-          if (!list.length) {
-            return alert('心願單為空！');
-          }
+          if (!list.length) return alert('心願單為空！');
+
           const messages = list.map(item => ({
             type: 'image',
             originalContentUrl: item.url,
             previewImageUrl:    item.url
           }));
-          try {
-            await liff.shareTargetPicker(messages);
-          } catch (err) {
-            console.error('分享失敗', err);
-            alert('分享失敗：'+err.message);
+
+          if (liff.isInClient()) {
+            // LINE App 裡：用 LIFF 分享
+            try {
+              await liff.shareTargetPicker(messages);
+            } catch (err) {
+              console.error(err);
+              alert('分享失敗：'+err.message);
+            }
+          } else {
+            // 桌機／非 LINE App：呼叫 LINE Web 分享
+            const shareUrl = window.location.href; 
+            window.open(
+              'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(shareUrl),
+              '_blank'
+            );
           }
         });
+
       
         // ─── 7. 匯出 PDF（維持你現有的 html2pdf 邏輯）  
         document.getElementById('export-pdf').addEventListener('click', async () => {
