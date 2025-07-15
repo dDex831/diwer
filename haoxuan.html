@@ -348,33 +348,62 @@
           });
         });
       
-        // ─── 6. LIFF 分享到 LINE （只傳圖片）
+        // ─── 6. 改用 Web Share + LIFF 回退分享
         document.getElementById('send-line').addEventListener('click', async () => {
-          const list = JSON.parse(localStorage.getItem('wishlist')||'[]');
-          if (!list.length) return alert('心願單為空！');
+          const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+          if (!wishlist.length) return alert('心願單為空！');
 
-          const messages = list.map(item => ({
-            type: 'image',
-            originalContentUrl: item.url,
-            previewImageUrl:    item.url
-          }));
+          // 嘗試使用 Web Share API
+          if (navigator.canShare && navigator.canShare({
+              files: wishlist.map(item => {
+                return fetch(item.url)
+                  .then(r => r.blob())
+                  .then(blob => new File([blob], item.id + '.png', { type: blob.type }));
+              })
+            })) {
 
+            const files = await Promise.all(
+              wishlist.map(item =>
+                fetch(item.url)
+                  .then(r => r.blob())
+                  .then(blob => new File([blob], item.id + '.png', { type: blob.type }))
+              )
+            );
+            try {
+              await navigator.share({
+                title: '我的心願清單',
+                text: '看看這些我喜歡的商品！',
+                files
+              });
+              return;
+            } catch (err) {
+              console.warn('Web Share 分享失敗', err);
+            }
+          }
+
+          // LINE App 內分享
           if (liff.isInClient()) {
-            // LINE App 裡：用 LIFF 分享
+            const messages = wishlist.map(item => ({
+              type: 'image',
+              originalContentUrl: item.url,
+              previewImageUrl: item.url
+            }));
             try {
               await liff.shareTargetPicker(messages);
-            } catch (err) {
-              console.error(err);
-              alert('分享失敗：'+err.message);
+              return;
+            } catch (e) {
+              console.error(e);
+              alert('分享失敗：' + e.message);
+              return;
             }
-          } else {
-            // 桌機／非 LINE App：呼叫 LINE Web 分享
-            const shareUrl = window.location.href; 
-            window.open(
-              'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(shareUrl),
-              '_blank'
-            );
           }
+
+          // 最後回退到 LINE Web 分享 (只傳 URL)
+          const shareUrl = window.location.href;
+          window.open(
+            'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(shareUrl),
+            '_blank'
+          );
         });
 
       
