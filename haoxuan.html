@@ -275,6 +275,10 @@
           }
           shareWishlist();
         });
+        // 綁定「回到頂端」按鈕
+        document.getElementById('scroll-top').addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         // 3. 動態填「產品目錄」
         const dropdown = document.getElementById('product-dropdown');
