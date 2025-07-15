@@ -43,33 +43,7 @@
       }
     </style>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-        const LIFF_ID = '2007748054-9bD5ZjXA';  // 你的 LIFF ID
-        await liff.init({ liffId: LIFF_ID });
-        // （以下僅在按「傳到 LINE 好友」的時候才要求登入）
-        document.getElementById('send-line').addEventListener('click', async () => {
-          if (!liff.isLoggedIn()) { 
-            liff.login(); 
-            return; 
-          }
-          const list = JSON.parse(localStorage.getItem('wishlist')||'[]');
-          if (!list.length) return alert('心願單為空！');
-          const messages = list.map(item => ({
-            type: 'image',
-            originalContentUrl: item.url,
-            previewImageUrl:    item.url
-          }));
-          try {
-            await liff.shareTargetPicker(messages);
-          } catch (e) {
-            console.error(e);
-            alert('分享失敗：' + e.message);
-          }
-        });
-        // —— 其他和 swiper、wish list、html2pdf 的程式保持不變 —— 
-      });
-    </script>
+    
     
 
   </head>
@@ -244,7 +218,19 @@
       </div>
     </div>
     <!-- 傳送到 LINE 按鈕 -->
-    <a id="send-line" class="btn btn-success" target="_blank">傳到 LINE 好友</a>
+
+    <div class="floating-icons">
+      <!-- 1. 傳送心願清單（改自 wishlist-share） -->
+      <button id="wishlist-share" class="floating-btn" title="傳送心願清單">
+        <i class="fas fa-comment-dots"></i>
+        <span id="wishlist-count" class="badge">0</span>
+      </button>
+
+      <!-- 2. 回到頂端 -->
+      <button id="scroll-top" class="floating-btn" title="回到頂端">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+    </div>
 
     <!-- 頁尾 -->
     <footer class="site-footer">
@@ -266,16 +252,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   
+
     <!-- 主 JS -->
     <script>
       document.addEventListener('DOMContentLoaded', async () => {
         // 0. 載入 LIFF SDK，並填上你的 LIFF ID
         const LIFF_ID = '2007748054-9bD5ZjXA';
         await liff.init({ liffId: LIFF_ID });
-      
-        
-      
-        // ─── 2. 動態填「產品目錄」
+
+        // 1. 如果剛才按過 login，現在已經登入，就自動觸發分享
+        if (liff.isLoggedIn() && sessionStorage.getItem('shareAfterLogin') === '1') {
+          sessionStorage.removeItem('shareAfterLogin');
+          shareWishlist();
+        }
+
+        // 2. 綁定「傳送心願清單」浮動圖示按鈕
+        document.getElementById('wishlist-share').addEventListener('click', () => {
+          if (!liff.isLoggedIn()) {
+            sessionStorage.setItem('shareAfterLogin', '1');
+            liff.login();
+          } else {
+            shareWishlist();
+          }
+        });
+
+        // 3. 動態填「產品目錄」
         const dropdown = document.getElementById('product-dropdown');
         document.querySelectorAll('.outdoor-title').forEach((title, idx) => {
           const id = `section-${idx}`;
@@ -288,8 +289,8 @@
           li.appendChild(a);
           dropdown.appendChild(li);
         });
-      
-        // ─── 3. Swiper + AOS 初始化（跟你原本一模一樣）
+
+        // 4. Swiper + AOS 初始化
         const swiperInstances = [];
         document.querySelectorAll('.outdoor-swiper').forEach(container => {
           const sw = new Swiper(container, {
@@ -301,8 +302,8 @@
           swiperInstances.push(sw);
         });
         AOS.init({ duration:800, once:true });
-      
-        // ─── 4. 放大預覽（你的原本邏輯）
+
+        // 5. 放大預覽
         const zoomPreview = document.querySelector('.zoom-preview');
         document.querySelectorAll('.zoomable-img').forEach(img => {
           img.style.cursor = 'zoom-in';
@@ -321,10 +322,11 @@
           zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
         });
         zoomPreview.addEventListener('click', () => zoomPreview.style.display = 'none');
-      
-        // ─── 5. 心願單邏輯
-        let wishlist = JSON.parse(localStorage.getItem('wishlist')||'[]');
+
+        // 6. 心願單邏輯
+        let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
         function refreshWishlistUI() {
+          // 更新每個按鈕的樣式
           document.querySelectorAll('.btn-wishlist').forEach(btn => {
             const item   = btn.closest('.outdoor-item');
             const inList = wishlist.some(x => x.id === item.dataset.id);
@@ -333,81 +335,45 @@
             icon.classList.toggle('fas', inList);
             icon.classList.toggle('far', !inList);
           });
+          // 更新 badge 數字
+          document.getElementById('wishlist-count').textContent = wishlist.length;
         }
+
+        // 頁面載入時先刷新一次 UI
         refreshWishlistUI();
+
+        // 綁定每個「愛心」按鈕，點擊後更新列表、localStorage、UI
         document.querySelectorAll('.btn-wishlist').forEach(btn => {
           btn.addEventListener('click', () => {
             const item = btn.closest('.outdoor-item');
             const { id, name } = item.dataset;
-            const url          = item.querySelector('img.zoomable-img').src;
-            const idx          = wishlist.findIndex(x => x.id===id);
-            if (idx>-1) wishlist.splice(idx,1);
-            else        wishlist.push({ id, name, url });
+            const url = item.querySelector('img.zoomable-img').src;
+            const idx = wishlist.findIndex(x => x.id === id);
+
+            if (idx > -1) {
+              wishlist.splice(idx, 1);
+            } else {
+              wishlist.push({ id, name, url });
+            }
             localStorage.setItem('wishlist', JSON.stringify(wishlist));
             refreshWishlistUI();
           });
         });
-      
-        // ─── 6. 改用 Web Share + LIFF 回退分享
-        document.getElementById('send-line').addEventListener('click', async () => {
-          const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
-          if (!wishlist.length) return alert('心願單為空！');
 
-          // 1. 桌機／行動只要支援 Web Share，就先分享圖片網址清單
-          if (navigator.share) {
-            const urlsText = wishlist.map(item => item.url).join('\n');
-            try {
-              await navigator.share({
-                title: '我的心願清單',
-                text: '看看我最想要的商品圖片：\n' + urlsText
-              });
-              return;
-            } catch (err) {
-              console.warn('Web Share API 分享失敗', err);
-            }
-          }
-
-          // 2. LINE App 裡：用 LIFF 分享圖片訊息
-          if (liff.isInClient()) {
-            const messages = wishlist.map(item => ({
-              type: 'image',
-              originalContentUrl: item.url,
-              previewImageUrl: item.url
-            }));
-            try {
-              await liff.shareTargetPicker(messages);
-              return;
-            } catch (e) {
-              console.error(e);
-              alert('分享失敗：' + e.message);
-              return;
-            }
-          }
-
-          // 3. 最後回退到 LINE Web 分享，只能傳 URL
-          const shareUrl = window.location.href;
-          window.open(
-            'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(shareUrl),
-            '_blank'
-          );
-        });
-
-
-      
-        // ─── 7. 匯出 PDF（維持你現有的 html2pdf 邏輯）  
+        // 7. 匯出 PDF（html2pdf）
         document.getElementById('export-pdf').addEventListener('click', async () => {
-          swiperInstances.forEach(sw=>sw.destroy(true,true));
+          swiperInstances.forEach(sw => sw.destroy(true, true));
           document.body.classList.add('pdf-grid');
           const orig = document.getElementById('pdf-catalog');
-          await Promise.all(Array.from(orig.querySelectorAll('img')).map(img=>
-            img.complete?Promise.resolve():new Promise(r=>img.onload=r)
+          await Promise.all(Array.from(orig.querySelectorAll('img')).map(img =>
+            img.complete ? Promise.resolve() : new Promise(r => img.onload = r)
           ));
           await html2pdf().set({
-            margin:      0.5,
-            filename:    '商品型錄.pdf',
-            image:       { type:'jpeg', quality:0.98 },
+            margin:    0.5,
+            filename:  '商品型錄.pdf',
+            image:     { type:'jpeg', quality:0.98 },
             html2canvas: { scale:2, useCORS:false, allowTaint:true },
-            jsPDF:       { unit:'in', format:'a4', orientation:'portrait' }
+            jsPDF:     { unit:'in', format:'a4', orientation:'portrait' }
           }).from(orig).save();
           document.body.classList.remove('pdf-grid');
           document.querySelectorAll('.outdoor-swiper').forEach(container => {
@@ -418,9 +384,52 @@
             swiperInstances.push(sw);
           });
         });
-      
       }); // end DOMContentLoaded
-      </script>
+
+      // 分享函式：可在登入後或按鈕點擊時呼叫
+      async function shareWishlist() {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        if (!wishlist.length) return alert('心願單為空！');
+
+        // A. 優先用 Web Share 傳圖片連結清單
+        if (navigator.share) {
+          try {
+            await navigator.share({
+              title: '我的心願清單',
+              text: wishlist.map(i => i.url).join('\n')
+            });
+            return;
+          } catch (err) {
+            console.warn('Web Share API 失敗', err);
+          }
+        }
+
+        // B. LINE App 內用 LIFF 分享圖檔訊息
+        if (liff.isInClient()) {
+          const messages = wishlist.map(item => ({
+            type: 'image',
+            originalContentUrl: item.url,
+            previewImageUrl:    item.url
+          }));
+          try {
+            await liff.shareTargetPicker(messages);
+            return;
+          } catch (e) {
+            console.error('LIFF 分享失敗', e);
+            alert('分享失敗：' + e.message);
+            return;
+          }
+        }
+
+        // C. 回退到 LINE Web 分享（只能傳 URL）
+        window.open(
+          'https://social-plugins.line.me/lineit/share?url='
+          + encodeURIComponent(location.href),
+          '_blank'
+        );
+      }
+    </script>
+
       
     
   </body>
