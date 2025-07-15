@@ -898,7 +898,7 @@ html, body {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 2rem;
+  font-size: 1 rem;
 }
 .btn-wishlist {
   background: none;
@@ -950,3 +950,4 @@ html, body {
 .floating-btn i {
   font-size: 20px;
 }
+

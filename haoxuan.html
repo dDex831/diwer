@@ -113,7 +113,7 @@
       <!-- 戶外用品推薦 -->
       <section class="outdoor-section">
         <div class="outdoor-container">
-          <h1 class="title-main">戶外用品推薦</h1>
+          <h1 class="title-main mb-4">戶外用品推薦</h1>
           <div class="swiper outdoor-swiper">
             
             <div class="swiper-wrapper">
@@ -203,7 +203,8 @@
       <!-- 杯子推薦 -->
       <section class="outdoor-section">
         <div class="outdoor-container">
-          <h1 class="title-main">杯子推薦</h1>
+          <h1 class="title-main mb-4">杯子推薦</h1>
+        
           <div class="swiper outdoor-swiper">
             
             <div class="swiper-wrapper">
@@ -318,7 +319,8 @@
       </section>
       <section class="outdoor-section">
         <div class="outdoor-container">
-          <h1 class="title-main">餐具推薦</h1>
+          <h1 class="title-main mb-4">餐具推薦</h1>
+
           <div class="swiper outdoor-swiper">
             <div class="swiper-wrapper">
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryA" data-name="餐具A">
@@ -392,6 +394,30 @@
                   </button>
                 </h2>
               </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具G">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/餐具G.png" class="zoomable-img" alt="餐具G">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  餐具G
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+
             </div>
           </div>
         </div>
@@ -494,8 +520,14 @@
           const sw = new Swiper(container, {
             slidesPerView: 2.5,
             spaceBetween: 20,
-            freeMode: true,
-            breakpoints: { 768:{slidesPerView:3.5}, 992:{slidesPerView:4.5} }
+            freeMode: {
+              enabled: true,
+              sticky: true,        // ← 啟用 sticky
+              momentum: false      // ← 可選：關掉慣性避免過度滑動
+            },
+            centeredSlidesBounds: true,  // ← 限制邊界
+        
+            breakpoints: { 768:{slidesPerView:3.5 }, 992:{slidesPerView:4.5 } }
           });
           swiperInstances.push(sw);
         });
@@ -588,9 +620,15 @@
         try {
           await liff.shareTargetPicker(messages);
         } catch (e) {
-          console.error('LIFF 分享失敗', e);
-          alert('分享失敗：' + (e.message || e));
-        }
+          console.error('LIFF 分享例外', e);
+          // 如果是因為 login 重導回本頁才呼叫，這裡改成提示「請再按一次」
+          if (liff.isLoggedIn()) {
+            alert('LINE 已登入，請再次點擊按鈕以分享心願清單');
+          } else {
+            // 其它例外仍顯示原本錯誤
+            alert('分享失敗：' + (e.message || e));
+          }
+        }  
       }
     </script>
 
