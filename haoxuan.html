@@ -43,33 +43,7 @@
       }
     </style>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <script>
-      document.addEventListener('DOMContentLoaded', async () => {
-        const LIFF_ID = '2007748054-9bD5ZjXA';  // 你的 LIFF ID
-        await liff.init({ liffId: LIFF_ID });
-        // （以下僅在按「傳到 LINE 好友」的時候才要求登入）
-        document.getElementById('send-line').addEventListener('click', async () => {
-          if (!liff.isLoggedIn()) { 
-            liff.login(); 
-            return; 
-          }
-          const list = JSON.parse(localStorage.getItem('wishlist')||'[]');
-          if (!list.length) return alert('心願單為空！');
-          const messages = list.map(item => ({
-            type: 'image',
-            originalContentUrl: item.url,
-            previewImageUrl:    item.url
-          }));
-          try {
-            await liff.shareTargetPicker(messages);
-          } catch (e) {
-            console.error(e);
-            alert('分享失敗：' + e.message);
-          }
-        });
-        // —— 其他和 swiper、wish list、html2pdf 的程式保持不變 —— 
-      });
-    </script>
+    
     
 
   </head>
@@ -353,35 +327,21 @@
           const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
           if (!wishlist.length) return alert('心願單為空！');
 
-          // 嘗試使用 Web Share API
-          if (navigator.canShare && navigator.canShare({
-              files: wishlist.map(item => {
-                return fetch(item.url)
-                  .then(r => r.blob())
-                  .then(blob => new File([blob], item.id + '.png', { type: blob.type }));
-              })
-            })) {
-
-            const files = await Promise.all(
-              wishlist.map(item =>
-                fetch(item.url)
-                  .then(r => r.blob())
-                  .then(blob => new File([blob], item.id + '.png', { type: blob.type }))
-              )
-            );
+          // 1. 桌機／行動只要支援 Web Share，就先分享圖片網址清單
+          if (navigator.share) {
+            const urlsText = wishlist.map(item => item.url).join('\n');
             try {
               await navigator.share({
                 title: '我的心願清單',
-                text: '看看這些我喜歡的商品！',
-                files
+                text: '看看我最想要的商品圖片：\n' + urlsText
               });
               return;
             } catch (err) {
-              console.warn('Web Share 分享失敗', err);
+              console.warn('Web Share API 分享失敗', err);
             }
           }
 
-          // LINE App 內分享
+          // 2. LINE App 裡：用 LIFF 分享圖片訊息
           if (liff.isInClient()) {
             const messages = wishlist.map(item => ({
               type: 'image',
@@ -398,13 +358,14 @@
             }
           }
 
-          // 最後回退到 LINE Web 分享 (只傳 URL)
+          // 3. 最後回退到 LINE Web 分享，只能傳 URL
           const shareUrl = window.location.href;
           window.open(
             'https://social-plugins.line.me/lineit/share?url=' + encodeURIComponent(shareUrl),
             '_blank'
           );
         });
+
 
       
         // ─── 7. 匯出 PDF（維持你現有的 html2pdf 邏輯）  
