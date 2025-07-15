@@ -894,7 +894,7 @@ html, body {
 
 /* 讓按鈕和文字在同一行，並在文字右側稍微留一點間距 */
 .outdoor-title {
-  justify-content: left;   /* 置中 flex 內容 */
+  justify-content: center;   /* 置中 flex 內容 */
   display: flex;
   align-items: center;
   gap: 6px;
