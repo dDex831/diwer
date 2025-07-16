@@ -512,28 +512,37 @@
       function isIOS() {
         return /iPhone|iPad|iPod/.test(navigator.userAgent);
       }
-    
+
+      // === 修改新增：顯示頂端小黃提示列（可帶訊息覆蓋） ===
+      function showExternalTip(msg) {
+        const tip = document.getElementById('open-external-tip');
+        if (msg) tip.textContent = msg;
+        tip.style.display = 'block';
+      }
+
       document.addEventListener('DOMContentLoaded', async () => {
         // 0. 載入 LIFF SDK
         const LIFF_ID = '2007748054-9bD5ZjXA';
         await liff.init({ liffId: LIFF_ID });
-    
-        // 1. 登入後自動觸發分享（僅限外部瀏覽器）
-        if (!liff.isInClient() &&
-            liff.isLoggedIn() &&
-            sessionStorage.getItem('shareAfterLogin') === '1'
-        ) {
+
+        // === 修改開始：登入後不自動分享，僅提示 ===
+        if (sessionStorage.getItem('shareAfterLogin') === '1') {
           sessionStorage.removeItem('shareAfterLogin');
-          shareWishlist();
+          if (liff.isLoggedIn()) {
+            alert('LINE登入成功，請再按一次「傳送心願清單」按鈕送出。');
+          } else {
+            alert('尚未登入 LINE，請再點一次「傳送心願清單」登入後送出。');
+          }
         }
-    
+        // === 修改結束 ===
+
         // 2. 綁定「傳送心願清單」按鈕
         document.getElementById('wishlist-share').addEventListener('click', () => {
           // LINE Client（內建瀏覽器）→ 直接分享
           if (liff.isInClient()) {
             return shareWishlist();
           }
-          // 非 LINE Client 且未登入 → 先登入再分享
+          // 非 LINE Client 且未登入 → 先登入（回跳後不自動分享）
           if (!liff.isLoggedIn()) {
             sessionStorage.setItem('shareAfterLogin', '1');
             return liff.login({ redirectUri: window.location.href });
@@ -541,12 +550,12 @@
           // 其他情況（外部瀏覽器已登入）→ 直接分享
           shareWishlist();
         });
-    
+
         // 綁定「回到頂端」按鈕
         document.getElementById('scroll-top').addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-    
+
         // 3. 動態填「產品目錄」
         const dropdown = document.getElementById('product-dropdown');
         document.querySelectorAll('.title-main').forEach((title, idx) => {
@@ -560,7 +569,7 @@
           li.appendChild(a);
           dropdown.appendChild(li);
         });
-    
+
         // 4. Swiper + AOS 初始化
         const swiperInstances = [];
         document.querySelectorAll('.outdoor-swiper').forEach(container => {
@@ -581,7 +590,7 @@
           swiperInstances.push(sw);
         });
         AOS.init({ duration: 800, once: true });
-    
+
         // 5. 放大預覽
         const zoomPreview = document.querySelector('.zoom-preview');
         document.querySelectorAll('.zoomable-img').forEach(img => {
@@ -603,7 +612,7 @@
         zoomPreview.addEventListener('click', () => {
           zoomPreview.style.display = 'none';
         });
-    
+
         // 6. 心願單邏輯
         let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
         function refreshWishlistUI() {
@@ -630,7 +639,7 @@
             refreshWishlistUI();
           });
         });
-    
+
         // 7. 匯出 PDF（html2pdf）
         document.getElementById('export-pdf').addEventListener('click', async () => {
           swiperInstances.forEach(sw => sw.destroy(true, true));
@@ -660,53 +669,37 @@
             swiperInstances.push(sw);
           });
         });
+
       }); // end DOMContentLoaded
-    
-      // 主分享函式：只做分享，不做 login
+
+      // === 修改開始：主分享函式（錯誤提示優化 & 外部瀏覽器指引） ===
       async function shareWishlist() {
         const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
         if (!list.length) {
-          return alert('心願單為空！');
-        }
-    
-        // LINE Client 內建瀏覽器：直接分享
-        if (liff.isInClient()) {
-          try {
-            await liff.shareTargetPicker(
-              list.map(item => ({
-                type: 'image',
-                originalContentUrl: item.url,
-                previewImageUrl:    item.url
-              }))
-            );
-          } catch (e) {
-            console.error('LINE Client 分享失敗', e);
-            if (isIOS()) {
-              alert(
-                'iOS LINE 內建瀏覽器不支援直接分享，\n' +
-                '請在右上「⋯」→「在 Safari 中開啟」後再分享。'
-              );
-            } else {
-              alert('分享失敗：' + (e.message || e));
-            }
-          }
+          alert('心願單為空，請先加入商品再分享！');
           return;
         }
-    
-        // 非 LINE Client（桌面或外部瀏覽器）：也用 LIFF 分享
+
+        const messages = list.map(item => ({
+          type: 'image',
+          originalContentUrl: item.url,
+          previewImageUrl:    item.url
+        }));
+
         try {
-          await liff.shareTargetPicker(
-            list.map(item => ({
-              type: 'image',
-              originalContentUrl: item.url,
-              previewImageUrl:    item.url
-            }))
-          );
+          await liff.shareTargetPicker(messages);
         } catch (e) {
-          console.error('外部瀏覽器分享失敗', e);
-          alert('分享失敗：' + (e.message || e));
+          console.error('分享發生錯誤', e);
+          if (isIOS() && liff.isInClient()) {
+            alert('LINE 內建瀏覽器可能無法直接分享。\n請點右上「⋯」→ 在 Safari / 瀏覽器開啟後再試一次。');
+            showExternalTip();
+          } else {
+            // 可依實際 e.code 判斷使用者取消 vs 真錯誤；暫時全部提示
+            alert('分享未完成：' + (e?.message || e));
+          }
         }
       }
+      // === 修改結束 ===
     </script>
     
 
