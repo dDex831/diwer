@@ -370,7 +370,7 @@
                   </button>
                 </h2>
               </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryE" data-name="餐具E">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具E">
                 <div class="outdoor-img-wrapper">
                   <img src="images-web/餐具E.png" class="zoomable-img" alt="餐具E">
                 </div>
@@ -382,7 +382,7 @@
                   </button>
                 </h2>
               </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryF" data-name="餐具F">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具F">
                 <div class="outdoor-img-wrapper">
                   <img src="images-web/餐具F.png" class="zoomable-img" alt="餐具F">
                 </div>
@@ -394,37 +394,13 @@
                   </button>
                 </h2>
               </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryG" data-name="餐具G">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具G">
                 <div class="outdoor-img-wrapper">
                   <img src="images-web/餐具G.png" class="zoomable-img" alt="餐具G">
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
                   餐具G
-                  <button class="btn-wishlist" aria-label="加入心願單">
-                    <i class="far fa-heart"></i>
-                  </button>
-                </h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryH" data-name="餐具H">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/餐具H.png" class="zoomable-img" alt="餐具H">
-                </div>
-                <hr class="outdoor-divider" />
-                <h2 class="outdoor-title">
-                  餐具H
-                  <button class="btn-wishlist" aria-label="加入心願單">
-                    <i class="far fa-heart"></i>
-                  </button>
-                </h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryI" data-name="餐具I">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/餐具I.png" class="zoomable-img" alt="餐具I">
-                </div>
-                <hr class="outdoor-divider" />
-                <h2 class="outdoor-title">
-                  餐具I
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -503,17 +479,18 @@
         // 0. 載入 LIFF SDK
         const LIFF_ID = '2007748054-9bD5ZjXA';
         await liff.init({ liffId: LIFF_ID });
-    
+
         // 1. 登入後自動觸發分享
         if (liff.isLoggedIn() && sessionStorage.getItem('shareAfterLogin') === '1') {
           sessionStorage.removeItem('shareAfterLogin');
           shareWishlist();
         }
-    
+
         // 2. 綁定「傳送心願清單」浮動圖示按鈕（只做登入檢查＋分享）
         document.getElementById('wishlist-share').addEventListener('click', () => {
           if (!liff.isLoggedIn()) {
             sessionStorage.setItem('shareAfterLogin', '1');
+            // 登入完會 redirect 回本頁，然後 step 1 自動呼叫 shareWishlist()
             return liff.login({ redirectUri: window.location.href });
           }
           shareWishlist();
@@ -522,7 +499,7 @@
         document.getElementById('scroll-top').addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-    
+
         // 3. 動態填「產品目錄」
         const dropdown = document.getElementById('product-dropdown');
         document.querySelectorAll('.title-main').forEach((title, idx) => {
@@ -536,7 +513,7 @@
           li.appendChild(a);
           dropdown.appendChild(li);
         });
-    
+
         // 4. Swiper + AOS 初始化
         const swiperInstances = [];
         document.querySelectorAll('.outdoor-swiper').forEach(container => {
@@ -545,16 +522,17 @@
             spaceBetween: 20,
             freeMode: {
               enabled: true,
-              sticky: true,
-              momentum: false
+              sticky: true,        // ← 啟用 sticky
+              momentum: false      // ← 可選：關掉慣性避免過度滑動
             },
-            centeredSlidesBounds: true,
-            breakpoints: { 768:{slidesPerView:3.5}, 992:{slidesPerView:4.5} }
+            centeredSlidesBounds: true,  // ← 限制邊界
+        
+            breakpoints: { 768:{slidesPerView:3.5 }, 992:{slidesPerView:4.5 } }
           });
           swiperInstances.push(sw);
         });
         AOS.init({ duration:800, once:true });
-    
+
         // 5. 放大預覽
         const zoomPreview = document.querySelector('.zoom-preview');
         document.querySelectorAll('.zoomable-img').forEach(img => {
@@ -574,7 +552,7 @@
           zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
         });
         zoomPreview.addEventListener('click', () => zoomPreview.style.display = 'none');
-    
+
         // 6. 心願單邏輯
         let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
         function refreshWishlistUI() {
@@ -601,7 +579,7 @@
             refreshWishlistUI();
           });
         });
-    
+
         // 7. 匯出 PDF（html2pdf）
         document.getElementById('export-pdf').addEventListener('click', async () => {
           swiperInstances.forEach(sw => sw.destroy(true, true));
@@ -627,47 +605,32 @@
           });
         });
       }); // end DOMContentLoaded
-    
-      // 主分享函式：LINE Client（內建瀏覽器）→ 一律外部瀏覽器；其他環境→ 正常分享
+
+      // 分享函式：跟舊版一模一樣
       async function shareWishlist() {
         const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
-        if (!list.length) {
-          return alert('心願單為空！');
-        }
-    
-        // 如果在 LINE App 的內建瀏覽器，無論 Android 或 iOS，一律跳到外部瀏覽器
-        if (liff.isInClient()) {
-          alert('LINE 內建瀏覽器分享不穩定，將在系統瀏覽器開啟分享畫面');
-          return liff.openWindow({
-            url: window.location.href,
-            external: true
-          });
-        }
-    
-        // NOT in LINE Client → 正常用 LIFF 分享照片
+        if (!list.length) return alert('心願單為空！');
+
         const messages = list.map(item => ({
           type: 'image',
           originalContentUrl: item.url,
           previewImageUrl:    item.url
         }));
-    
+
         try {
           await liff.shareTargetPicker(messages);
         } catch (e) {
           console.error('LIFF 分享例外', e);
+          // 如果是因為 login 重導回本頁才呼叫，這裡改成提示「請再按一次」
           if (liff.isLoggedIn()) {
             alert('LINE 已登入，請再次點擊按鈕以分享心願清單');
           } else {
+            // 其它例外仍顯示原本錯誤
             alert('分享失敗：' + (e.message || e));
           }
-        }
+        }  
       }
     </script>
-    
-    
-    
-    
-    
 
 
 
