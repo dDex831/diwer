@@ -507,9 +507,6 @@
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-  
-
-   
     <script>
       // 偵測 iOS
       function isIOS() {
@@ -522,23 +519,26 @@
         await liff.init({ liffId: LIFF_ID });
     
         // 1. 登入後自動觸發分享（僅限外部瀏覽器）
-        if (!liff.isInClient() && liff.isLoggedIn() && sessionStorage.getItem('shareAfterLogin') === '1') {
+        if (!liff.isInClient() &&
+            liff.isLoggedIn() &&
+            sessionStorage.getItem('shareAfterLogin') === '1'
+        ) {
           sessionStorage.removeItem('shareAfterLogin');
           shareWishlist();
         }
     
         // 2. 綁定「傳送心願清單」按鈕
         document.getElementById('wishlist-share').addEventListener('click', () => {
-          // 如果是在 LINE App 內建瀏覽器，直接分享
+          // LINE Client（內建瀏覽器）→ 直接分享
           if (liff.isInClient()) {
             return shareWishlist();
           }
-          // 如果不在 LINE Client 而且還沒登入，先登入再分享
+          // 非 LINE Client 且未登入 → 先登入再分享
           if (!liff.isLoggedIn()) {
             sessionStorage.setItem('shareAfterLogin', '1');
             return liff.login({ redirectUri: window.location.href });
           }
-          // 其他情況（外部瀏覽器已登入），直接分享
+          // 其他情況（外部瀏覽器已登入）→ 直接分享
           shareWishlist();
         });
     
@@ -708,6 +708,10 @@
         }
       }
     </script>
+    
+
+   
+    
     
     
     
