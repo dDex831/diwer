@@ -475,32 +475,68 @@
 
     <!-- 主 JS -->
     <script>
+      // 提示函式：桌機未安裝 LINE Desktop 時呼叫
+      function showInstallLineDesktopNotice() {
+        alert('請先安裝 LINE Desktop，或用手機 LINE 掃描頁面上的 QR Code 開啟');
+      }
+      // 提示函式：手機純瀏覽器時呼叫
+      function showOpenInLineAppNotice() {
+        alert('請在 LINE App 裡開啟此頁面，才能使用分享功能');
+      }
+    
       document.addEventListener('DOMContentLoaded', async () => {
         // 0. 載入 LIFF SDK
         const LIFF_ID = '2007748054-9bD5ZjXA';
         await liff.init({ liffId: LIFF_ID });
-
-        // 1. 登入後自動觸發分享
+    
+        // 平台判斷（手機 vs. 桌機）
+        const ua = navigator.userAgent.toLowerCase();
+        const isMobile = /iphone|ipad|ipod|android/.test(ua);
+        const isDesktop = !isMobile;
+    
+        // 若不在 LINE Client，先做一次平台導引
+        if (!liff.isInClient()) {
+          if (isDesktop) {
+            // 桌機 → 嘗試跳到 LINE Desktop
+            const a = document.createElement('a');
+            a.href = `line://app/${LIFF_ID}`;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(showInstallLineDesktopNotice, 2000);
+          } else {
+            // 手機純瀏覽器 → 提示去 LINE App 開啟
+            showOpenInLineAppNotice();
+          }
+        }
+    
+        // 綁定「傳送心願清單」按鈕（合併邏輯）
+        document.getElementById('wishlist-share').addEventListener('click', async () => {
+          // 若仍不在 LINE Client，直接提示
+          if (!liff.isInClient()) {
+            alert('請在 LINE App 中開啟此頁面，才能使用分享功能');
+            return;
+          }
+          // 在 LINE Client：若未登入就先 login
+          if (!liff.isLoggedIn()) {
+            sessionStorage.setItem('shareAfterLogin', '1');
+            return liff.login({ redirectUri: window.location.href });
+          }
+          // 已登入，直接分享
+          shareWishlist();
+        });
+    
+        // 登入後自動觸發分享
         if (liff.isLoggedIn() && sessionStorage.getItem('shareAfterLogin') === '1') {
           sessionStorage.removeItem('shareAfterLogin');
           shareWishlist();
         }
-
-        // 2. 綁定「傳送心願清單」浮動圖示按鈕（只做登入檢查＋分享）
-        document.getElementById('wishlist-share').addEventListener('click', () => {
-          if (!liff.isLoggedIn()) {
-            sessionStorage.setItem('shareAfterLogin', '1');
-            // 登入完會 redirect 回本頁，然後 step 1 自動呼叫 shareWishlist()
-            return liff.login({ redirectUri: window.location.href });
-          }
-          shareWishlist();
-        });
+    
         // 綁定「回到頂端」按鈕
         document.getElementById('scroll-top').addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
-        // 3. 動態填「產品目錄」
+    
+        // 動態填「產品目錄」
         const dropdown = document.getElementById('product-dropdown');
         document.querySelectorAll('.title-main').forEach((title, idx) => {
           const id = `section-${idx}`;
@@ -513,8 +549,8 @@
           li.appendChild(a);
           dropdown.appendChild(li);
         });
-
-        // 4. Swiper + AOS 初始化
+    
+        // Swiper + AOS 初始化
         const swiperInstances = [];
         document.querySelectorAll('.outdoor-swiper').forEach(container => {
           const sw = new Swiper(container, {
@@ -522,18 +558,17 @@
             spaceBetween: 20,
             freeMode: {
               enabled: true,
-              sticky: true,        // ← 啟用 sticky
-              momentum: false      // ← 可選：關掉慣性避免過度滑動
+              sticky: true,        
+              momentum: false      
             },
-            centeredSlidesBounds: true,  // ← 限制邊界
-        
-            breakpoints: { 768:{slidesPerView:3.5 }, 992:{slidesPerView:4.5 } }
+            centeredSlidesBounds: true,
+            breakpoints: { 768:{slidesPerView:3.5}, 992:{slidesPerView:4.5} }
           });
           swiperInstances.push(sw);
         });
         AOS.init({ duration:800, once:true });
-
-        // 5. 放大預覽
+    
+        // 放大預覽
         const zoomPreview = document.querySelector('.zoom-preview');
         document.querySelectorAll('.zoomable-img').forEach(img => {
           img.style.cursor = 'zoom-in';
@@ -552,8 +587,8 @@
           zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
         });
         zoomPreview.addEventListener('click', () => zoomPreview.style.display = 'none');
-
-        // 6. 心願單邏輯
+    
+        // 心願單邏輯
         let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
         function refreshWishlistUI() {
           document.querySelectorAll('.btn-wishlist').forEach(btn => {
@@ -579,8 +614,8 @@
             refreshWishlistUI();
           });
         });
-
-        // 7. 匯出 PDF（html2pdf）
+    
+        // 匯出 PDF（html2pdf）
         document.getElementById('export-pdf').addEventListener('click', async () => {
           swiperInstances.forEach(sw => sw.destroy(true, true));
           document.body.classList.add('pdf-grid');
@@ -592,7 +627,7 @@
             margin:    0.5,
             filename:  '商品型錄.pdf',
             image:     { type:'jpeg', quality:0.98 },
-            html2canvas: { scale:2, useCORS:false, allowTaint:true },
+            html2canvas:{ scale:2, useCORS:false, allowTaint:true },
             jsPDF:     { unit:'in', format:'a4', orientation:'portrait' }
           }).from(orig).save();
           document.body.classList.remove('pdf-grid');
@@ -605,32 +640,31 @@
           });
         });
       }); // end DOMContentLoaded
-
+    
       // 分享函式：跟舊版一模一樣
       async function shareWishlist() {
         const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
         if (!list.length) return alert('心願單為空！');
-
+    
         const messages = list.map(item => ({
           type: 'image',
           originalContentUrl: item.url,
           previewImageUrl:    item.url
         }));
-
+    
         try {
           await liff.shareTargetPicker(messages);
         } catch (e) {
           console.error('LIFF 分享例外', e);
-          // 如果是因為 login 重導回本頁才呼叫，這裡改成提示「請再按一次」
           if (liff.isLoggedIn()) {
             alert('LINE 已登入，請再次點擊按鈕以分享心願清單');
           } else {
-            // 其它例外仍顯示原本錯誤
             alert('分享失敗：' + (e.message || e));
           }
         }  
       }
     </script>
+    
 
 
 
