@@ -528,17 +528,17 @@
         }
     
         // 2. 綁定「傳送心願清單」按鈕
-        document.getElementById('wishlist-share').addEventListener('click', async () => {
-          // 如果在 LINE 內建瀏覽器，直接分享
+        document.getElementById('wishlist-share').addEventListener('click', () => {
+          // 如果是在 LINE App 內建瀏覽器，直接分享
           if (liff.isInClient()) {
             return shareWishlist();
           }
-          // 不在 LINE Client，且未登入，才跳 login
+          // 如果不在 LINE Client 而且還沒登入，先登入再分享
           if (!liff.isLoggedIn()) {
             sessionStorage.setItem('shareAfterLogin', '1');
             return liff.login({ redirectUri: window.location.href });
           }
-          // 非 Client 已登入，直接分享
+          // 其他情況（外部瀏覽器已登入），直接分享
           shareWishlist();
         });
     
@@ -567,13 +567,20 @@
           const sw = new Swiper(container, {
             slidesPerView: 2.5,
             spaceBetween: 20,
-            freeMode: { enabled:true, sticky:true, momentum:false },
+            freeMode: {
+              enabled: true,
+              sticky: true,
+              momentum: false
+            },
             centeredSlidesBounds: true,
-            breakpoints: { 768:{slidesPerView:3.5}, 992:{slidesPerView:4.5} }
+            breakpoints: {
+              768: { slidesPerView: 3.5 },
+              992: { slidesPerView: 4.5 }
+            }
           });
           swiperInstances.push(sw);
         });
-        AOS.init({ duration:800, once:true });
+        AOS.init({ duration: 800, once: true });
     
         // 5. 放大預覽
         const zoomPreview = document.querySelector('.zoom-preview');
@@ -581,25 +588,27 @@
           img.style.cursor = 'zoom-in';
           img.addEventListener('click', e => {
             const { left, top, width, height } = img.getBoundingClientRect();
-            const xPct = ((e.clientX - left)/width)*100;
-            const yPct = ((e.clientY - top)/height)*100;
+            const xPct = ((e.clientX - left) / width) * 100;
+            const yPct = ((e.clientY - top) / height) * 100;
             zoomPreview.style.backgroundImage    = `url(${img.src})`;
             zoomPreview.style.backgroundPosition = `${xPct}% ${yPct}%`;
             zoomPreview.style.display            = 'block';
           });
         });
         zoomPreview.addEventListener('mousemove', e => {
-          const x = (e.clientX / window.innerWidth)*100;
-          const y = (e.clientY / window.innerHeight)*100;
+          const x = (e.clientX / window.innerWidth) * 100;
+          const y = (e.clientY / window.innerHeight) * 100;
           zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
         });
-        zoomPreview.addEventListener('click', () => zoomPreview.style.display = 'none');
+        zoomPreview.addEventListener('click', () => {
+          zoomPreview.style.display = 'none';
+        });
     
         // 6. 心願單邏輯
         let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
         function refreshWishlistUI() {
           document.querySelectorAll('.btn-wishlist').forEach(btn => {
-            const item = btn.closest('.outdoor-item');
+            const item   = btn.closest('.outdoor-item');
             const inList = wishlist.some(x => x.id === item.dataset.id);
             btn.classList.toggle('active', inList);
             const icon = btn.querySelector('i');
@@ -624,79 +633,81 @@
     
         // 7. 匯出 PDF（html2pdf）
         document.getElementById('export-pdf').addEventListener('click', async () => {
-          swiperInstances.forEach(sw => sw.destroy(true,true));
+          swiperInstances.forEach(sw => sw.destroy(true, true));
           document.body.classList.add('pdf-grid');
           const orig = document.getElementById('pdf-catalog');
-          await Promise.all(Array.from(orig.querySelectorAll('img'))
-            .map(img => img.complete ? Promise.resolve() : new Promise(r => img.onload = r))
-          );
+          await Promise.all(Array.from(orig.querySelectorAll('img')).map(img =>
+            img.complete ? Promise.resolve() : new Promise(r => img.onload = r)
+          ));
           await html2pdf().set({
-            margin:    0.5,
-            filename:  '商品型錄.pdf',
-            image:     { type:'jpeg', quality:0.98 },
-            html2canvas: { scale:2, useCORS:false, allowTaint:true },
-            jsPDF:     { unit:'in', format:'a4', orientation:'portrait' }
+            margin:     0.5,
+            filename:   '商品型錄.pdf',
+            image:      { type: 'jpeg', quality: 0.98 },
+            html2canvas:{ scale: 2, useCORS: false, allowTaint: true },
+            jsPDF:      { unit: 'in', format: 'a4', orientation: 'portrait' }
           }).from(orig).save();
           document.body.classList.remove('pdf-grid');
           document.querySelectorAll('.outdoor-swiper').forEach(container => {
             const sw = new Swiper(container, {
-              slidesPerView:2.5, spaceBetween:20, freeMode:true,
-              breakpoints:{768:{slidesPerView:3.5},992:{slidesPerView:4.5}}
+              slidesPerView: 2.5,
+              spaceBetween: 20,
+              freeMode: true,
+              breakpoints: {
+                768: { slidesPerView: 3.5 },
+                992: { slidesPerView: 4.5 }
+              }
             });
             swiperInstances.push(sw);
           });
         });
       }); // end DOMContentLoaded
     
-      // 主分享函式：依平台決定行為
+      // 主分享函式：只做分享，不做 login
       async function shareWishlist() {
         const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
         if (!list.length) {
           return alert('心願單為空！');
         }
     
-        // LINE Client 內建瀏覽器：Android/iOS 都直接 shareTargetPicker
+        // LINE Client 內建瀏覽器：直接分享
         if (liff.isInClient()) {
-          const messages = list.map(item => ({
-            type: 'image',
-            originalContentUrl: item.url,
-            previewImageUrl:    item.url
-          }));
           try {
-            await liff.shareTargetPicker(messages);
+            await liff.shareTargetPicker(
+              list.map(item => ({
+                type: 'image',
+                originalContentUrl: item.url,
+                previewImageUrl:    item.url
+              }))
+            );
           } catch (e) {
-            console.error('LINE Client 分享例外', e);
+            console.error('LINE Client 分享失敗', e);
             if (isIOS()) {
-              return alert(
-                'iOS LINE 內建瀏覽器不支援直接分享圖片，\n' +
-                '請右上「⋯」→「在 Safari 中開啟」，\n' +
-                '再重新點分享鈕。'
+              alert(
+                'iOS LINE 內建瀏覽器不支援直接分享，\n' +
+                '請在右上「⋯」→「在 Safari 中開啟」後再分享。'
               );
+            } else {
+              alert('分享失敗：' + (e.message || e));
             }
-            return alert(liff.isLoggedIn()
-              ? 'LINE 已登入，請再次點擊分享'
-              : `分享失敗：${e.message||e}`);
           }
           return;
         }
     
-        // 非 LINE Client（桌面或外部瀏覽器）：一樣用 LIFF 分享
-        const messages = list.map(item => ({
-          type: 'image',
-          originalContentUrl: item.url,
-          previewImageUrl:    item.url
-        }));
+        // 非 LINE Client（桌面或外部瀏覽器）：也用 LIFF 分享
         try {
-          await liff.shareTargetPicker(messages);
+          await liff.shareTargetPicker(
+            list.map(item => ({
+              type: 'image',
+              originalContentUrl: item.url,
+              previewImageUrl:    item.url
+            }))
+          );
         } catch (e) {
-          console.error('外部瀏覽器分享例外', e);
-          alert(liff.isLoggedIn()
-            ? 'LINE 已登入，請再次點擊分享'
-            : `分享失敗：${e.message||e}`);
+          console.error('外部瀏覽器分享失敗', e);
+          alert('分享失敗：' + (e.message || e));
         }
       }
     </script>
-    
     
     
     
