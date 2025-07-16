@@ -542,19 +542,38 @@
        ******************************************************/
       const LIFF_ID  = '2007748054-9bD5ZjXA';
       const LIFF_WEB = 'https://liff.line.me/' + LIFF_ID;
-      const BASE_URL = 'https://www.diwer.me/'; // 圖片絕對路徑補全
+      const BASE_URL = 'https://www.diwer.me/'; // 站點根 (最後一定加 / 處理)
+      const IMG_DIR  = 'images-web/';           // 圖片目錄 (相對網站根)
       const MOBILE_WIDTH_BREAKPOINT = 768;
-
+      
       function isIOS() { return /iPhone|iPad|iPod/.test(navigator.userAgent); }
       function isMobileUA() {
         return /Android|iPhone|iPad|iPod|Mobile|Phone/i.test(navigator.userAgent);
       }
+      
+      /* ======================================================
+       * Step 1: 強化圖片絕對路徑補全 (含中文檔名 encode)
+       * - 支援: "./images-web/xxx", "images-web/xxx", "xxx.png"
+       * - 已是 http(s) 直接回傳
+       * ====================================================== */
       function toAbsUrl(u){
         if(!u) return u;
-        if(/^https?:\/\//i.test(u)) return u;
-        return BASE_URL.replace(/\/+$/,'/') + u.replace(/^\.?\//,'');
+        if(/^https?:\/\//i.test(u)) return u;              // 已是絕對路徑
+      
+        // 去掉 ./ 或開頭 /
+        let path = u.replace(/^\.?\//,'');
+        // 若沒帶 images-web/ 則補
+        if(!path.startsWith(IMG_DIR)){
+          path = IMG_DIR + path;
+        }
+        // encode 中文
+        // encodeURI 保留 /, 再確保空白等被處理
+        path = encodeURI(path);
+      
+        // new URL 可處理 BASE_URL 尾端 / 問題
+        return new URL(path, BASE_URL).href;
       }
-
+      
       /******************************************************
        * 商品掃描 & Map (手機/桌電共用)
        ******************************************************/
@@ -564,7 +583,8 @@
           const id = it.dataset.id;
           const name = it.dataset.name || '';
           const imgEl = it.querySelector('img.zoomable-img');
-          const url = toAbsUrl(imgEl ? imgEl.getAttribute('src') : '');
+          const raw  = imgEl ? imgEl.getAttribute('src') : '';
+          const url  = toAbsUrl(raw);
           list.push({id,name,url});
         });
         return list;
@@ -581,7 +601,7 @@
           IDX_TO_ITEM[idx] = item;
         });
       }
-
+      
       /******************************************************
        * Token 編碼 / 解碼 (手機流程用)
        ******************************************************/
@@ -617,7 +637,7 @@
         });
         return q;
       }
-
+      
       /******************************************************
        * Storage 工具 (雙寫備援)
        ******************************************************/
@@ -631,18 +651,22 @@
         try{ localStorage.setItem(key,json); }catch(e){}
         try{ sessionStorage.setItem(key,json); }catch(e){}
       }
-
+      
       /******************************************************
-       * 心願單共同狀態
+       * 心願單共同狀態  (Step 2: 初始化時補全 URL)
        ******************************************************/
-      let wishlist = storageGet('wishlist', []);
+      let wishlist = storageGet('wishlist', []).map(it => ({
+        ...it,
+        url: toAbsUrl(it.url)
+      }));
+      
       function getWishlist(){ return wishlist.slice(); }
       function setWishlist(arr){
         wishlist = arr.slice();
         storageSet('wishlist', wishlist);
         refreshWishlistUI(); // defined later
       }
-
+      
       /******************************************************
        * UI Refresh (共用)
        ******************************************************/
@@ -663,9 +687,9 @@
         if (msg) tip.textContent = msg;
         tip.style.display = 'block';
       }
-
+      
       /******************************************************
-       * 桌電流程 (你的原本版保留)
+       * 桌電流程 (你的原本版保留，已套 Step 3/4)
        ******************************************************/
       function initDesktopFlow(){
         console.log('[HX] Desktop flow start');
@@ -675,10 +699,9 @@
         }).catch(err=>{
           console.warn('LIFF init fail (desktop)', err);
         });
-
+      
         // 傳送心願清單按鈕
         document.getElementById('wishlist-share').addEventListener('click', () => {
-          // 桌電版原邏輯：若在 LINE 直接 share；否則登入後 share
           if (liff.isInClient()) {
             return desktopShareWishlist();
           }
@@ -688,7 +711,7 @@
           }
           desktopShareWishlist();
         });
-
+      
         // 登入回跳提示
         if (sessionStorage.getItem('shareAfterLogin') === '1') {
           sessionStorage.removeItem('shareAfterLogin');
@@ -698,18 +721,22 @@
             alert('尚未登入 LINE，請再點一次「傳送心願清單」登入後送出。');
           }
         }
-
+      
         function desktopShareWishlist() {
           const list = getWishlist();
           if (!list.length) {
             alert('心願單為空，請先加入商品再分享！');
             return;
           }
-          const messages = list.map(item => ({
-            type: 'image',
-            originalContentUrl: item.url,
-            previewImageUrl:    item.url
-          }));
+          /* Step 4: 分享前保險補全 URL */
+          const messages = list.map(item => {
+            const u = toAbsUrl(item.url);
+            return {
+              type: 'image',
+              originalContentUrl: u,
+              previewImageUrl:    u
+            };
+          });
           liff.shareTargetPicker(messages).catch(e=>{
             console.error('桌電分享發生錯誤', e);
             if (isIOS() && liff.isInClient()) {
@@ -720,28 +747,25 @@
             }
           });
         }
-
-        // 桌電版：加入心願單時顯示 Toast
+      
+        // 桌電版：加入/移除心願單 (Step 3: 使用 raw src + toAbsUrl)
         document.querySelectorAll('.btn-wishlist').forEach(btn => {
           btn.addEventListener('click', () => {
             const item = btn.closest('.outdoor-item');
             const { id, name } = item.dataset;
-            const url = item.querySelector('img.zoomable-img').src;
+            const imgEl = item.querySelector('img.zoomable-img');
+            const raw   = imgEl ? imgEl.getAttribute('src') : '';
+            const abs   = toAbsUrl(raw);
             const idx = wishlist.findIndex(x => x.id === id);
             if (idx > -1) wishlist.splice(idx, 1);
-            else          wishlist.push({ id, name, url: toAbsUrl(url) });
+            else          wishlist.push({ id, name, url: abs });
             setWishlist(wishlist);
-            // 顯示 Toast
-            const toastEl = document.getElementById('liveToast');
-            if (toastEl && window.bootstrap && bootstrap.Toast) {
-              new bootstrap.Toast(toastEl).show();
-            }
           });
         });
       }
-
+      
       /******************************************************
-       * 手機流程 (新版)
+       * 手機流程 (新版，已套 Step 3/4)
        ******************************************************/
       async function initMobileFlow(){
         console.log('[HX] Mobile flow start');
@@ -753,23 +777,26 @@
         }catch(e){
           console.warn('LIFF init fail (mobile)', e);
         }
-
+      
         // 如果不是在 LIFF，就顯示提示條
         const outsideMsg = document.getElementById('hx-outside-msg');
-        if(!inClient){
+        if(outsideMsg && !inClient){
           outsideMsg.style.display='block';
         }
         // 按「開啟」→ 試 line://app -> LIFF
-        document.getElementById('hx-open-in-line').addEventListener('click',()=>{
-          window.location.href='line://app/'+LIFF_ID;
-          setTimeout(()=>{ window.location.href=LIFF_WEB; },1000);
-        });
-
+        const openBtn = document.getElementById('hx-open-in-line');
+        if(openBtn){
+          openBtn.addEventListener('click',()=>{
+            window.location.href='line://app/'+LIFF_ID;
+            setTimeout(()=>{ window.location.href=LIFF_WEB; },1000);
+          });
+        }
+      
         // 綁分享按鈕
         document.getElementById('wishlist-share').addEventListener('click',()=>{
           mobileShareButton(liffInited,inClient);
         });
-
+      
         // 處理 token (從外部跳入 LIFF)
         const q = parseQuery();
         let decoded = [];
@@ -788,7 +815,7 @@
         if(q.wl){
           history.replaceState({}, "", window.location.pathname);
         }
-
+      
         // token 回來後自動提示分享
         if(inClient && cameFromToken && wishlist.length){
           const go = confirm('已進入 LINE，是否立即傳送心願單？\n(按取消可先檢查看看)');
@@ -796,21 +823,23 @@
             mobileShareWishlistViaLiff();
           }
         }
-
-        // 手機版：加入/移除心願單 (不 Toast)
+      
+        // 手機版：加入/移除心願單 (Step 3: raw + toAbsUrl)
         document.querySelectorAll('.btn-wishlist').forEach(btn => {
           btn.addEventListener('click', () => {
             const item = btn.closest('.outdoor-item');
             const { id, name } = item.dataset;
-            const url = item.querySelector('img.zoomable-img').src;
+            const imgEl = item.querySelector('img.zoomable-img');
+            const raw   = imgEl ? imgEl.getAttribute('src') : '';
+            const abs   = toAbsUrl(raw);
             const idx = wishlist.findIndex(x => x.id === id);
             if (idx > -1) wishlist.splice(idx, 1);
-            else          wishlist.push({ id, name, url: toAbsUrl(url) });
+            else          wishlist.push({ id, name, url: abs });
             setWishlist(wishlist);
           });
         });
       }
-
+      
       function mobileShareButton(liffInited,inClient){
         const list = getWishlist();
         if(inClient){
@@ -827,18 +856,22 @@
         const target = LIFF_WEB + '?wl=' + encodeURIComponent(token);
         window.location.href = target;
       }
-
+      
       async function mobileShareWishlistViaLiff(){
         const list = getWishlist();
         if(!list.length){
           alert('心願單為空，請先加入商品再分享！');
           return;
         }
-        const messages = list.map(item=>({
-          type:'image',
-          originalContentUrl: item.url,
-          previewImageUrl:    item.url
-        }));
+        /* Step 4: 分享前保險補全 URL */
+        const messages = list.map(item=>{
+          const u = toAbsUrl(item.url);
+          return {
+            type:'image',
+            originalContentUrl: u,
+            previewImageUrl:    u
+          };
+        });
         try{
           await liff.shareTargetPicker(messages);
         }catch(e){
@@ -854,17 +887,20 @@
       }
       function mobileShareViaLineIntent(list){
         const lines = ['我挑了幾個浩軒商品：'];
-        list.forEach(item=>{ lines.push('• '+item.name+' '+item.url); });
+        list.forEach(item=>{
+          lines.push('• '+item.name+' '+toAbsUrl(item.url));
+        });
         const text = encodeURIComponent(lines.join('\n'));
         window.open('https://line.me/R/share?text='+text,'_blank');
       }
-
+      
       /******************************************************
        * 共用：載入後主入口
        ******************************************************/
       document.addEventListener('DOMContentLoaded', () => {
         // 建商品索引
         buildItemMaps();
+      
         // 填產品目錄 (共用)
         const dropdown = document.getElementById('product-dropdown');
         document.querySelectorAll('.title-main').forEach((title, idx) => {
@@ -878,7 +914,7 @@
           li.appendChild(a);
           dropdown.appendChild(li);
         });
-
+      
         // Swiper (共用)
         const swiperInstances = [];
         document.querySelectorAll('.outdoor-swiper').forEach(container => {
@@ -898,11 +934,11 @@
           });
           swiperInstances.push(sw);
         });
-
+      
         // AOS
         AOS.init({ duration: 800, once: true });
-
-        // 圖片放大共用
+      
+        // 圖片放大共用 (此處使用 img.src 顯示即可，不影響分享 URL)
         const zoomPreview = document.querySelector('.zoom-preview');
         document.querySelectorAll('.zoomable-img').forEach(img => {
           img.style.cursor = 'zoom-in';
@@ -923,12 +959,12 @@
         zoomPreview.addEventListener('click', () => {
           zoomPreview.style.display = 'none';
         });
-
+      
         // 回到頂端
         document.getElementById('scroll-top').addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
+      
         // 匯出 PDF
         document.getElementById('export-pdf').addEventListener('click', async () => {
           swiperInstances.forEach(sw => sw.destroy(true, true));
@@ -958,15 +994,15 @@
             swiperInstances.push(sw);
           });
         });
-
+      
         // 初始化共用心願單狀態
         refreshWishlistUI();
-
+      
         // ------- 判斷桌電 / 手機 -------
         const IS_MOBILE_ENV =
           window.innerWidth <= MOBILE_WIDTH_BREAKPOINT ||
           isMobileUA();
-
+      
         if (IS_MOBILE_ENV) {
           initMobileFlow();  // 手機版新版行為
         } else {
@@ -974,5 +1010,6 @@
         }
       });
     </script>
+      
   </body>
 </html>
