@@ -634,8 +634,9 @@
     
       // —— Android / Windows 分享 —— 
       async function shareWishlistAndroidWindows() {
-        console.log('Android/Windows shareWishlist');
+        console.log('shareWishlistAndroidWindows()');
         const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        console.log('list:', list);
         if (!list.length) return alert('心願單為空！');
     
         const messages = list.map(item => ({
@@ -643,6 +644,7 @@
           originalContentUrl: item.url,
           previewImageUrl:    item.url
         }));
+        console.log('messages:', messages);
     
         try {
           await liff.shareTargetPicker(messages);
@@ -658,8 +660,9 @@
     
       // —— iOS / Mac 分享 —— 
       async function shareWishlistIOSMac() {
-        console.log('iOS/Mac shareWishlist');
+        console.log('shareWishlistIOSMac()');
         const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        console.log('list:', list);
         if (!list.length) return alert('心願單為空！');
     
         const messages = list.map(item => ({
@@ -667,6 +670,7 @@
           originalContentUrl: item.url,
           previewImageUrl:    item.url
         }));
+        console.log('messages:', messages);
     
         try {
           await liff.shareTargetPicker(messages);
@@ -682,13 +686,19 @@
     
       // —— 主分享函式：依平台切換 —— 
       async function shareWishlist() {
-        if (isIOS() || isMac()) {
+        if (liff.isInClient()) {
+          // 如果是在 LINE App 內，直接用 Android/Windows 邏輯也沒問題
+          await shareWishlistAndroidWindows();
+        } else if (isIOS() || isMac()) {
+          // 不在 LINE Client，iOS/Mac 也用 LIFF SDK 強制呼叫分享（需登入）
           await shareWishlistIOSMac();
         } else {
+          // 其他平台（純瀏覽器）走 Android/Windows 邏輯
           await shareWishlistAndroidWindows();
         }
       }
     </script>
+    
     
     
     
