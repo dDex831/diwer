@@ -510,44 +510,43 @@
   
 
    
-    <!-- 主 JS（完整版，修正了在 LINE Client 內不要再呼叫 liff.login） -->
     <script>
       // 偵測 iOS
       function isIOS() {
         return /iPhone|iPad|iPod/.test(navigator.userAgent);
       }
-
+    
       document.addEventListener('DOMContentLoaded', async () => {
         // 0. 載入 LIFF SDK
         const LIFF_ID = '2007748054-9bD5ZjXA';
         await liff.init({ liffId: LIFF_ID });
-
-        // 1. 登入後自動觸發分享
-        if (liff.isLoggedIn() && sessionStorage.getItem('shareAfterLogin') === '1') {
+    
+        // 1. 登入後自動觸發分享（僅限外部瀏覽器）
+        if (!liff.isInClient() && liff.isLoggedIn() && sessionStorage.getItem('shareAfterLogin') === '1') {
           sessionStorage.removeItem('shareAfterLogin');
           shareWishlist();
         }
-
+    
         // 2. 綁定「傳送心願清單」按鈕
-        document.getElementById('wishlist-share').addEventListener('click', () => {
-          if (!liff.isLoggedIn()) {
-            // **只在非 LINE Client** 呼叫 login，LINE Client 內不跳 login，直接走分享
-            if (!liff.isInClient()) {
-              sessionStorage.setItem('shareAfterLogin', '1');
-              return liff.login({ redirectUri: window.location.href });
-            } else {
-              // 在 LINE App 裡通常已經登入了，直接呼叫分享
-              return shareWishlist();
-            }
+        document.getElementById('wishlist-share').addEventListener('click', async () => {
+          // 如果在 LINE 內建瀏覽器，直接分享
+          if (liff.isInClient()) {
+            return shareWishlist();
           }
+          // 不在 LINE Client，且未登入，才跳 login
+          if (!liff.isLoggedIn()) {
+            sessionStorage.setItem('shareAfterLogin', '1');
+            return liff.login({ redirectUri: window.location.href });
+          }
+          // 非 Client 已登入，直接分享
           shareWishlist();
         });
-
-        // 回到頂端
+    
+        // 綁定「回到頂端」按鈕
         document.getElementById('scroll-top').addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-
+    
         // 3. 動態填「產品目錄」
         const dropdown = document.getElementById('product-dropdown');
         document.querySelectorAll('.title-main').forEach((title, idx) => {
@@ -561,21 +560,21 @@
           li.appendChild(a);
           dropdown.appendChild(li);
         });
-
+    
         // 4. Swiper + AOS 初始化
         const swiperInstances = [];
         document.querySelectorAll('.outdoor-swiper').forEach(container => {
           const sw = new Swiper(container, {
             slidesPerView: 2.5,
             spaceBetween: 20,
-            freeMode: { enabled: true, sticky: true, momentum: false },
+            freeMode: { enabled:true, sticky:true, momentum:false },
             centeredSlidesBounds: true,
             breakpoints: { 768:{slidesPerView:3.5}, 992:{slidesPerView:4.5} }
           });
           swiperInstances.push(sw);
         });
         AOS.init({ duration:800, once:true });
-
+    
         // 5. 放大預覽
         const zoomPreview = document.querySelector('.zoom-preview');
         document.querySelectorAll('.zoomable-img').forEach(img => {
@@ -595,12 +594,12 @@
           zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
         });
         zoomPreview.addEventListener('click', () => zoomPreview.style.display = 'none');
-
+    
         // 6. 心願單邏輯
         let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
         function refreshWishlistUI() {
           document.querySelectorAll('.btn-wishlist').forEach(btn => {
-            const item   = btn.closest('.outdoor-item');
+            const item = btn.closest('.outdoor-item');
             const inList = wishlist.some(x => x.id === item.dataset.id);
             btn.classList.toggle('active', inList);
             const icon = btn.querySelector('i');
@@ -622,15 +621,15 @@
             refreshWishlistUI();
           });
         });
-
+    
         // 7. 匯出 PDF（html2pdf）
         document.getElementById('export-pdf').addEventListener('click', async () => {
-          swiperInstances.forEach(sw => sw.destroy(true, true));
+          swiperInstances.forEach(sw => sw.destroy(true,true));
           document.body.classList.add('pdf-grid');
           const orig = document.getElementById('pdf-catalog');
-          await Promise.all(Array.from(orig.querySelectorAll('img')).map(img =>
-            img.complete ? Promise.resolve() : new Promise(r => img.onload = r)
-          ));
+          await Promise.all(Array.from(orig.querySelectorAll('img'))
+            .map(img => img.complete ? Promise.resolve() : new Promise(r => img.onload = r))
+          );
           await html2pdf().set({
             margin:    0.5,
             filename:  '商品型錄.pdf',
@@ -648,15 +647,15 @@
           });
         });
       }); // end DOMContentLoaded
-
+    
       // 主分享函式：依平台決定行為
       async function shareWishlist() {
         const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
         if (!list.length) {
           return alert('心願單為空！');
         }
-
-        // 在 LINE Client 下：Android/iOS 都直接用 shareTargetPicker
+    
+        // LINE Client 內建瀏覽器：Android/iOS 都直接 shareTargetPicker
         if (liff.isInClient()) {
           const messages = list.map(item => ({
             type: 'image',
@@ -667,7 +666,6 @@
             await liff.shareTargetPicker(messages);
           } catch (e) {
             console.error('LINE Client 分享例外', e);
-            // iOS LINE 內建 WebView 可能無回應，提示手動切 Safari
             if (isIOS()) {
               return alert(
                 'iOS LINE 內建瀏覽器不支援直接分享圖片，\n' +
@@ -677,11 +675,11 @@
             }
             return alert(liff.isLoggedIn()
               ? 'LINE 已登入，請再次點擊分享'
-              : `分享失敗：${e.message || e}`);
+              : `分享失敗：${e.message||e}`);
           }
           return;
         }
-
+    
         // 非 LINE Client（桌面或外部瀏覽器）：一樣用 LIFF 分享
         const messages = list.map(item => ({
           type: 'image',
@@ -694,11 +692,11 @@
           console.error('外部瀏覽器分享例外', e);
           alert(liff.isLoggedIn()
             ? 'LINE 已登入，請再次點擊分享'
-            : `分享失敗：${e.message || e}`);
+            : `分享失敗：${e.message||e}`);
         }
       }
     </script>
-
+    
     
     
     
