@@ -504,9 +504,6 @@
         const LIFF_ID = '2007748054-9bD5ZjXA';
         await liff.init({ liffId: LIFF_ID });
     
-        // 檢查是否為 iOS 裝置
-        const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent);
-    
         // 1. 登入後自動觸發分享
         if (liff.isLoggedIn() && sessionStorage.getItem('shareAfterLogin') === '1') {
           sessionStorage.removeItem('shareAfterLogin');
@@ -517,7 +514,6 @@
         document.getElementById('wishlist-share').addEventListener('click', () => {
           if (!liff.isLoggedIn()) {
             sessionStorage.setItem('shareAfterLogin', '1');
-            // 登入完會 redirect 回本頁，然後 step 1 自動呼叫 shareWishlist()
             return liff.login({ redirectUri: window.location.href });
           }
           shareWishlist();
@@ -632,31 +628,16 @@
         });
       }); // end DOMContentLoaded
     
-      // 分享函式：新增 iOS Web Share API 回退支援
-      async function shareWishlist() {
+      // —— 平台檢測 —— 
+      function isIOS() { return /iPad|iPhone|iPod/.test(navigator.userAgent); }
+      function isMac() { return /Macintosh|MacIntel|MacPPC|Mac68K/.test(navigator.platform); }
+    
+      // —— Android / Windows 分享 —— 
+      async function shareWishlistAndroidWindows() {
+        console.log('Android/Windows shareWishlist');
         const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
-        if (!list.length) {
-          return alert('心願單為空！');
-        }
+        if (!list.length) return alert('心願單為空！');
     
-        // 如果非 LINE Client 且是 iOS 裝置，且支援 Web Share API，就呼叫 navigator.share()
-        if (!liff.isInClient() && /iPad|iPhone|iPod/.test(navigator.userAgent) && navigator.share) {
-          const urlsText = list.map(item => item.url).join('\n');
-          try {
-            await navigator.share({
-              title: '我的心願單',
-              text: urlsText,
-              url: window.location.href
-            });
-            return;
-          } catch (e) {
-            console.error('Web Share API 例外', e);
-            alert('分享失敗：' + (e.message || e));
-            return;
-          }
-        }
-    
-        // 原本 LINE LIFF 分享流程
         const messages = list.map(item => ({
           type: 'image',
           originalContentUrl: item.url,
@@ -666,7 +647,7 @@
         try {
           await liff.shareTargetPicker(messages);
         } catch (e) {
-          console.error('LIFF 分享例外', e);
+          console.error('LIFF 分享例外 (Android/Windows)', e);
           if (liff.isLoggedIn()) {
             alert('LINE 已登入，請再次點擊按鈕以分享心願清單');
           } else {
@@ -674,7 +655,41 @@
           }
         }
       }
+    
+      // —— iOS / Mac 分享 —— 
+      async function shareWishlistIOSMac() {
+        console.log('iOS/Mac shareWishlist');
+        const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        if (!list.length) return alert('心願單為空！');
+    
+        const messages = list.map(item => ({
+          type: 'image',
+          originalContentUrl: item.url,
+          previewImageUrl:    item.url
+        }));
+    
+        try {
+          await liff.shareTargetPicker(messages);
+        } catch (e) {
+          console.error('LIFF 分享例外 (iOS/Mac)', e);
+          if (liff.isLoggedIn()) {
+            alert('LINE 已登入，請再次點擊按鈕以分享心願清單');
+          } else {
+            alert('分享失敗：' + (e.message || e));
+          }
+        }
+      }
+    
+      // —— 主分享函式：依平台切換 —— 
+      async function shareWishlist() {
+        if (isIOS() || isMac()) {
+          await shareWishlistIOSMac();
+        } else {
+          await shareWishlistAndroidWindows();
+        }
+      }
     </script>
+    
     
     
 
