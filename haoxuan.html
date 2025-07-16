@@ -11,7 +11,6 @@
   <meta property="og:image" content="https://www.diwer.me/images-web/浩軒13.6.png">
   <link rel="icon" type="image/png" sizes="32x32" href="images-web/浩軒13.6.png">
   <link rel="Diwer-icon" sizes="180x180" href="images-web/浩軒13.6.png">
-  <!-- 保留原外掛（本頁用不多，但依你要求不省略） -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700&display=swap" rel="stylesheet" />
@@ -20,6 +19,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
   <style>
     body{margin:0;background:#f6f1ee;color:#333;font-family:system-ui,"Noto Sans TC",sans-serif;text-align:center;line-height:1.4;}
+    #open-external-tip{display:none;background:#fffae6;padding:8px;text-align:center;font-size:14px;border-bottom:1px solid #ddd;}
     .hx-launch-wrap{max-width:480px;margin:0 auto;padding:48px 16px 72px;}
     .hx-launch-logo{width:96px;height:auto;margin-bottom:16px;}
     .hx-launch-title{font-size:1.4rem;margin:0 0 8px;font-weight:700;}
@@ -29,29 +29,49 @@
     .hx-btn-line{background:#06c755;color:#fff;}
     .hx-btn-web{background:#333;color:#fff;}
     .hx-launch-note{font-size:.85rem;color:#666;margin-top:24px;line-height:1.4;}
-    #open-external-tip{display:none;background:#fffae6;padding:8px;text-align:center;font-size:14px;border-bottom:1px solid #ddd;}
-    /* 以下保留你原本樣式（雖然本頁不使用） */
-    .zoom-preview{position:fixed;top:0;left:0;width:100%;height:100%;background-repeat:no-repeat;background-size:50%;display:none;cursor:zoom-out;z-index:9999;}
-    .pdf-grid .outdoor-swiper{overflow:visible!important;height:auto!important;}
-    .pdf-grid .swiper-wrapper{display:grid!important;grid-template-columns:repeat(6,1fr)!important;grid-auto-rows:auto!important;gap:10px!important;overflow:visible!important;width:100%!important;}
-    .pdf-grid #pdf-catalog{transform:scale(0.9);transform-origin:top;}
   </style>
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script>
-    /* === 設定 (如需修改路徑在這裡改) === */
+    /* ===== 設定 ===== */
     const HX_LIFF_ID  = '2007748054-9bD5ZjXA';
     const HX_LIFF_WEB = 'https://liff.line.me/' + HX_LIFF_ID;
-    /* 這裡指向完整商品頁（下一份檔案） */
-    const HX_WEB_ONLY = 'haoxuan-liff.html';  /* 改成你想提供的純瀏覽檔；若要 index.html 就改 */
+    /* 只看產品（純瀏覽版） */
+    const HX_WEB_ONLY = 'haoxuan-liff.html'; /* 如要改 index.html 就改這裡 */
 
-    function hxGetQuery(){ return window.location.search || ''; }
+    /* 白名單參數：只允許這些 query 被帶到純瀏覽版 (避免 URL 爆長) */
+    const ALLOWED_PARAMS = ['cat','sku','ref'];
+
+    function hxParseQuery(){
+      const q = {};
+      const qs = window.location.search.substring(1);
+      if (!qs) return q;
+      qs.split('&').forEach(p=>{
+        const [k,v] = p.split('=');
+        if (!k) return;
+        q[decodeURIComponent(k)] = decodeURIComponent(v||'');
+      });
+      return q;
+    }
+    function hxBuildAllowedQuery(){
+      const obj = hxParseQuery();
+      const pairs = [];
+      ALLOWED_PARAMS.forEach(k=>{
+        if (obj[k]!==undefined && obj[k]!==null && obj[k] !== ''){
+          pairs.push(encodeURIComponent(k)+'='+encodeURIComponent(obj[k]));
+        }
+      });
+      return pairs.length ? '?' + pairs.join('&') : '';
+    }
     function hxIsInLineApp(){ return /Line\//i.test(navigator.userAgent||''); }
-    function hxAutoLaunchLiff(){ window.location.replace(HX_LIFF_WEB + hxGetQuery()); }
+
+    /* 在 LINE 內：直接跳 LIFF，不帶 query（最穩） */
+    function hxAutoLaunchLiff(){ window.location.replace(HX_LIFF_WEB); }
+
     function hxOpenLiffManually(){
-      const qs = hxGetQuery().replace(/^\?/, '');
-      const intent = qs ? `line://app/${HX_LIFF_ID}?${qs}` : `line://app/${HX_LIFF_ID}`;
-      window.location.href = intent;
-      setTimeout(() => { hxAutoLaunchLiff(); }, 1200);
+      // 試圖喚起 LINE App（不帶 query）
+      window.location.href = `line://app/${HX_LIFF_ID}`;
+      // 備援：1.2 秒後跳 LIFF Web
+      setTimeout(()=>{ hxAutoLaunchLiff(); },1200);
     }
 
     (function(){
@@ -61,8 +81,8 @@
         document.addEventListener('DOMContentLoaded',()=>{
           document.getElementById('hx-launcher-ui').style.display='block';
           document.getElementById('hx-open-line-btn').addEventListener('click',hxOpenLiffManually);
-          const webBtn=document.getElementById('hx-open-web-btn');
-          webBtn.href = HX_WEB_ONLY + hxGetQuery(); /* 帶 query 回純瀏覽頁 */
+          const webBtn = document.getElementById('hx-open-web-btn');
+          webBtn.href = HX_WEB_ONLY + hxBuildAllowedQuery();
         });
       }
     })();
@@ -73,7 +93,6 @@
     分享或下載失敗？ 請點右上「⋯」選單 → 在瀏覽器開啟
   </div>
 
-  <!-- 非 LINE 環境的落地頁 -->
   <div id="hx-launcher-ui" class="hx-launch-wrap" style="display:none;">
     <img src="images-web/浩軒13.6.png" alt="浩軒 LOGO" class="hx-launch-logo" />
     <h1 class="hx-launch-title">浩軒產品互動版</h1>
@@ -88,7 +107,6 @@
     </p>
   </div>
 
-  <!-- 保留簡版頁尾 -->
   <footer class="site-footer">
     <div class="container-fluid bg-dark py-5 px-0">
       <div class="container d-flex flex-column align-items-center text-center">
@@ -101,7 +119,7 @@
     </div>
   </footer>
 
-  <!-- 外掛 JS 保留（不省略） -->
+  <!-- 外掛 JS 保留 -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
