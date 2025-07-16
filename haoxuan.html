@@ -628,76 +628,42 @@
         });
       }); // end DOMContentLoaded
     
-      // —— 平台檢測 —— 
-      function isIOS() { return /iPad|iPhone|iPod/.test(navigator.userAgent); }
-      function isMac() { return /Macintosh|MacIntel|MacPPC|Mac68K/.test(navigator.platform); }
-    
-      // —— Android / Windows 分享 —— 
-      async function shareWishlistAndroidWindows() {
-        console.log('shareWishlistAndroidWindows()');
-        const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
-        console.log('list:', list);
-        if (!list.length) return alert('心願單為空！');
-    
-        const messages = list.map(item => ({
-          type: 'image',
-          originalContentUrl: item.url,
-          previewImageUrl:    item.url
-        }));
-        console.log('messages:', messages);
-    
-        try {
-          await liff.shareTargetPicker(messages);
-        } catch (e) {
-          console.error('LIFF 分享例外 (Android/Windows)', e);
-          if (liff.isLoggedIn()) {
-            alert('LINE 已登入，請再次點擊按鈕以分享心願清單');
-          } else {
-            alert('分享失敗：' + (e.message || e));
-          }
-        }
-      }
-    
-      // —— iOS / Mac 分享 —— 
-      async function shareWishlistIOSMac() {
-        console.log('shareWishlistIOSMac()');
-        const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
-        console.log('list:', list);
-        if (!list.length) return alert('心願單為空！');
-    
-        const messages = list.map(item => ({
-          type: 'image',
-          originalContentUrl: item.url,
-          previewImageUrl:    item.url
-        }));
-        console.log('messages:', messages);
-    
-        try {
-          await liff.shareTargetPicker(messages);
-        } catch (e) {
-          console.error('LIFF 分享例外 (iOS/Mac)', e);
-          if (liff.isLoggedIn()) {
-            alert('LINE 已登入，請再次點擊按鈕以分享心願清單');
-          } else {
-            alert('分享失敗：' + (e.message || e));
-          }
-        }
-      }
-    
-      // —— 主分享函式：依平台切換 —— 
+      // 主分享函式：LINE Client（內建瀏覽器）→ 一律外部瀏覽器；其他環境→ 正常分享
       async function shareWishlist() {
+        const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        if (!list.length) {
+          return alert('心願單為空！');
+        }
+    
+        // 如果在 LINE App 的內建瀏覽器，無論 Android 或 iOS，一律跳到外部瀏覽器
         if (liff.isInClient()) {
-          // 如果是在 LINE App 內，直接用 Android/Windows 邏輯也沒問題
-          await shareWishlistAndroidWindows();
-        } else if (isIOS() || isMac()) {
-          // 不在 LINE Client，iOS/Mac 也用 LIFF SDK 強制呼叫分享（需登入）
-          await shareWishlistIOSMac();
-        } else {
-          // 其他平台（純瀏覽器）走 Android/Windows 邏輯
-          await shareWishlistAndroidWindows();
+          alert('LINE 內建瀏覽器分享不穩定，將在系統瀏覽器開啟分享畫面');
+          return liff.openWindow({
+            url: window.location.href,
+            external: true
+          });
+        }
+    
+        // NOT in LINE Client → 正常用 LIFF 分享照片
+        const messages = list.map(item => ({
+          type: 'image',
+          originalContentUrl: item.url,
+          previewImageUrl:    item.url
+        }));
+    
+        try {
+          await liff.shareTargetPicker(messages);
+        } catch (e) {
+          console.error('LIFF 分享例外', e);
+          if (liff.isLoggedIn()) {
+            alert('LINE 已登入，請再次點擊按鈕以分享心願清單');
+          } else {
+            alert('分享失敗：' + (e.message || e));
+          }
         }
       }
     </script>
+    
     
     
     
