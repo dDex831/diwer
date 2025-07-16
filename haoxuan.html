@@ -510,7 +510,7 @@
   
 
    
-    <!-- 主 JS -->
+    <!-- 主 JS（完整貼上，不省略任何功能） -->
     <script>
       // 偵測 iOS
       function isIOS() {
@@ -528,7 +528,7 @@
           shareWishlist();
         }
 
-        // 2. 綁定「傳送心願清單」浮動圖示按鈕
+        // 2. 綁定「傳送心願清單」浮動圖示按鈕（只做登入檢查＋分享）
         document.getElementById('wishlist-share').addEventListener('click', () => {
           if (!liff.isLoggedIn()) {
             sessionStorage.setItem('shareAfterLogin', '1');
@@ -561,11 +561,7 @@
           const sw = new Swiper(container, {
             slidesPerView: 2.5,
             spaceBetween: 20,
-            freeMode: {
-              enabled: true,
-              sticky: true,
-              momentum: false
-            },
+            freeMode: { enabled: true, sticky: true, momentum: false },
             centeredSlidesBounds: true,
             breakpoints: { 768:{slidesPerView:3.5}, 992:{slidesPerView:4.5} }
           });
@@ -653,8 +649,8 @@
           return alert('心願單為空！');
         }
 
-        // Android LINE 客戶端：直接分享照片
-        if (liff.isInClient() && !isIOS()) {
+        // 在 LINE Client 下，對 Android/iOS 都直接 call shareTargetPicker
+        if (liff.isInClient()) {
           const messages = list.map(item => ({
             type: 'image',
             originalContentUrl: item.url,
@@ -663,7 +659,15 @@
           try {
             await liff.shareTargetPicker(messages);
           } catch (e) {
-            console.error('Android LINE 分享例外', e);
+            console.error('LINE Client 分享例外', e);
+            // iOS 可能沒有反饋，提示使用者手動切到外部瀏覽器
+            if (isIOS()) {
+              return alert(
+                'iOS LINE 內建瀏覽器不支援直接分享圖片，\n' +
+                '請右上「⋯」→「在 Safari 中開啟」，\n' +
+                '再重新點分享鈕。'
+              );
+            }
             return alert(liff.isLoggedIn()
               ? 'LINE 已登入，請再次點擊分享'
               : `分享失敗：${e.message || e}`);
@@ -671,16 +675,7 @@
           return;
         }
 
-        // iOS LINE 客戶端：提示手動到 Safari
-        if (liff.isInClient() && isIOS()) {
-          return alert(
-            'iOS LINE 內建瀏覽器不支援直接分享圖片，\n' +
-            '請右上「⋯」→「在 Safari 中開啟」，\n' +
-            '再重新點分享鈕。'
-          );
-        }
-
-        // 其他（桌面或外部瀏覽器）：一樣用 LIFF 分享
+        // 非 LINE Client（桌面或外部瀏覽器）：一樣用 LIFF 分享
         const messages = list.map(item => ({
           type: 'image',
           originalContentUrl: item.url,
