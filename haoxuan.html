@@ -510,7 +510,7 @@
   
 
    
-    <!-- 主 JS（完整貼上，不省略任何功能） -->
+    <!-- 主 JS（完整版，修正了在 LINE Client 內不要再呼叫 liff.login） -->
     <script>
       // 偵測 iOS
       function isIOS() {
@@ -528,15 +528,22 @@
           shareWishlist();
         }
 
-        // 2. 綁定「傳送心願清單」浮動圖示按鈕（只做登入檢查＋分享）
+        // 2. 綁定「傳送心願清單」按鈕
         document.getElementById('wishlist-share').addEventListener('click', () => {
           if (!liff.isLoggedIn()) {
-            sessionStorage.setItem('shareAfterLogin', '1');
-            return liff.login({ redirectUri: window.location.href });
+            // **只在非 LINE Client** 呼叫 login，LINE Client 內不跳 login，直接走分享
+            if (!liff.isInClient()) {
+              sessionStorage.setItem('shareAfterLogin', '1');
+              return liff.login({ redirectUri: window.location.href });
+            } else {
+              // 在 LINE App 裡通常已經登入了，直接呼叫分享
+              return shareWishlist();
+            }
           }
           shareWishlist();
         });
-        // 綁定「回到頂端」按鈕
+
+        // 回到頂端
         document.getElementById('scroll-top').addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
@@ -649,7 +656,7 @@
           return alert('心願單為空！');
         }
 
-        // 在 LINE Client 下，對 Android/iOS 都直接 call shareTargetPicker
+        // 在 LINE Client 下：Android/iOS 都直接用 shareTargetPicker
         if (liff.isInClient()) {
           const messages = list.map(item => ({
             type: 'image',
@@ -660,7 +667,7 @@
             await liff.shareTargetPicker(messages);
           } catch (e) {
             console.error('LINE Client 分享例外', e);
-            // iOS 可能沒有反饋，提示使用者手動切到外部瀏覽器
+            // iOS LINE 內建 WebView 可能無回應，提示手動切 Safari
             if (isIOS()) {
               return alert(
                 'iOS LINE 內建瀏覽器不支援直接分享圖片，\n' +
@@ -692,7 +699,6 @@
       }
     </script>
 
-    
     
     
     
