@@ -370,7 +370,7 @@
                   </button>
                 </h2>
               </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具E">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryE" data-name="餐具E">
                 <div class="outdoor-img-wrapper">
                   <img src="images-web/餐具E.png" class="zoomable-img" alt="餐具E">
                 </div>
@@ -382,7 +382,7 @@
                   </button>
                 </h2>
               </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具F">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryF" data-name="餐具F">
                 <div class="outdoor-img-wrapper">
                   <img src="images-web/餐具F.png" class="zoomable-img" alt="餐具F">
                 </div>
@@ -394,7 +394,7 @@
                   </button>
                 </h2>
               </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具G">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryG" data-name="餐具G">
                 <div class="outdoor-img-wrapper">
                   <img src="images-web/餐具G.png" class="zoomable-img" alt="餐具G">
                 </div>
@@ -406,7 +406,7 @@
                   </button>
                 </h2>
               </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具H">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryH" data-name="餐具H">
                 <div class="outdoor-img-wrapper">
                   <img src="images-web/餐具H.png" class="zoomable-img" alt="餐具H">
                 </div>
@@ -418,7 +418,7 @@
                   </button>
                 </h2>
               </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具I">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryI" data-name="餐具I">
                 <div class="outdoor-img-wrapper">
                   <img src="images-web/餐具I.png" class="zoomable-img" alt="餐具I">
                 </div>
@@ -499,61 +499,35 @@
 
     <!-- 主 JS -->
     <script>
-      // 提示函式：桌機未安裝 LINE Desktop 時呼叫
-      function showInstallLineDesktopNotice() {
-        alert('請先安裝 LINE Desktop，或用手機 LINE 掃描頁面上的 QR Code 開啟');
-      }
-      // 提示函式：手機純瀏覽器時呼叫
-      function showOpenInLineAppNotice() {
-        alert('請在 LINE App 裡開啟此頁面，才能使用分享功能');
-      }
-    
       document.addEventListener('DOMContentLoaded', async () => {
         // 0. 載入 LIFF SDK
         const LIFF_ID = '2007748054-9bD5ZjXA';
         await liff.init({ liffId: LIFF_ID });
     
-        // 綁定「傳送心願清單」按鈕（合併邏輯，並把自動導引放在這裡）
-        document.getElementById('wishlist-share').addEventListener('click', async () => {
-          // 先判斷是否在 LINE Client
-          if (!liff.isInClient()) {
-            // 平台判斷（手機 vs. 桌機）
-            const ua = navigator.userAgent.toLowerCase();
-            const isMobile = /iphone|ipad|ipod|android/.test(ua);
-            if (isMobile) {
-              // 手機純瀏覽器 → 提示去 LINE App 開啟
-              showOpenInLineAppNotice();
-            } else {
-              // 桌機瀏覽器 → 嘗試跳到 LINE Desktop
-              const a = document.createElement('a');
-              a.href = `line://app/${LIFF_ID}`;
-              document.body.appendChild(a);
-              a.click();
-              setTimeout(showInstallLineDesktopNotice, 2000);
-            }
-            return;  // 一定要 return，避免繼續呼叫 liff.login/share
-          }
+        // 檢查是否為 iOS 裝置
+        const isIOS = () => /iPad|iPhone|iPod/.test(navigator.userAgent);
     
-          // 在 LINE Client 才繼續下面流程
-          if (!liff.isLoggedIn()) {
-            sessionStorage.setItem('shareAfterLogin', '1');
-            return liff.login({ redirectUri: window.location.href });
-          }
-          shareWishlist();
-        });
-    
-        // 登入後自動觸發分享
+        // 1. 登入後自動觸發分享
         if (liff.isLoggedIn() && sessionStorage.getItem('shareAfterLogin') === '1') {
           sessionStorage.removeItem('shareAfterLogin');
           shareWishlist();
         }
     
+        // 2. 綁定「傳送心願清單」浮動圖示按鈕（只做登入檢查＋分享）
+        document.getElementById('wishlist-share').addEventListener('click', () => {
+          if (!liff.isLoggedIn()) {
+            sessionStorage.setItem('shareAfterLogin', '1');
+            // 登入完會 redirect 回本頁，然後 step 1 自動呼叫 shareWishlist()
+            return liff.login({ redirectUri: window.location.href });
+          }
+          shareWishlist();
+        });
         // 綁定「回到頂端」按鈕
         document.getElementById('scroll-top').addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     
-        // 動態填「產品目錄」
+        // 3. 動態填「產品目錄」
         const dropdown = document.getElementById('product-dropdown');
         document.querySelectorAll('.title-main').forEach((title, idx) => {
           const id = `section-${idx}`;
@@ -567,7 +541,7 @@
           dropdown.appendChild(li);
         });
     
-        // Swiper + AOS 初始化
+        // 4. Swiper + AOS 初始化
         const swiperInstances = [];
         document.querySelectorAll('.outdoor-swiper').forEach(container => {
           const sw = new Swiper(container, {
@@ -585,7 +559,7 @@
         });
         AOS.init({ duration:800, once:true });
     
-        // 放大預覽
+        // 5. 放大預覽
         const zoomPreview = document.querySelector('.zoom-preview');
         document.querySelectorAll('.zoomable-img').forEach(img => {
           img.style.cursor = 'zoom-in';
@@ -605,7 +579,7 @@
         });
         zoomPreview.addEventListener('click', () => zoomPreview.style.display = 'none');
     
-        // 心願單邏輯
+        // 6. 心願單邏輯
         let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
         function refreshWishlistUI() {
           document.querySelectorAll('.btn-wishlist').forEach(btn => {
@@ -632,7 +606,7 @@
           });
         });
     
-        // 匯出 PDF（html2pdf）
+        // 7. 匯出 PDF（html2pdf）
         document.getElementById('export-pdf').addEventListener('click', async () => {
           swiperInstances.forEach(sw => sw.destroy(true, true));
           document.body.classList.add('pdf-grid');
@@ -644,7 +618,7 @@
             margin:    0.5,
             filename:  '商品型錄.pdf',
             image:     { type:'jpeg', quality:0.98 },
-            html2canvas:{ scale:2, useCORS:false, allowTaint:true },
+            html2canvas: { scale:2, useCORS:false, allowTaint:true },
             jsPDF:     { unit:'in', format:'a4', orientation:'portrait' }
           }).from(orig).save();
           document.body.classList.remove('pdf-grid');
@@ -656,14 +630,33 @@
             swiperInstances.push(sw);
           });
         });
-    
       }); // end DOMContentLoaded
     
-      // 分享函式：跟舊版一模一樣
+      // 分享函式：新增 iOS Web Share API 回退支援
       async function shareWishlist() {
         const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
-        if (!list.length) return alert('心願單為空！');
+        if (!list.length) {
+          return alert('心願單為空！');
+        }
     
+        // 如果非 LINE Client 且是 iOS 裝置，且支援 Web Share API，就呼叫 navigator.share()
+        if (!liff.isInClient() && /iPad|iPhone|iPod/.test(navigator.userAgent) && navigator.share) {
+          const urlsText = list.map(item => item.url).join('\n');
+          try {
+            await navigator.share({
+              title: '我的心願單',
+              text: urlsText,
+              url: window.location.href
+            });
+            return;
+          } catch (e) {
+            console.error('Web Share API 例外', e);
+            alert('分享失敗：' + (e.message || e));
+            return;
+          }
+        }
+    
+        // 原本 LINE LIFF 分享流程
         const messages = list.map(item => ({
           type: 'image',
           originalContentUrl: item.url,
