@@ -42,35 +42,13 @@
         transform-origin: top ;
       }
 
-      /* 外部環境提醒 (手機流程用) */
-      #hx-outside-msg{
-        display:none;
-        background:#fffae6;
-        padding:8px 16px;
-        font-size:14px;
-        text-align:center;
-        border-bottom:1px solid #ddd;
-      }
-      #hx-outside-msg button{
-        margin-left:8px;
-        padding:4px 8px;
-        font-size:13px;
-        line-height:1;
-        border-radius:4px;
-        border:1px solid #06c755;
-        color:#fff;
-        background:#06c755;
-      }
+      
     </style>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   </head>
 
   <body>
     <!-- 手機流程用：若外部瀏覽器而非 LIFF，提示「開啟 LINE」 -->
-    <div id="hx-outside-msg">
-      若要分享心願單圖片到 LINE，請點這裡在 LINE App 中開啟。
-      <button type="button" id="hx-open-in-line">開啟</button>
-    </div>
 
     <div id="open-external-tip" style="
       display:none;
@@ -778,11 +756,7 @@
           console.warn('LIFF init fail (mobile)', e);
         }
       
-        // 如果不是在 LIFF，就顯示提示條
-        const outsideMsg = document.getElementById('hx-outside-msg');
-        if(outsideMsg && !inClient){
-          outsideMsg.style.display='block';
-        }
+        
         // 按「開啟」→ 試 line://app -> LIFF
         const openBtn = document.getElementById('hx-open-in-line');
         if(openBtn){
