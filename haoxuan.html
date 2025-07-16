@@ -406,6 +406,30 @@
                   </button>
                 </h2>
               </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具H">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/餐具H.png" class="zoomable-img" alt="餐具H">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  餐具H
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具I">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/餐具I.png" class="zoomable-img" alt="餐具I">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  餐具I
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
 
 
 
@@ -489,39 +513,32 @@
         const LIFF_ID = '2007748054-9bD5ZjXA';
         await liff.init({ liffId: LIFF_ID });
     
-        // 平台判斷（手機 vs. 桌機）
-        const ua = navigator.userAgent.toLowerCase();
-        const isMobile = /iphone|ipad|ipod|android/.test(ua);
-        const isDesktop = !isMobile;
-    
-        // 若不在 LINE Client，先做一次平台導引
-        if (!liff.isInClient()) {
-          if (isDesktop) {
-            // 桌機 → 嘗試跳到 LINE Desktop
-            const a = document.createElement('a');
-            a.href = `line://app/${LIFF_ID}`;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(showInstallLineDesktopNotice, 2000);
-          } else {
-            // 手機純瀏覽器 → 提示去 LINE App 開啟
-            showOpenInLineAppNotice();
-          }
-        }
-    
-        // 綁定「傳送心願清單」按鈕（合併邏輯）
+        // 綁定「傳送心願清單」按鈕（合併邏輯，並把自動導引放在這裡）
         document.getElementById('wishlist-share').addEventListener('click', async () => {
-          // 若仍不在 LINE Client，直接提示
+          // 先判斷是否在 LINE Client
           if (!liff.isInClient()) {
-            alert('請在 LINE App 中開啟此頁面，才能使用分享功能');
-            return;
+            // 平台判斷（手機 vs. 桌機）
+            const ua = navigator.userAgent.toLowerCase();
+            const isMobile = /iphone|ipad|ipod|android/.test(ua);
+            if (isMobile) {
+              // 手機純瀏覽器 → 提示去 LINE App 開啟
+              showOpenInLineAppNotice();
+            } else {
+              // 桌機瀏覽器 → 嘗試跳到 LINE Desktop
+              const a = document.createElement('a');
+              a.href = `line://app/${LIFF_ID}`;
+              document.body.appendChild(a);
+              a.click();
+              setTimeout(showInstallLineDesktopNotice, 2000);
+            }
+            return;  // 一定要 return，避免繼續呼叫 liff.login/share
           }
-          // 在 LINE Client：若未登入就先 login
+    
+          // 在 LINE Client 才繼續下面流程
           if (!liff.isLoggedIn()) {
             sessionStorage.setItem('shareAfterLogin', '1');
             return liff.login({ redirectUri: window.location.href });
           }
-          // 已登入，直接分享
           shareWishlist();
         });
     
@@ -558,8 +575,8 @@
             spaceBetween: 20,
             freeMode: {
               enabled: true,
-              sticky: true,        
-              momentum: false      
+              sticky: true,
+              momentum: false
             },
             centeredSlidesBounds: true,
             breakpoints: { 768:{slidesPerView:3.5}, 992:{slidesPerView:4.5} }
@@ -639,6 +656,7 @@
             swiperInstances.push(sw);
           });
         });
+    
       }); // end DOMContentLoaded
     
       // 分享函式：跟舊版一模一樣
@@ -661,9 +679,10 @@
           } else {
             alert('分享失敗：' + (e.message || e));
           }
-        }  
+        }
       }
     </script>
+    
     
 
 
