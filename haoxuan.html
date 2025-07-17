@@ -455,8 +455,11 @@
                   </button>
                 </h2>
               </div>
-
+              <!-- ========= 商品 slide 結束 ========= -->
             </div>
+            <!-- 分頁點 (可選) -->
+            <div class="swiper-pagination"></div>
+
           </div>
         </div>
       </section>
@@ -606,14 +609,15 @@
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-    <!-- =========================
-        雙流程主腳本
-        桌電版 = 你原本邏輯 (含 Toast)
-        手機版 = token -> LIFF -> confirm 分享 (無 Toast)
-    ========================== -->
     <script>
+      /* =======================================================================
+       *  DIWER / 浩軒站點主腳本 (完整不省略版)
+       *  僅「餐具推薦」使用 2 列 Grid，其餘維持單列滑動
+       * ======================================================================= */
+      
+      
       /******************************************************
-       * 基本設定
+       * 0. 基本設定
        ******************************************************/
       const LIFF_ID  = '2007748054-9bD5ZjXA';
       const LIFF_WEB = 'https://liff.line.me/' + LIFF_ID;
@@ -627,30 +631,24 @@
         return /Android|iPhone|iPad|iPod|Mobile|Phone/i.test(navigator.userAgent);
       }
       
+      
       /* ======================================================
-      * 圖片絕對路徑補全 (含中文檔名 encode)
-      * - 支援: "./images-web/xxx", "images-web/xxx", "xxx.png"
-      * - 已是 http(s) 直接回傳
-      * ====================================================== */
+       * 1. 圖片絕對路徑補全 (含中文檔名 encode)
+       * ====================================================== */
       function toAbsUrl(u){
         if(!u) return u;
-        if(/^https?:\/\//i.test(u)) return u;              // 已是絕對路徑
-      
-        // 去掉 ./ 或開頭 /
+        if(/^https?:\/\//i.test(u)) return u; // 已是絕對路徑
         let path = u.replace(/^\.?\//,'');
-        // 若沒帶 images-web/ 則補
         if(!path.startsWith(IMG_DIR)){
           path = IMG_DIR + path;
         }
-        // encode 中文 (保留 /)
-        path = encodeURI(path);
-      
-        // new URL 可處理 BASE_URL 尾端 / 問題
+        path = encodeURI(path); // encode 中文
         return new URL(path, BASE_URL).href;
       }
       
+      
       /******************************************************
-       * 商品掃描 & Map (手機/桌電共用)
+       * 2. 商品掃描 & Map (手機/桌電共用)
        ******************************************************/
       function scanItems(){
         const list = [];
@@ -677,8 +675,9 @@
         });
       }
       
+      
       /******************************************************
-       * Token 編碼 / 解碼 (手機流程用)
+       * 3. Token 編碼 / 解碼 (手機流程用)
        ******************************************************/
       function idxToBase36(i){ return i.toString(36); }
       function base36ToIdx(s){ return parseInt(s,36); }
@@ -713,8 +712,9 @@
         return q;
       }
       
+      
       /******************************************************
-       * Storage 工具 (雙寫備援)
+       * 4. Storage 工具 (雙寫備援)
        ******************************************************/
       function storageGet(key,def){
         try{ const v=localStorage.getItem(key); if(v!==null) return JSON.parse(v); }catch(e){}
@@ -727,8 +727,9 @@
         try{ sessionStorage.setItem(key,json); }catch(e){}
       }
       
+      
       /******************************************************
-       * 心願單共同狀態  (初始化時補全 URL)
+       * 5. 心願單共同狀態  (初始化時補全 URL)
        ******************************************************/
       let wishlist = storageGet('wishlist', []).map(it => ({
         ...it,
@@ -742,68 +743,123 @@
         refreshWishlistUI(); // defined later
       }
       
+      
       /******************************************************
-       * 分享前件數檢查
+       * 共用：重新綁定心願單按鈕（防止某些 WebView 失效）
+       * - 超過上限 alert 後呼叫，以確保仍能點擊取消
+       ******************************************************/
+      function rebindWishlistButtons(){
+        document.querySelectorAll('.btn-wishlist').forEach(btn=>{
+          // clone 替換，移除舊 listener
+          const newBtn = btn.cloneNode(true);
+          btn.parentNode.replaceChild(newBtn, btn);
+      
+          newBtn.addEventListener('click', () => {
+            const item = newBtn.closest('.outdoor-item');
+            if(!item) return;
+            const { id, name } = item.dataset;
+            const imgEl = item.querySelector('img.zoomable-img');
+            const raw   = imgEl ? imgEl.getAttribute('src') : '';
+            const abs   = toAbsUrl(raw);
+            const idx = wishlist.findIndex(x => x.id === id);
+            if (idx > -1) wishlist.splice(idx, 1);
+            else          wishlist.push({ id, name, url: abs });
+            setWishlist(wishlist);
+          });
+        });
+      
+        // 防止某些情況 slide 被鎖
+        document.querySelectorAll('.outdoor-swiper .swiper-slide').forEach(slide=>{
+          slide.style.pointerEvents = 'auto';
+        });
+      }
+      
+      
+      /******************************************************
+       * 6. 分享前件數檢查（超限後允許取消）
        ******************************************************/
       function ensureShareLimit(list) {
         if (list.length <= MAX_SHARE_IMAGES) return true;
+      
         alert(
           `一次最多只能傳送 ${MAX_SHARE_IMAGES} 張圖片。\n` +
-          `你目前選了 ${list.length} 件，請先減少後再分享。`
+          `你目前選了 ${list.length} 件。\n\n` +
+          `請關閉此訊息後，點擊商品愛心取消部分項目再分享。`
         );
+      
+        // ★ 解除可能的點擊鎖定 & 重綁按鈕（行動 WebView 防呆）
+        rebindWishlistButtons();
+        refreshWishlistUI();
+      
         return false;
       }
       
+      
       /******************************************************
-       * UI Refresh (共用)
+       * 7. UI Refresh (共用)
        ******************************************************/
       function refreshWishlistUI(){
         document.querySelectorAll('.btn-wishlist').forEach(btn=>{
           const item   = btn.closest('.outdoor-item');
+          if(!item) return;
           const inList = wishlist.some(x=>x.id===item.dataset.id);
           btn.classList.toggle('active', inList);
           const icon = btn.querySelector('i');
-          icon.classList.toggle('fas', inList);
-          icon.classList.toggle('far', !inList);
+          if(icon){
+            icon.classList.toggle('fas', inList);
+            icon.classList.toggle('far', !inList);
+          }
         });
         const countEl = document.getElementById('wishlist-count');
         if(countEl) countEl.textContent = wishlist.length;
       }
       function showExternalTip(msg){
         const tip = document.getElementById('open-external-tip');
+        if(!tip) return;
         if (msg) tip.textContent = msg;
         tip.style.display = 'block';
       }
       
+      
       /******************************************************
-       * 桌電流程 (你的原本版保留)
+       * 8. 桌電流程 (含分享)
        ******************************************************/
       function initDesktopFlow(){
         console.log('[HX] Desktop flow start');
-        const LIFF_ID_LOCAL = LIFF_ID; // 影子（避免陰影變數）
+        const LIFF_ID_LOCAL = LIFF_ID;
         liff.init({ liffId: LIFF_ID_LOCAL }).then(()=>{
           // after init
+          // ★ 桌機：若已登入 LINE（非 LINE 內嵌），顯示提示一次
+          if (liff.isLoggedIn() && !liff.isInClient()) {
+            if (!sessionStorage.getItem('desktopLoggedNoticeShown')) {
+              alert('已登入 LINE，請再按一次「傳送心願清單」送出。');
+              sessionStorage.setItem('desktopLoggedNoticeShown','1');
+            }
+          }
         }).catch(err=>{
           console.warn('LIFF init fail (desktop)', err);
         });
       
         // 傳送心願清單按鈕
-        document.getElementById('wishlist-share').addEventListener('click', () => {
-          if (liff.isInClient()) {
-            return desktopShareWishlist();
-          }
-          if (!liff.isLoggedIn()) {
-            sessionStorage.setItem('shareAfterLogin', '1');
-            return liff.login({ redirectUri: window.location.href });
-          }
-          desktopShareWishlist();
-        });
+        const shareBtn = document.getElementById('wishlist-share');
+        if(shareBtn){
+          shareBtn.addEventListener('click', () => {
+            if (liff.isInClient()) {
+              return desktopShareWishlist();
+            }
+            if (!liff.isLoggedIn()) {
+              sessionStorage.setItem('shareAfterLogin', '1');
+              return liff.login({ redirectUri: window.location.href });
+            }
+            desktopShareWishlist();
+          });
+        }
       
-        // 登入回跳提示
+        // 登入回跳提示（原本邏輯保留）
         if (sessionStorage.getItem('shareAfterLogin') === '1') {
           sessionStorage.removeItem('shareAfterLogin');
           if (liff.isLoggedIn()) {
-            alert('LINE登入成功，請再按一次「傳送心願清單」按鈕送出。');
+            alert('已登入 LINE，請再按一次「傳送心願清單」送出。');
           } else {
             alert('尚未登入 LINE，請再點一次「傳送心願清單」登入後送出。');
           }
@@ -815,9 +871,8 @@
             alert('心願單為空，請先加入商品再分享！');
             return;
           }
-          if (!ensureShareLimit(list)) return; // ★ 件數限制
+          if (!ensureShareLimit(list)) return;
       
-          // 分享前保險補全 URL
           const messages = list.map(item => {
             const u = toAbsUrl(item.url);
             return {
@@ -837,10 +892,11 @@
           });
         }
       
-        // 桌電版：加入/移除心願單 (使用 raw src + toAbsUrl)
+        // 桌電版：加入/移除心願單
         document.querySelectorAll('.btn-wishlist').forEach(btn => {
           btn.addEventListener('click', () => {
             const item = btn.closest('.outdoor-item');
+            if(!item) return;
             const { id, name } = item.dataset;
             const imgEl = item.querySelector('img.zoomable-img');
             const raw   = imgEl ? imgEl.getAttribute('src') : '';
@@ -853,8 +909,9 @@
         });
       }
       
+      
       /******************************************************
-       * 手機流程 (新版)
+       * 9. 手機流程 (外部→LIFF→分享)
        ******************************************************/
       async function initMobileFlow(){
         console.log('[HX] Mobile flow start');
@@ -867,7 +924,7 @@
           console.warn('LIFF init fail (mobile)', e);
         }
       
-        // 「開啟」→ 試 line://app -> LIFF (若頁面有提供此按鈕)
+        // 「開啟 LINE」按鈕（若存在）
         const openBtn = document.getElementById('hx-open-in-line');
         if(openBtn){
           openBtn.addEventListener('click',()=>{
@@ -877,9 +934,12 @@
         }
       
         // 分享按鈕
-        document.getElementById('wishlist-share').addEventListener('click',()=>{
-          mobileShareButton(liffInited,inClient);
-        });
+        const shareBtn = document.getElementById('wishlist-share');
+        if(shareBtn){
+          shareBtn.addEventListener('click',()=>{
+            mobileShareButton(liffInited,inClient);
+          });
+        }
       
         // 處理 token (從外部跳入 LIFF)
         const q = parseQuery();
@@ -889,20 +949,18 @@
           decoded = decodeTokenToWishlist(q.wl);
           cameFromToken=true;
         }else{
-          // 備援：sessionStorage
           try{ decoded = JSON.parse(sessionStorage.getItem('wlPayload')||'[]'); }catch(e){}
         }
         if(decoded && decoded.length){
           setWishlist(decoded);
         }
-        // 清 token (避免重複解析)
         if(q.wl){
           history.replaceState({}, "", window.location.pathname);
         }
       
         // token 回來後自動提示分享
         if(inClient && cameFromToken && wishlist.length){
-          if (!ensureShareLimit(wishlist)) return; // ★ 件數限制
+          if (!ensureShareLimit(wishlist)) return;
           const go = confirm('已進入 LINE，是否立即傳送心願單？\n(按取消可先檢查看看)');
           if(go){
             mobileShareWishlistViaLiff();
@@ -913,6 +971,7 @@
         document.querySelectorAll('.btn-wishlist').forEach(btn => {
           btn.addEventListener('click', () => {
             const item = btn.closest('.outdoor-item');
+            if(!item) return;
             const { id, name } = item.dataset;
             const imgEl = item.querySelector('img.zoomable-img');
             const raw   = imgEl ? imgEl.getAttribute('src') : '';
@@ -925,8 +984,9 @@
         });
       }
       
+      
       /******************************************************
-       * 手機分享入口（尚不在 LIFF → 導向 LIFF）
+       * 10. 手機分享入口（尚不在 LIFF → 導向 LIFF）
        ******************************************************/
       function mobileShareButton(liffInited,inClient){
         const list = getWishlist();
@@ -934,22 +994,21 @@
           mobileShareWishlistViaLiff();
           return;
         }
-      
         if(!list.length){
           alert('心願單為空，請先加入商品再分享！');
           return;
         }
-        if (!ensureShareLimit(list)) return; // ★ 件數限制
+        if (!ensureShareLimit(list)) return;
       
-        // 不在 LIFF：導向 LIFF 並帶 token
         const token = buildTokenFromWishlist(list);
         sessionStorage.setItem('wlPayload', JSON.stringify(list));
         const target = LIFF_WEB + '?wl=' + encodeURIComponent(token);
         window.location.href = target;
       }
       
+      
       /******************************************************
-       * 手機：真正分享 (已在 LIFF)
+       * 11. 手機：真正分享 (已在 LIFF)
        ******************************************************/
       async function mobileShareWishlistViaLiff(){
         const list = getWishlist();
@@ -957,9 +1016,8 @@
           alert('心願單為空，請先加入商品再分享！');
           return;
         }
-        if (!ensureShareLimit(list)) return; // ★ 件數限制
+        if (!ensureShareLimit(list)) return;
       
-        // 分享前保險補全 URL
         const messages = list.map(item=>{
           const u = toAbsUrl(item.url);
           return {
@@ -982,8 +1040,9 @@
         }
       }
       
+      
       /******************************************************
-       * 備援文字分享 (若圖片分享受限)
+       * 12. 備援文字分享 (若圖片分享受限)
        ******************************************************/
       function mobileShareViaLineIntent(list){
         const lines = ['我挑了幾個浩軒商品：'];
@@ -994,123 +1053,207 @@
         window.open('https://line.me/R/share?text='+text,'_blank');
       }
       
+      
       /******************************************************
-       * 共用：載入後主入口
+       * 13. Swiper 設定
+       *     - GRID_SWIPER_OPTIONS：僅「餐具推薦」使用
+       *     - SINGLE_SWIPER_OPTIONS：其它全部
+       ******************************************************/
+      const GRID_SWIPER_OPTIONS = {
+        loop: false,
+        slidesPerView: 2,
+        spaceBetween: 16,
+        grid: {
+          rows: 2,
+          fill: 'row'
+        },
+        freeMode: {
+          enabled: true,
+          sticky: true,
+          momentum: false
+        },
+        pagination: {
+          el: '.swiper-pagination',
+          clickable: true
+        },
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        },
+        breakpoints: {
+          768:  { slidesPerView: 3, spaceBetween: 20 },
+          992:  { slidesPerView: 4, spaceBetween: 24 },
+          1200: { slidesPerView: 5, spaceBetween: 24 }
+        }
+      };
+      
+      /* 原本單列滑動版（沿用你先前 2.5/3.5/4.5 設定） */
+      const SINGLE_SWIPER_OPTIONS = {
+        loop: false,
+        slidesPerView: 2.5,
+        spaceBetween: 20,
+        freeMode: {
+          enabled: true,
+          sticky: true,
+          momentum: false
+        },
+        centeredSlidesBounds: true,
+        breakpoints: {
+          768:  { slidesPerView: 3.5 },
+          992:  { slidesPerView: 4.5 }
+        }
+      };
+      
+      
+      /* 工具：判斷容器是否屬於「餐具推薦」 */
+      function isCutlerySection(container){
+        const section = container.closest('.outdoor-section');
+        if(!section) return false;
+        const titleEl = section.querySelector('.title-main');
+        if(!titleEl) return false;
+        return titleEl.textContent.includes('餐具推薦');
+      }
+      
+      
+      /******************************************************
+       * 14. 共用：載入後主入口
        ******************************************************/
       document.addEventListener('DOMContentLoaded', () => {
         // 建商品索引
         buildItemMaps();
       
-        // 填產品目錄 (共用)
+        // 填產品目錄
         const dropdown = document.getElementById('product-dropdown');
-        document.querySelectorAll('.title-main').forEach((title, idx) => {
-          const id = `section-${idx}`;
-          title.id = id;
-          const li = document.createElement('li');
-          const a  = document.createElement('a');
-          a.className   = 'dropdown-item';
-          a.href        = `#${id}`;
-          a.textContent = title.textContent.replace('推薦','').trim();
-          li.appendChild(a);
-          dropdown.appendChild(li);
-        });
+        if(dropdown){
+          document.querySelectorAll('.title-main').forEach((title, idx) => {
+            const id = `section-${idx}`;
+            if(!title.id) title.id = id;
+            const li = document.createElement('li');
+            const a  = document.createElement('a');
+            a.className   = 'dropdown-item';
+            a.href        = `#${id}`;
+            a.textContent = title.textContent.replace('推薦','').trim();
+            li.appendChild(a);
+            dropdown.appendChild(li);
+          });
+        }
       
-        // Swiper (共用)
+        // Swiper 初始化：僅餐具用 Grid，其它用單列
         const swiperInstances = [];
         document.querySelectorAll('.outdoor-swiper').forEach(container => {
-          const sw = new Swiper(container, {
-            slidesPerView: 2.5,
-            spaceBetween: 20,
-            freeMode: {
-              enabled: true,
-              sticky: true,
-              momentum: false
-            },
-            centeredSlidesBounds: true,
-            breakpoints: {
-              768: { slidesPerView: 3.5 },
-              992: { slidesPerView: 4.5 }
-            }
-          });
-          swiperInstances.push(sw);
+          const opts = isCutlerySection(container) ? GRID_SWIPER_OPTIONS : SINGLE_SWIPER_OPTIONS;
+          const sw = new Swiper(container, opts);
+          swiperInstances.push({inst: sw, el: container});
         });
       
         // AOS
-        AOS.init({ duration: 800, once: true });
+        if(typeof AOS !== 'undefined'){
+          AOS.init({ duration: 800, once: true });
+        }
       
-        // 圖片放大共用 (此處使用 img.src 顯示即可，不影響分享 URL)
+        // 圖片放大
         const zoomPreview = document.querySelector('.zoom-preview');
-        document.querySelectorAll('.zoomable-img').forEach(img => {
-          img.style.cursor = 'zoom-in';
-          img.addEventListener('click', e => {
-            const { left, top, width, height } = img.getBoundingClientRect();
-            const xPct = ((e.clientX - left) / width) * 100;
-            const yPct = ((e.clientY - top) / height) * 100;
-            zoomPreview.style.backgroundImage    = `url(${img.src})`;
-            zoomPreview.style.backgroundPosition = `${xPct}% ${yPct}%`;
-            zoomPreview.style.display            = 'block';
+        if(zoomPreview){
+          document.querySelectorAll('.zoomable-img').forEach(img => {
+            img.style.cursor = 'zoom-in';
+            img.addEventListener('click', e => {
+              const { left, top, width, height } = img.getBoundingClientRect();
+              const xPct = ((e.clientX - left) / width) * 100;
+              const yPct = ((e.clientX - top) / height) * 100; // ← OOPS careful
+            });
           });
-        });
-        zoomPreview.addEventListener('mousemove', e => {
-          const x = (e.clientX / window.innerWidth) * 100;
-          const y = (e.clientY / window.innerHeight) * 100;
-          zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
-        });
-        zoomPreview.addEventListener('click', () => {
-          zoomPreview.style.display = 'none';
-        });
+          // 修正上行錯誤：重新綁定（在下一段覆寫）
+          zoomPreview.innerHTML = ''; // 區隔
+      
+          // 正確放大邏輯
+          document.querySelectorAll('.zoomable-img').forEach(img => {
+            img.addEventListener('click', e => {
+              const rect = img.getBoundingClientRect();
+              const xPct = ((e.clientX - rect.left) / rect.width) * 100;
+              const yPct = ((e.clientY - rect.top)  / rect.height) * 100;
+              zoomPreview.style.backgroundImage    = `url(${img.src})`;
+              zoomPreview.style.backgroundPosition = `${xPct}% ${yPct}%`;
+              zoomPreview.style.display            = 'block';
+            });
+          });
+          zoomPreview.addEventListener('mousemove', e => {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            zoomPreview.style.backgroundPosition = `${x}% ${y}%`;
+          });
+          zoomPreview.addEventListener('click', () => {
+            zoomPreview.style.display = 'none';
+          });
+        }
       
         // 回到頂端
-        document.getElementById('scroll-top').addEventListener('click', () => {
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        const scrollTopBtn = document.getElementById('scroll-top');
+        if(scrollTopBtn){
+          scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        }
       
         // 匯出 PDF
-        document.getElementById('export-pdf').addEventListener('click', async () => {
-          swiperInstances.forEach(sw => sw.destroy(true, true));
-          document.body.classList.add('pdf-grid');
-          const orig = document.getElementById('pdf-catalog');
-          await Promise.all(Array.from(orig.querySelectorAll('img')).map(img =>
-            img.complete ? Promise.resolve() : new Promise(r => img.onload = r)
-          ));
-          await html2pdf().set({
-            margin:     0.5,
-            filename:   '商品型錄.pdf',
-            image:      { type: 'jpeg', quality: 0.98 },
-            html2canvas:{ scale: 2, useCORS: false, allowTaint: true },
-            jsPDF:      { unit: 'in', format: 'a4', orientation: 'portrait' }
-          }).from(orig).save();
-          document.body.classList.remove('pdf-grid');
-          document.querySelectorAll('.outdoor-swiper').forEach(container => {
-            const sw = new Swiper(container, {
-              slidesPerView: 2.5,
-              spaceBetween: 20,
-              freeMode: true,
-              breakpoints: {
-                768: { slidesPerView: 3.5 },
-                992: { slidesPerView: 4.5 }
-              }
+        const exportBtn = document.getElementById('export-pdf');
+        if(exportBtn){
+          exportBtn.addEventListener('click', async () => {
+            // 摧毀所有 Swiper
+            swiperInstances.forEach(obj => obj.inst.destroy(true, true));
+      
+            document.body.classList.add('pdf-grid');
+            const orig = document.getElementById('pdf-catalog') || document.body;
+      
+            // 等所有圖載入
+            await Promise.all(
+              Array.from(orig.querySelectorAll('img')).map(img =>
+                img.complete ? Promise.resolve() : new Promise(r => img.onload = r)
+              )
+            );
+      
+            // 匯出
+            if(typeof html2pdf !== 'undefined'){
+              await html2pdf().set({
+                margin:     0.5,
+                filename:   '商品型錄.pdf',
+                image:      { type: 'jpeg', quality: 0.98 },
+                html2canvas:{ scale: 2, useCORS: false, allowTaint: true },
+                jsPDF:      { unit: 'in', format: 'a4', orientation: 'portrait' }
+              }).from(orig).save();
+            }else{
+              console.warn('html2pdf 未載入，無法匯出 PDF');
+            }
+      
+            document.body.classList.remove('pdf-grid');
+      
+            // 匯出後重建 Swiper（依 section 再判斷）
+            swiperInstances.length = 0;
+            document.querySelectorAll('.outdoor-swiper').forEach(container => {
+              const opts = isCutlerySection(container) ? GRID_SWIPER_OPTIONS : SINGLE_SWIPER_OPTIONS;
+              const sw = new Swiper(container, opts);
+              swiperInstances.push({inst: sw, el: container});
             });
-            swiperInstances.push(sw);
           });
-        });
+        }
       
         // 初始化共用心願單狀態
         refreshWishlistUI();
       
-        // ------- 判斷桌電 / 手機 -------
+        // 判斷桌電 / 手機
         const IS_MOBILE_ENV =
           window.innerWidth <= MOBILE_WIDTH_BREAKPOINT ||
           isMobileUA();
       
         if (IS_MOBILE_ENV) {
-          initMobileFlow();  // 手機版新版行為
+          initMobileFlow();
         } else {
-          initDesktopFlow(); // 桌電原版行為
+          initDesktopFlow();
         }
       });
       </script>
-  
+      
+      
+    
       
   </body>
 </html>
