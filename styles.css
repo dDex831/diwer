@@ -395,7 +395,7 @@
     align-items: center;
     justify-content: flex-start;
     box-sizing: border-box;
-    padding: 0.5rem;
+    
   }
   .outdoor-swiper .swiper-wrapper {
     box-sizing: border-box;
@@ -1139,15 +1139,4 @@
     padding-right: 0 !important;
   }
   
-  
-  /* ======================================================================
-     15. Demo Overrides / 測試樣式（若正式上線請移除）
-     ====================================================================== */
-  /* 你曾示範：Product Detail 標題大字體/顏色/位移 */
-  .product-detail .description h1 {
-    font-size: 5.5rem !important;   /* 舉例：更大字 */
-    color: #123456;
-    position: relative;
-    left: -2rem !important;
-  }
   
