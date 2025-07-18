@@ -38,7 +38,7 @@
 
 -用者可在商品卡片上點擊「愛心」按鈕，將商品加入／移除心願單 (localStorage 保存)
 -點擊「傳到 LINE 好友」按鈕，於 LINE App 環境內彈出好友／聊天室選擇視窗，使用 LIFF shareTargetPicker 只傳送圖片訊息
--在非 LINE App（桌機瀏覽器、一般行動瀏覽器）中，提供 QR Code 掃描或複製連結，提示使用者轉至 LINE App 分享
+-在非 LINE App（桌機瀏覽器、一般行動瀏覽器）中，點擊「傳到 LINE 好友」按鈕，登入LINE後，提示使用者轉至 LINE App 分享
 
 
 ---
