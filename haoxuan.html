@@ -320,17 +320,36 @@
           </div>
         </div>
       </section>
-      <!-- 杯子贈品 -->
+      <!-- ========================================= -->
+      <!--          杯子贈品  (全部已改 <picture>)    -->
+      <!-- ========================================= -->
       <section class="outdoor-section">
         <div class="outdoor-container">
           <h1 class="title-main mb-4">杯子贈品</h1>
-        
+
           <div class="swiper outdoor-swiper">
-            
             <div class="swiper-wrapper">
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cup-ice" data-name="冰壩杯">
+              <!-- ① 冰壩杯 -->
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"
+                  data-id="cup-ice" data-name="冰壩杯">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/冰壩杯.png" class="zoomable-img" alt="冰壩杯" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/冰壩杯-400.webp 400w,
+                                    images-web/冰壩杯-800.webp 800w,
+                                    images-web/冰壩杯-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/冰壩杯-400.png 400w,
+                                    images-web/冰壩杯-800.png 800w,
+                                    images-web/冰壩杯-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/冰壩杯-800.webp"
+                        alt="冰壩杯"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -340,10 +359,28 @@
                   </button>
                 </h2>
               </div>
-            
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cup-coffee" data-name="咖啡玻璃杯">
+
+              <!-- ② 咖啡玻璃杯 -->
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"
+                  data-id="cup-coffee" data-name="咖啡玻璃杯">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/咖啡玻璃杯.png" class="zoomable-img" alt="咖啡玻璃杯" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/咖啡玻璃杯-400.webp 400w,
+                                    images-web/咖啡玻璃杯-800.webp 800w,
+                                    images-web/咖啡玻璃杯-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/咖啡玻璃杯-400.png 400w,
+                                    images-web/咖啡玻璃杯-800.png 800w,
+                                    images-web/咖啡玻璃杯-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/咖啡玻璃杯-800.webp"
+                        alt="咖啡玻璃杯"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -353,10 +390,28 @@
                   </button>
                 </h2>
               </div>
-            
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cup-travel" data-name="旅行洗洗漱杯">
+
+              <!-- ③ 旅行洗漱杯 -->
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"
+                  data-id="cup-travel" data-name="旅行洗洗漱杯">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/旅行洗洗漱杯.png" class="zoomable-img" alt="旅行洗洗漱杯" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/旅行洗洗漱杯-400.webp 400w,
+                                    images-web/旅行洗洗漱杯-800.webp 800w,
+                                    images-web/旅行洗洗漱杯-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/旅行洗洗漱杯-400.png 400w,
+                                    images-web/旅行洗洗漱杯-800.png 800w,
+                                    images-web/旅行洗洗漱杯-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/旅行洗洗漱杯-800.webp"
+                        alt="旅行洗洗漱杯"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -366,10 +421,28 @@
                   </button>
                 </h2>
               </div>
-            
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cup-a" data-name="水杯A">
+
+              <!-- ④ 水杯A -->
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"
+                  data-id="cup-a" data-name="水杯A">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/水杯A.png" class="zoomable-img" alt="水杯A" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/水杯A-400.webp 400w,
+                                    images-web/水杯A-800.webp 800w,
+                                    images-web/水杯A-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/水杯A-400.png 400w,
+                                    images-web/水杯A-800.png 800w,
+                                    images-web/水杯A-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/水杯A-800.webp"
+                        alt="水杯A"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -379,10 +452,28 @@
                   </button>
                 </h2>
               </div>
-            
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cup-b" data-name="水杯B" width="150" height="150" loading="lazy"   decoding="async">
+
+              <!-- ⑤ 水杯B -->
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"
+                  data-id="cup-b" data-name="水杯B">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/水杯B.PNG" class="zoomable-img" alt="水杯B">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/水杯B-400.webp 400w,
+                                    images-web/水杯B-800.webp 800w,
+                                    images-web/水杯B-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/水杯B-400.png 400w,
+                                    images-web/水杯B-800.png 800w,
+                                    images-web/水杯B-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/水杯B-800.webp"
+                        alt="水杯B"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -392,10 +483,28 @@
                   </button>
                 </h2>
               </div>
-            
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cup-c" data-name="水杯C">
+
+              <!-- ⑥ 水杯C -->
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"
+                  data-id="cup-c" data-name="水杯C">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/水杯C.PNG" class="zoomable-img" alt="水杯C" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/水杯C-400.webp 400w,
+                                    images-web/水杯C-800.webp 800w,
+                                    images-web/水杯C-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/水杯C-400.png 400w,
+                                    images-web/水杯C-800.png 800w,
+                                    images-web/水杯C-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/水杯C-800.webp"
+                        alt="水杯C"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -405,10 +514,28 @@
                   </button>
                 </h2>
               </div>
-            
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cup-glass" data-name="玻璃杯">
+
+              <!-- ⑦ 玻璃杯 -->
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"
+                  data-id="cup-glass" data-name="玻璃杯">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/玻璃杯.png" class="zoomable-img" alt="玻璃杯" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/玻璃杯-400.webp 400w,
+                                    images-web/玻璃杯-800.webp 800w,
+                                    images-web/玻璃杯-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/玻璃杯-400.png 400w,
+                                    images-web/玻璃杯-800.png 800w,
+                                    images-web/玻璃杯-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/玻璃杯-800.webp"
+                        alt="玻璃杯"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -418,10 +545,28 @@
                   </button>
                 </h2>
               </div>
-            
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cup-d" data-name="水杯D">
+
+              <!-- ⑧ 水杯D -->
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"
+                  data-id="cup-d" data-name="水杯D">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/水杯D.png" class="zoomable-img" alt="水杯D" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/水杯D-400.webp 400w,
+                                    images-web/水杯D-800.webp 800w,
+                                    images-web/水杯D-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/水杯D-400.png 400w,
+                                    images-web/水杯D-800.png 800w,
+                                    images-web/水杯D-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/水杯D-800.webp"
+                        alt="水杯D"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -431,12 +576,11 @@
                   </button>
                 </h2>
               </div>
-            </div>
-            
-           
-          </div>
-        </div>
+            </div> <!-- .swiper-wrapper -->
+          </div>   <!-- .swiper -->
+        </div>     <!-- .outdoor-container -->
       </section>
+
 
       <!-- 餐盒贈品 -->
       <section class="outdoor-section">
@@ -447,9 +591,27 @@
             <div class="swiper-wrapper">
             
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryC" data-name="餐盒A">
+                <!-- ① 餐盒A ------------------------------------------------------------------- -->
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/餐具C.png" class="zoomable-img" alt="餐盒A" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/餐具C-400.webp 400w,
+                                    images-web/餐具C-800.webp 800w,
+                                    images-web/餐具C-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/餐具C-400.png 400w,
+                                    images-web/餐具C-800.png 800w,
+                                    images-web/餐具C-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/餐具C-800.webp"
+                        alt="餐盒A"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
+
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
                   餐盒A
@@ -460,8 +622,25 @@
               </div>
 
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryD" data-name="餐具D">
+                <!-- ② 便當盒 ------------------------------------------------------------------- -->
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/餐具D.png" class="zoomable-img" alt="餐具D" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/餐具D-400.webp 400w,
+                                    images-web/餐具D-800.webp 800w,
+                                    images-web/餐具D-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/餐具D-400.png 400w,
+                                    images-web/餐具D-800.png 800w,
+                                    images-web/餐具D-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/餐具D-800.webp"
+                        alt="便當盒"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -472,8 +651,25 @@
                 </h2>
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryF" data-name="餐具F">
+                <!-- ③ 復古便當盒 --------------------------------------------------------------- -->
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/餐具F.png" class="zoomable-img" alt="餐具F" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/餐具F-400.webp 400w,
+                                    images-web/餐具F-800.webp 800w,
+                                    images-web/餐具F-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/餐具F-400.png 400w,
+                                    images-web/餐具F-800.png 800w,
+                                    images-web/餐具F-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/餐具F-800.webp"
+                        alt="復古便當盒"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -484,9 +680,27 @@
                 </h2>
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryG" data-name="餐具G">
+                <!-- ④ 保鮮盒 ------------------------------------------------------------------- -->
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/餐具G.png" class="zoomable-img" alt="餐具G" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/餐具G-400.webp 400w,
+                                    images-web/餐具G-800.webp 800w,
+                                    images-web/餐具G-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/餐具G-400.png 400w,
+                                    images-web/餐具G-800.png 800w,
+                                    images-web/餐具G-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/餐具G-800.webp"
+                        alt="保鮮盒"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
+
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
                   保鮮盒
@@ -496,8 +710,25 @@
                 </h2>
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryH" data-name="餐具H">
+                <!-- ⑤ 不銹鋼餐盒A -------------------------------------------------------------- -->
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/餐具H.png" class="zoomable-img" alt="餐具H" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/餐具H-400.webp 400w,
+                                    images-web/餐具H-800.webp 800w,
+                                    images-web/餐具H-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/餐具H-400.png 400w,
+                                    images-web/餐具H-800.png 800w,
+                                    images-web/餐具H-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/餐具H-800.webp"
+                        alt="不銹鋼餐盒A"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -508,8 +739,25 @@
                 </h2>
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryJ" data-name="餐具J">
+                <!-- ⑥ 不銹鋼餐盒B -------------------------------------------------------------- -->
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/餐具J.png" class="zoomable-img" alt="餐具J" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/餐具J-400.webp 400w,
+                                    images-web/餐具J-800.webp 800w,
+                                    images-web/餐具J-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/餐具J-400.png 400w,
+                                    images-web/餐具J-800.png 800w,
+                                    images-web/餐具J-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/餐具J-800.webp"
+                        alt="不銹鋼餐盒B"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -520,8 +768,25 @@
                 </h2>
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryL" data-name="餐具L">
+                <!-- ⑦ 餐盒B ------------------------------------------------------------------- -->
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/餐具L.png" class="zoomable-img" alt="餐具L" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/餐具L-400.webp 400w,
+                                    images-web/餐具L-800.webp 800w,
+                                    images-web/餐具L-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/餐具L-400.png 400w,
+                                    images-web/餐具L-800.png 800w,
+                                    images-web/餐具L-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/餐具L-800.webp"
+                        alt="餐盒B"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -564,7 +829,7 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryB" data-name="餐具B">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/餐具M.png" class="zoomable-img" alt="餐具B" width="150" height="150" loading="lazy"   decoding="async">
+                 <img src="images-web/餐具M.png" class="zoomable-img" alt="餐具B" width="150" height="150" loading="lazy"   decoding="async">
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
