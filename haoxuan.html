@@ -155,12 +155,17 @@
                   </picture>
                 </div>
                 <hr class="outdoor-divider" />
-                <h2 class="outdoor-title">
-                  帳篷
+                <h2 class="outdoor-title"> <!-- 外層 h2 維持原 class，讓 CSS/JS 能鎖定 -->
+                  <!-- 正面文字：初始顯示「積木娃包」 -->
+                  <span class="title-front">帳篷</span>
+                  <!-- 背面文字：預設旋轉 90° 隱藏，之後顯示「HS-1900」 -->
+                  <span class="title-back">SH-059</span>
+                  <!-- 原本的心願單按鈕不動 -->
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
                 </h2>
+                
               </div>
             
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="outdoor-moon-chair" data-name="月亮椅">
@@ -185,12 +190,17 @@
                   </picture>
                 </div>
                 <hr class="outdoor-divider" />
-                <h2 class="outdoor-title">
-                  月亮椅
+                <h2 class="outdoor-title"> <!-- 外層 h2 維持原 class，讓 CSS/JS 能鎖定 -->
+                  <!-- 正面文字：初始顯示「積木娃包」 -->
+                  <span class="title-front">月亮椅</span>
+                  <!-- 背面文字：預設旋轉 90° 隱藏，之後顯示「HS-1900」 -->
+                  <span class="title-back">SH-062</span>
+                  <!-- 原本的心願單按鈕不動 -->
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
                 </h2>
+                
               </div>
             
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="outdoor-chair-2" data-name="戶外折疊椅2">
@@ -216,8 +226,12 @@
                 </div>
                 
                 <hr class="outdoor-divider" />
-                <h2 class="outdoor-title">
-                  戶外折疊椅2
+                <h2 class="outdoor-title"> <!-- 外層 h2 維持原 class，讓 CSS/JS 能鎖定 -->
+                  <!-- 正面文字：初始顯示「積木娃包」 -->
+                  <span class="title-front">戶外折疊椅2</span>
+                  <!-- 背面文字：預設旋轉 90° 隱藏，之後顯示「HS-1900」 -->
+                  <span class="title-back">SH-060</span>
+                  <!-- 原本的心願單按鈕不動 -->
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -246,9 +260,11 @@
                   </picture>
                 </div>
                 <hr class="outdoor-divider" />
-                <h2 class="outdoor-title">
-                  戶外折疊椅1
-                  <button class="btn-wishlist" aria-label="加入心願單">
+                <!-- ★ 戶外折疊椅 1 ──(原本 h2 區塊) -->
+                <h2 class="outdoor-title">                   <!-- ① 外層 h2：維持原 class -->
+                  <span class="title-front">戶外折疊椅1</span> <!-- ② 正面文字 -->
+                  <span class="title-back">SH‑061</span>       <!-- ③ 背面文字 (自行替換) -->
+                  <button class="btn-wishlist" aria-label="加入心願單"> <!-- ④ 愛心按鈕不變 -->
                     <i class="far fa-heart"></i>
                   </button>
                 </h2>
@@ -278,7 +294,8 @@
                 
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  戶外折疊椅3
+                  <span class="title-front">戶外折疊椅3</span>
+                  <span class="title-back">SH-063</span>       <!-- ← 型號示範，依需求修改 -->
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -308,7 +325,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  棒球
+                  <span class="title-front">棒球</span>
+                  <span class="title-back">SH-064</span>       <!-- ← 型號示範，依需求修改 -->
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -353,7 +371,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  冰壩杯
+                  <span class="title-front">冰壩杯</span>   <!-- 正面：原商品名 -->
+                  <span class="title-back">SC-0007</span>   <!-- 背面：型號示範，可換 -->
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -386,7 +405,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  旅行洗洗漱杯
+                  <span class="title-front">旅行洗洗漱杯</span>
+                  <span class="title-back">SC-0005</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -417,7 +437,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  水杯A
+                  <span class="title-front">水杯A</span>
+                  <span class="title-back">SC-0006</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -448,7 +469,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  水杯B
+                  <span class="title-front">水杯B</span>
+                  <span class="title-back">SC-0006</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -479,7 +501,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  水杯C
+                  <span class="title-front">水杯C</span>
+                  <span class="title-back">SC-0006</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -492,7 +515,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  冷水壺
+                  <span class="title-front">冷水壺</span>
+                  <span class="title-back">SO-367</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -523,7 +547,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  玻璃杯
+                  <span class="title-front">玻璃杯</span>
+                  <span class="title-back">SC-0002</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -554,7 +579,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  水杯D
+                  <span class="title-front">水杯D</span>
+                  <span class="title-back">SC-0008</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -584,7 +610,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  咖啡玻璃杯
+                  <span class="title-front">咖啡玻璃杯</span>
+                  <span class="title-back">SC‑0004</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -619,7 +646,7 @@
                                     images-web/餐具C-1200.png 1200w"
                             sizes="(min-width: 1200px) 20vw, 33vw">
                     <img src="images-web/餐具C-800.webp"
-                        alt="餐盒A"
+                        alt="餐盒"
                         class="zoomable-img"
                         width="150" height="150"
                         loading="lazy" decoding="async">
@@ -627,8 +654,9 @@
                 </div>
 
                 <hr class="outdoor-divider" />
-                <h2 class="outdoor-title">
-                  餐盒A
+                <h2 class="outdoor-title"> <!-- 外層 h2 保持原 class -->
+                  <span class="title-front">餐盒A</span>   <!-- 正面：原文字 -->
+                  <span class="title-back">SG-060</span> <!-- 背面：型號，自行替換 -->
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -658,7 +686,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  便當盒
+                  <span class="title-front">便當盒</span>
+                  <span class="title-back">SG-061</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -687,7 +716,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  復古便當盒
+                  <span class="title-front">復古便當盒</span>
+                  <span class="title-back">SG-063</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -717,11 +747,13 @@
 
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  保鮮盒
+                  <span class="title-front">保鮮盒</span>
+                  <span class="title-back">SG-064</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
                 </h2>
+                
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryH" data-name="餐具H">
                 <!-- ⑤ 不銹鋼餐盒A -------------------------------------------------------------- -->
@@ -746,7 +778,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  不銹鋼餐盒A
+                  <span class="title-front">不銹鋼餐盒A</span>
+                  <span class="title-back">SG-066</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -775,7 +808,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  不銹鋼餐盒B
+                  <span class="title-front">不銹鋼餐盒B</span>
+                  <span class="title-back">SG-065</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -804,7 +838,8 @@
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
-                  餐盒B
+                  <span class="title-front">收納盒4件組</span>
+                  <span class="title-back">SO-390</span>
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -864,7 +899,7 @@
 
               <!-- ② 餐具B (cutleryM) -->
               <div class="swiper-slide outdoor-item" data-aos="fade-up"
-                  data-id="cutleryB" data-name="餐具B">
+                  data-id="cutleryM" data-name="餐具B">
                 <div class="outdoor-img-wrapper">
                   <picture>
                     <source type="image/webp"
@@ -895,7 +930,7 @@
 
               <!-- ③ 餐具C (cutleryN) -->
               <div class="swiper-slide outdoor-item" data-aos="fade-up"
-                  data-id="cutleryB" data-name="餐具B">
+                  data-id="cutlery" data-name="餐具B">
                 <div class="outdoor-img-wrapper">
                   <picture>
                     <source type="image/webp"
@@ -955,36 +990,7 @@
                 </h2>
               </div>
 
-              <!-- ⑤ 餐盒 (cutleryE) -->
-              <div class="swiper-slide outdoor-item" data-aos="fade-up"
-                  data-id="cutleryE" data-name="餐具E">
-                <div class="outdoor-img-wrapper">
-                  <picture>
-                    <source type="image/webp"
-                            srcset="images-web/餐具E-400.webp 400w,
-                                    images-web/餐具E-800.webp 800w,
-                                    images-web/餐具E-1200.webp 1200w"
-                            sizes="(min-width: 1200px) 20vw, 33vw">
-                    <source type="image/png"
-                            srcset="images-web/餐具E-400.png 400w,
-                                    images-web/餐具E-800.png 800w,
-                                    images-web/餐具E-1200.png 1200w"
-                            sizes="(min-width: 1200px) 20vw, 33vw">
-                    <img src="images-web/餐具E-800.webp"
-                        alt="餐盒"
-                        class="zoomable-img"
-                        width="150" height="150"
-                        loading="lazy" decoding="async">
-                  </picture>
-                </div>
-                <hr class="outdoor-divider" />
-                <h2 class="outdoor-title">
-                  餐盒
-                  <button class="btn-wishlist" aria-label="加入心願單">
-                    <i class="far fa-heart"></i>
-                  </button>
-                </h2>
-              </div>
+              
 
               <!-- ⑥ 陶瓷碗 (cutleryI) -->
               <div class="swiper-slide outdoor-item" data-aos="fade-up"
@@ -1047,6 +1053,21 @@
                   </button>
                 </h2>
               </div>
+
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryT" data-name="不鏽鋼碗">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/不鏽鋼碗.png" class="zoomable-img" alt="不鏽鋼碗" width="150" height="150" loading="lazy"   decoding="async">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  不鏽鋼碗
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
+
+
 
               <!-- ⑧ 隔熱墊A (cutleryO) -->
               <div class="swiper-slide outdoor-item" data-aos="fade-up"
@@ -1197,6 +1218,36 @@
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
                   手提冰桶
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
+              <!-- ⑤ 餐盒 (cutleryE) -->
+              <div class="swiper-slide outdoor-item" data-aos="fade-up"
+                  data-id="cutleryE" data-name="餐具E">
+                <div class="outdoor-img-wrapper">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/餐具E-400.webp 400w,
+                                    images-web/餐具E-800.webp 800w,
+                                    images-web/餐具E-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/餐具E-400.png 400w,
+                                    images-web/餐具E-800.png 800w,
+                                    images-web/餐具E-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/餐具E-800.webp"
+                        alt="餐盒"
+                        class="zoomable-img"
+                        width="150" height="150"
+                        loading="lazy" decoding="async">
+                  </picture>
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  餐盒
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -1361,31 +1412,22 @@
                   </button>
                 </h2>
               </div>
+
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="毛巾" data-name="毛巾">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/毛巾.png" class="zoomable-img" alt="毛巾" width="150" height="150" loading="lazy"   decoding="async">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  毛巾
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
+
               
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="daysB" data-name="日用B">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/日用B.png" class="zoomable-img" alt="日用B" width="150" height="150" loading="lazy"   decoding="async">
-                </div>
-                <hr class="outdoor-divider" />
-                <h2 class="outdoor-title">
-                  娃娃A
-                  <button class="btn-wishlist" aria-label="加入心願單">
-                    <i class="far fa-heart"></i>
-                  </button>
-                </h2>
-              </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="daysC" data-name="日用C">
-                <div class="outdoor-img-wrapper">
-                  <img src="images-web/日用C.png" class="zoomable-img" alt="日用C" width="150" height="150" loading="lazy"   decoding="async">
-                </div>
-                <hr class="outdoor-divider" />
-                <h2 class="outdoor-title">
-                  娃娃B
-                  <button class="btn-wishlist" aria-label="加入心願單">
-                    <i class="far fa-heart"></i>
-                  </button>
-                </h2>
-              </div>
+              
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="daysE" data-name="日用E">
                 <div class="outdoor-img-wrapper">
                   <img src="images-web/日用E.png" class="zoomable-img" alt="日用E" width="150" height="150" loading="lazy"   decoding="async">
@@ -1405,6 +1447,47 @@
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
                   收納盒
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
+
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="積木娃包" data-name="積木娃包">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/積木娃包.png" class="zoomable-img" alt="積木娃包" width="150" height="150" loading="lazy"   decoding="async">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title"> <!-- 外層 h2 維持原 class，讓 CSS/JS 能鎖定 -->
+                  <!-- 正面文字：初始顯示「積木娃包」 -->
+                  <span class="title-front">積木娃包</span>
+                  <!-- 背面文字：預設旋轉 90° 隱藏，之後顯示「HS-1900」 -->
+                  <span class="title-back">SO-371</span>
+                  <!-- 原本的心願單按鈕不動 -->
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="daysB" data-name="日用B">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/日用B.png" class="zoomable-img" alt="日用B" width="150" height="150" loading="lazy"   decoding="async">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  娃娃A
+                  <button class="btn-wishlist" aria-label="加入心願單">
+                    <i class="far fa-heart"></i>
+                  </button>
+                </h2>
+              </div>
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="daysC" data-name="日用C">
+                <div class="outdoor-img-wrapper">
+                  <img src="images-web/日用C.png" class="zoomable-img" alt="日用C" width="150" height="150" loading="lazy"   decoding="async">
+                </div>
+                <hr class="outdoor-divider" />
+                <h2 class="outdoor-title">
+                  娃娃B
                   <button class="btn-wishlist" aria-label="加入心願單">
                     <i class="far fa-heart"></i>
                   </button>
@@ -2276,6 +2359,35 @@
         } else {
           initDesktopFlow();
         }
+      });
+      // 1. 取得所有 .outdoor-title → 之後可重複用在多張卡片
+      document.querySelectorAll('.outdoor-title').forEach((title) => {
+        // 2. 宣告一個計時器 ID，之後可清除
+        let hoverTimer = null; // 儲存 setTimeout 回傳值
+
+        // 3. 滑鼠進入事件
+        title.addEventListener('mouseenter', () => {
+          // 3‑1. 先保險清掉舊計時器，避免重複
+          clearTimeout(hoverTimer);
+
+          // 3‑2. 計時 5000ms（5 秒）後觸發翻轉
+          hoverTimer = setTimeout(() => {
+            // a) 先把向上翻轉 class 移除（若之前有）
+            title.classList.remove('flip-up');
+            // b) 加上向下翻轉 class → 觸發 CSS 動畫
+            title.classList.add('flip-down');
+          }, 1500); // 1500 毫秒
+        });
+
+        // 4. 滑鼠離開事件
+        title.addEventListener('mouseleave', () => {
+          // 4‑1. 離開就取消尚未完成的 5 秒計時
+          clearTimeout(hoverTimer);
+
+          // 4‑2. 若已經翻下去，現在要翻回來
+          title.classList.remove('flip-down'); // 拿掉向下 class
+          title.classList.add('flip-up');      // 加上向上 class
+        });
       });
       </script>
       
