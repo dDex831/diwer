@@ -1595,7 +1595,7 @@
           <div class="swiper outdoor-swiper">
             <div class="swiper-wrapper">
 
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="fansa" data-name="fansa">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="風扇A" data-name="風扇A">
                 <div class="outdoor-img-wrapper">
                   <picture>
                     <source type="image/webp"
@@ -1622,7 +1622,7 @@
                   <button class="btn-wishlist" aria-label="加入心願單"><i class="far fa-heart"></i></button>
                 </h2>
               </div>
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="fansb" data-name="fansb">
+              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="風扇B" data-name="風扇B">
                 <div class="outdoor-img-wrapper">
                   <picture>
                     <source type="image/webp"
@@ -2875,15 +2875,16 @@
       /******************************************************
        * 2. 商品掃描 & Map (手機/桌電共用)
        ******************************************************/
-      function scanItems(){
+       function scanItems(){
         const list = [];
-        document.querySelectorAll('.outdoor-item').forEach(it=>{
-          const id = it.dataset.id;
-          const name = it.dataset.name || '';
+        document.querySelectorAll('.outdoor-item').forEach(it => {
+          const id   = it.dataset.id;                       // 保留 id
+          const name = it.querySelector('.title-front')     // ← ★ 抓可見標題
+                          ?.textContent.trim() || '';       //   去掉兩端空白
           const imgEl = it.querySelector('img.zoomable-img');
-          const raw  = imgEl ? imgEl.getAttribute('src') : '';
-          const url  = toAbsUrl(raw);
-          list.push({id,name,url});
+          const raw   = imgEl ? imgEl.getAttribute('src') : '';
+          const url   = toAbsUrl(raw);
+          list.push({ id, name, url });
         });
         return list;
       }
@@ -3537,7 +3538,7 @@
         /* 0. 確認商品索引與 Fuse 建立 -------------------------------------- */
         buildItemMaps();                               // 若已呼叫可刪，無害
         const fuse = new Fuse(ALL_ITEMS, {
-          keys: ['name', 'id'],
+          keys: ['name'],
           threshold: 0.4
         });
 
