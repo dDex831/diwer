@@ -193,6 +193,18 @@
     background-color: #EFE6DC;
     transform: translateX(3.5px);
   }
+  /* 讓 <li class="dropdown-submenu"> 自己當定位參考點 */
+  .dropdown-submenu {
+    position: relative;
+  }
+
+  /* 次級選單在右側水平展開 */
+  .dropdown-submenu > .dropdown-menu {
+    top: 0;            /* 與父選單頂端對齊 */
+    left: 100%;        /* 靠右對齊父選單寬度 */
+    margin-left: .2rem;/* 稍微留點縫 */
+    margin-right: .2rem;
+  }
   
   /* LINE 按鈕 & 搜尋圖示 */
   .btn-line {
@@ -915,6 +927,9 @@
     
     .partners-section {
       margin-top: 7rem !important; /* 桌機距離 */
+    }
+    .dropdown-submenu:hover > .dropdown-menu {
+      display: block;
     }
   }
   

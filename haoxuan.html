@@ -3315,17 +3315,55 @@
         buildItemMaps();
       
         // 填產品目錄
+        
         const dropdown = document.getElementById('product-dropdown');
-        if(dropdown){
+        if (dropdown) {
           document.querySelectorAll('.title-main').forEach((title, idx) => {
-            const id = `section-${idx}`;
-            if(!title.id) title.id = id;
+            const sectionId = `section-${idx}`;
+            if (!title.id) title.id = sectionId;
+
+            // 1. 建立大分類 li
             const li = document.createElement('li');
-            const a  = document.createElement('a');
-            a.className   = 'dropdown-item';
-            a.href        = `#${id}`;
-            a.textContent = title.textContent.replace('贈品','').trim();
+            li.className = 'dropdown-submenu'; // 方便 CSS
+
+            const a = document.createElement('a');
+            a.className = 'dropdown-item fw-bold'; // 粗體顯示大分類
+            a.href = `#${sectionId}`;
+            a.textContent = title.textContent.replace('贈品', '').trim();
+
             li.appendChild(a);
+
+            // 2. 建立小分類 UL
+            const subUl = document.createElement('ul');
+            subUl.className = 'dropdown-menu ps-3'; // 次級選單縮排
+
+            // 找出該 section 下的 .title-front
+            const section = title.closest('section');
+            if (section) {
+              section.querySelectorAll('.outdoor-item').forEach((item, subIdx) => {
+                const frontTitle = item.querySelector('.title-front');
+                if (frontTitle) {
+                  // 給每個商品一個唯一 ID
+                  if (!item.id) item.id = `${sectionId}-item-${subIdx}`;
+
+                  const subLi = document.createElement('li');
+                  const subA = document.createElement('a');
+                  subA.className = 'dropdown-item';
+                  subA.href = `#${item.id}`;
+                  subA.textContent = frontTitle.textContent.trim();
+
+                  subLi.appendChild(subA);
+                  subUl.appendChild(subLi);
+                }
+              });
+            }
+
+            // 3. 把小分類 UL 加到大分類 LI
+            if (subUl.children.length > 0) {
+              li.appendChild(subUl);
+            }
+
+            // 4. 加入到主 dropdown
             dropdown.appendChild(li);
           });
         }
