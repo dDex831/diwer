@@ -2788,6 +2788,10 @@
     <!-- 傳送到 LINE 按鈕 -->
 
     <div class="floating-icons">
+      <!-- ★ 新增區 1：模糊搜尋按鈕（放最上方） -->
+      <button id="search-btn" class="floating-btn" title="搜尋商品"> <!-- 搜尋按鈕 -->
+        <i class="fas fa-search"></i>                                  <!-- FontAwesome 搜尋圖示 -->
+      </button>
       <!-- 1. 傳送心願清單（改自 wishlist-share） -->
       <button id="wishlist-share" class="floating-btn" title="傳送心願清單">
         <i class="fas fa-comment-dots"></i>
@@ -2813,12 +2817,22 @@
         </div>
       </div>
     </footer>
+    <!-- ★ 新增區 2：搜尋對話框（預設隱藏） -->
+    <div id="search-modal" class="search-modal" style="display:none;"> <!-- 外層遮罩 -->
+      <div class="search-box">                                         <!-- 內容區 -->
+        <button id="search-close" class="btn-close" aria-label="關閉"></button> <!-- 關閉 -->
+        <input  id="search-input"  type="text" class="form-control mb-3"
+                placeholder="輸入關鍵字…" />                         <!-- 搜尋輸入框 -->
+        <ul     id="search-results" class="list-group"></ul>           <!-- 結果清單 -->
+      </div>
+    </div>
 
     <!-- 依賴 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@7.1.0/dist/fuse.min.js"></script>
 
     <script>
       /* =======================================================================
@@ -2984,6 +2998,7 @@
           slide.style.pointerEvents = 'auto';
         });
       }
+      
       
       
       /******************************************************
@@ -3510,6 +3525,72 @@
           title.classList.add('flip-up');      // 加上向上 class
         });
       });
+      /* =======================================================================
+        *  搜尋模組（完整版，直接貼上即可）
+        *  ---------------------------------------------------------------------
+        *  ‑ 開啟對話框：結果清單空白
+        *  ‑ 輸入關鍵字：即時模糊搜尋 name / id
+        *  ‑ 點結果　　：捲動並高亮
+        * ======================================================================= */
+        document.addEventListener('DOMContentLoaded', () => {
+
+        /* 0. 確認商品索引與 Fuse 建立 -------------------------------------- */
+        buildItemMaps();                               // 若已呼叫可刪，無害
+        const fuse = new Fuse(ALL_ITEMS, {
+          keys: ['name', 'id'],
+          threshold: 0.4
+        });
+
+        /* 1. DOM 參照 ------------------------------------------------------- */
+        const searchBtn   = document.getElementById('search-btn');
+        const searchModal = document.getElementById('search-modal');
+        const searchInput = document.getElementById('search-input');
+        const searchList  = document.getElementById('search-results');
+        const searchClose = document.getElementById('search-close');
+
+        /* 2. 開啟對話框 ----------------------------------------------------- */
+        searchBtn.addEventListener('click', () => {
+          searchModal.style.display = 'flex';
+          searchInput.value = '';
+          searchInput.focus();
+          renderResults([]);                            // << 初始不顯示任何項目
+        });
+
+        /* 3. 關閉 ----------------------------------------------------------- */
+        searchClose.addEventListener('click', () => {
+          searchModal.style.display = 'none';
+        });
+
+        /* 4. 即時搜尋 / 清空列表 ------------------------------------------- */
+        searchInput.addEventListener('input', () => {
+          const kw   = searchInput.value.trim();
+          const list = kw ? fuse.search(kw).map(r => r.item) : [];
+          renderResults(list);
+        });
+
+        /* 5. 畫結果 --------------------------------------------------------- */
+        function renderResults(arr){
+          searchList.innerHTML = '';
+          arr.forEach(it => {
+            const li = document.createElement('li');
+            li.className = 'list-group-item list-group-item-action';
+            li.textContent = it.name;
+            li.addEventListener('click', () => {
+              const card = document.querySelector(`.outdoor-item[data-id="${it.id}"]`);
+              if(card){
+                card.scrollIntoView({ behavior:'smooth', block:'center' });
+                searchModal.style.display = 'none';
+                card.classList.add('search-highlight');
+                setTimeout(() => card.classList.remove('search-highlight'), 1200);
+              }
+            });
+            searchList.appendChild(li);
+          });
+        }
+
+        });
+        /* ======================== 搜尋模組結束 =============================== */
+
       </script>
       
       

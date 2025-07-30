@@ -1195,5 +1195,16 @@
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
-  
+  .search-modal{             /* 全畫面半透明遮罩 */
+    position:fixed;top:0;left:0;width:100%;height:100%;
+    background:rgba(0,0,0,.6);display:none;z-index:2000;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .search-box{               /* 白色內容盒 */
+    background:#fff;border-radius:8px;padding:1rem 1.25rem;
+    width:90%;max-width:360px;box-shadow:0 4px 12px rgba(0,0,0,.25);
+    position:relative;
+  }
+  .search-results{max-height:60vh;overflow-y:auto;} /* 結果可捲動 */
+  .search-highlight{outline:3px solid #ff5722;}     /* 被捲到的商品高亮 */
   
