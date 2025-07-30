@@ -1242,7 +1242,26 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="cutleryT" data-name="餐具T">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/餐具T.png" class="zoomable-img" alt="餐具T" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <!-- WebP 版本（400 / 800 / 1200 px，大螢幕優先）-->
+                    <source type="image/webp"
+                            srcset="images-web/餐具T-400.webp 400w,
+                                    images-web/餐具T-800.webp 800w,
+                                    images-web/餐具T-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <!-- PNG Fallback（同尺寸，以防極舊瀏覽器）-->
+                    <source type="image/png"
+                            srcset="images-web/餐具T-400.png 400w,
+                                    images-web/餐具T-800.png 800w,
+                                    images-web/餐具T-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <!-- 最終保底 <img>，加 lazy 與寬高避免 CLS -->
+                    <img src="images-web/餐具T-800.webp"
+                         alt="餐具T"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -1267,7 +1286,23 @@
             <div class="swiper-wrapper">
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="penA" data-name="文具A">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/文具H.png" class="zoomable-img" alt="文具A" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/文具H-400.webp 400w,
+                                    images-web/文具H-800.webp 800w,
+                                    images-web/文具H-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/文具H-400.png 400w,
+                                    images-web/文具H-800.png 800w,
+                                    images-web/文具H-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/文具H-800.webp"
+                         alt="文具H"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -1278,7 +1313,23 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="penB" data-name="文具B">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/文具B.png" class="zoomable-img" alt="文具B" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/文具B-400.webp 400w,
+                                    images-web/文具B-800.webp 800w,
+                                    images-web/文具B-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/文具B-400.png 400w,
+                                    images-web/文具B-800.png 800w,
+                                    images-web/文具B-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/文具B-800.webp"
+                         alt="文具B"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -1289,7 +1340,23 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="penC" data-name="文具C">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/文具C.png" class="zoomable-img" alt="文具C" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/文具C-400.webp 400w,
+                                    images-web/文具C-800.webp 800w,
+                                    images-web/文具C-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/文具C-400.png 400w,
+                                    images-web/文具C-800.png 800w,
+                                    images-web/文具C-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/文具C-800.webp"
+                         alt="文具C"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -1300,7 +1367,23 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="penD" data-name="文具D">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/文具D.png" class="zoomable-img" alt="文具D" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/文具D-400.webp 400w,
+                                    images-web/文具D-800.webp 800w,
+                                    images-web/文具D-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/文具D-400.png 400w,
+                                    images-web/文具D-800.png 800w,
+                                    images-web/文具D-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/文具D-800.webp"
+                         alt="文具D"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -1311,7 +1394,23 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="penE" data-name="文具E">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/文具E.png" class="zoomable-img" alt="文具E" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/文具E-400.webp 400w,
+                                    images-web/文具E-800.webp 800w,
+                                    images-web/文具E-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/文具E-400.png 400w,
+                                    images-web/文具E-800.png 800w,
+                                    images-web/文具E-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/文具E-800.webp"
+                         alt="文具E"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -1322,7 +1421,23 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="penF" data-name="文具F">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/文具F.png" class="zoomable-img" alt="文具F" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/文具F-400.webp 400w,
+                                    images-web/文具F-800.webp 800w,
+                                    images-web/文具F-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/文具F-400.png 400w,
+                                    images-web/文具F-800.png 800w,
+                                    images-web/文具F-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/文具F-800.webp"
+                         alt="文具F"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -1333,7 +1448,23 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="penG" data-name="文具G">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/文具G.png" class="zoomable-img" alt="文具G" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/文具G-400.webp 400w,
+                                    images-web/文具G-800.webp 800w,
+                                    images-web/文具G-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/文具G-400.png 400w,
+                                    images-web/文具G-800.png 800w,
+                                    images-web/文具G-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/文具G-800.webp"
+                         alt="文具G"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -1344,7 +1475,23 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="penI" data-name="文具I">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/文具I.png" class="zoomable-img" alt="文具I" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/文具I-400.webp 400w,
+                                    images-web/文具I-800.webp 800w,
+                                    images-web/文具I-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/文具I-400.png 400w,
+                                    images-web/文具I-800.png 800w,
+                                    images-web/文具I-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/文具I-800.webp"
+                         alt="文具I"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -1355,7 +1502,23 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="penJ" data-name="文具J">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/文具J.png" class="zoomable-img" alt="文具J" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/文具J-400.webp 400w,
+                                    images-web/文具J-800.webp 800w,
+                                    images-web/文具J-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/文具J-400.png 400w,
+                                    images-web/文具J-800.png 800w,
+                                    images-web/文具J-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/文具J-800.webp"
+                         alt="文具J"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -1366,7 +1529,23 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="penH" data-name="文具H">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/文具A.png" class="zoomable-img" alt="文具H" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/文具A-400.webp 400w,
+                                    images-web/文具A-800.webp 800w,
+                                    images-web/文具A-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/文具A-400.png 400w,
+                                    images-web/文具A-800.png 800w,
+                                    images-web/文具A-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/文具A-800.webp"
+                         alt="文具A"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
@@ -1377,7 +1556,23 @@
               </div>
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="刺繡鑰匙圈" data-name="刺繡鑰匙圈">
                 <div class="outdoor-img-wrapper">
-                  <img src="images-web/刺繡鑰匙圈.png" class="zoomable-img" alt="文具H" width="150" height="150" loading="lazy"   decoding="async">
+                  <picture>
+                    <source type="image/webp"
+                            srcset="images-web/刺繡鑰匙圈-400.webp 400w,
+                                    images-web/刺繡鑰匙圈-800.webp 800w,
+                                    images-web/刺繡鑰匙圈-1200.webp 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <source type="image/png"
+                            srcset="images-web/刺繡鑰匙圈-400.png 400w,
+                                    images-web/刺繡鑰匙圈-800.png 800w,
+                                    images-web/刺繡鑰匙圈-1200.png 1200w"
+                            sizes="(min-width: 1200px) 20vw, 33vw">
+                    <img src="images-web/刺繡鑰匙圈-800.webp"
+                         alt="刺繡鑰匙圈"
+                         class="zoomable-img"
+                         width="150" height="150"
+                         loading="lazy" decoding="async">
+                  </picture>
                 </div>
                 <hr class="outdoor-divider" />
                 <h2 class="outdoor-title">
