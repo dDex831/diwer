@@ -2846,7 +2846,7 @@
        ******************************************************/
       const LIFF_ID  = '2007748054-9bD5ZjXA';
       const LIFF_WEB = 'https://liff.line.me/' + LIFF_ID;
-      const BASE_URL = 'https://www.diwer.me/'; // 站點根 (最後一定加 / 處理)
+      const BASE_URL = `${window.location.origin}/`; // 跟著網頁所在網域走
       const IMG_DIR  = 'images-web/';           // 圖片目錄 (相對網站根)
       const MOBILE_WIDTH_BREAKPOINT = 768;
       const MAX_SHARE_IMAGES = 5;               // ★ 一次最多傳送 5 張
@@ -3451,42 +3451,56 @@
         const exportBtn = document.getElementById('export-pdf');
         if(exportBtn){
           exportBtn.addEventListener('click', async () => {
-            // 匯出時摧毀
-            swiperInstances.forEach(sw => {
-              try { sw.destroy(true, true); } catch(e){}
-            });
-      
-            document.body.classList.add('pdf-grid');
-            const orig = document.getElementById('pdf-catalog') || document.body;
-      
-            // 等所有圖載入
-            await Promise.all(
-              Array.from(orig.querySelectorAll('img')).map(img =>
-                img.complete ? Promise.resolve() : new Promise(r => img.onload = r)
-              )
-            );
-      
-            // 匯出
-            if(typeof html2pdf !== 'undefined'){
-              await html2pdf().set({
-                margin:     0.5,
-                filename:   '商品型錄.pdf',
-                image:      { type: 'jpeg', quality: 0.98 },
-                html2canvas:{ scale: 2, useCORS: false, allowTaint: true },
-                jsPDF:      { unit: 'in', format: 'a4', orientation: 'portrait' }
-              }).from(orig).save();
-            }else{
-              console.warn('html2pdf 未載入，無法匯出 PDF');
+            exportBtn.disabled = true;
+            const origText = exportBtn.textContent;
+            exportBtn.textContent = '匯出中…';
+
+            try {
+              swiperInstances.forEach(sw => sw.inst?.destroy(true, true));
+              document.body.classList.add('pdf-grid');
+
+              const orig = document.getElementById('pdf-catalog') || document.body;
+
+              await Promise.all(
+                Array.from(orig.querySelectorAll('img')).map(img =>
+                  img.complete
+                    ? Promise.resolve()
+                    : new Promise(r => {
+                        img.onload = r;
+                        img.onerror = r;
+                      })
+                )
+              );
+
+              if (typeof html2pdf === 'undefined') {
+                throw new Error('html2pdf 函式庫載入失敗');
+              }
+
+              await html2pdf()
+                .set({
+                  margin: 0.5,
+                  filename: '商品型錄.pdf',
+                  image: { type: 'jpeg', quality: 0.98 },
+                  html2canvas:{ scale:2, useCORS:false, allowTaint:false },
+                  jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+                })
+                .from(orig)
+                .save();
+            } catch (err) {
+              console.error(err);
+              alert('PDF 產生失敗：' + err.message);
+            } finally {
+              document.body.classList.remove('pdf-grid');
+              /* 重新初始化 Swiper */
+              swiperInstances.length = 0;
+              document.querySelectorAll('.outdoor-swiper').forEach(container => {
+                const sw = new Swiper(container, buildGridSwiperOptions(container));
+                swiperInstances.push({ inst: sw, el: container });
+              });
+
+              exportBtn.disabled = false;
+              exportBtn.textContent = origText;
             }
-      
-            document.body.classList.remove('pdf-grid');
-      
-            swiperInstances.length = 0;
-            document.querySelectorAll('.outdoor-swiper').forEach(container => {
-              const opts = buildGridSwiperOptions(container);
-              const sw = new Swiper(container, opts);
-              swiperInstances.push({inst: sw, el: container});
-            });
           });
         }
       
