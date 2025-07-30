@@ -2850,6 +2850,7 @@
       const IMG_DIR  = 'images-web/';           // 圖片目錄 (相對網站根)
       const MOBILE_WIDTH_BREAKPOINT = 768;
       const MAX_SHARE_IMAGES = 5;               // ★ 一次最多傳送 5 張
+      window.swiperInstances = [];   // ← 先做一個全域空陣列
       
       function isIOS() { return /iPhone|iPad|iPod/.test(navigator.userAgent); }
       function isMobileUA() {
@@ -3287,6 +3288,8 @@
       function buildGridSwiperOptions(container) {
         const isCutlery = isCutlerySection(container);
         return {
+          centeredSlides: true,
+          centeredSlidesBounds: true,
           loop: false,
           slidesPerView: 2,
           spaceBetween: 16,
@@ -3385,11 +3388,15 @@
         }
       
         // Swiper 初始化：全部使用 Grid（rows 依是否為餐具調整）
-        const swiperInstances = [];
-        document.querySelectorAll('.outdoor-swiper').forEach(container => {
+        /* 不要再宣告 const；直接用已經存在的 window.swiperInstances */
+        const swiperContainers = document.querySelectorAll('.outdoor-swiper');
+
+        swiperContainers.forEach(container => {
           const opts = buildGridSwiperOptions(container);
-          const sw = new Swiper(container, opts);
-          swiperInstances.push({inst: sw, el: container});
+          const sw   = new Swiper(container, opts);
+
+          /* 關鍵：push 到全域陣列 */
+          window.swiperInstances.push({ inst: sw, el: container });
         });
       
         // AOS
@@ -3572,19 +3579,37 @@
         /* 5. 畫結果 --------------------------------------------------------- */
         function renderResults(arr){
           searchList.innerHTML = '';
+
           arr.forEach(it => {
             const li = document.createElement('li');
             li.className = 'list-group-item list-group-item-action';
             li.textContent = it.name;
+
             li.addEventListener('click', () => {
-              const card = document.querySelector(`.outdoor-item[data-id="${it.id}"]`);
-              if(card){
-                card.scrollIntoView({ behavior:'smooth', block:'center' });
-                searchModal.style.display = 'none';
-                card.classList.add('search-highlight');
-                setTimeout(() => card.classList.remove('search-highlight'), 1200);
+              /* ---------- ① 取得卡片、Swiper ---------- */
+              const card      = document.querySelector(`.outdoor-item[data-id="${it.id}"]`);
+              if (!card) return;
+
+              const slideEl   = card.closest('.swiper-slide');      // 該卡所在 slide
+              const swiperEl  = card.closest('.outdoor-swiper');    // 外層 Swiper 容器
+              const swiperObj = (window.swiperInstances || [])
+                                  .find(s => s.el === swiperEl)?.inst;
+
+              /* ---------- ② 讓 Swiper 滑到目標 ---------- */
+              if (swiperObj && slideEl) {
+                const slides = Array.from(swiperEl.querySelectorAll('.swiper-slide'));
+                const idx    = slides.indexOf(slideEl);             // 目標索引
+                if (idx > -1) swiperObj.slideTo(idx, 300);          // 300 ms 動畫
               }
+
+              /* ---------- ③ 垂直捲動、關對話框、加高亮 ---------- */
+              card.scrollIntoView({ behavior:'smooth', block:'center' });
+              searchModal.style.display = 'none';
+
+              card.classList.add('search-highlight');
+              setTimeout(() => card.classList.remove('search-highlight'), 1200);
             });
+
             searchList.appendChild(li);
           });
         }
