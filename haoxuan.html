@@ -81,12 +81,12 @@
               </ul>
             </li>
             <li class="nav-item px-2"><a class="nav-link" href="partners.html">合作品牌</a></li>
-            <li class="nav-item px-2">
+            <!-- <li class="nav-item px-2">
               <div class="d-flex align-items-center gap-2">
                 <a href="https://line.me/R/ti/p/@851akusw" target="_blank" class="btn btn-success">LINE諮詢</a>
                 <button class="btn btn-dark" id="export-pdf">下載商品型錄</button>
               </div>
-            </li>
+            </li> -->
             
           </ul>
         </div>
@@ -130,42 +130,69 @@
           <div class="swiper outdoor-swiper">
             
             <div class="swiper-wrapper">
-              <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="outdoor-tent" data-name="帳篷">
-                <div class="outdoor-img-wrapper"> <!-- 包覆圖片的外框 -->
-                  <picture> <!-- 使用 picture 讓瀏覽器優先載入 WebP，不支援才退回 PNG -->
-                    <!-- WebP 版本：提供 400/800/1200 三種寬度 -->
-                    <source type="image/webp"  
-                            srcset="images-web/帳篷1-400.webp 400w,  
-                                    images-web/帳篷1-800.webp 800w,  
-                                    images-web/帳篷1-1200.webp 1200w" 
-                            sizes="(min-width: 1200px) 20vw, 33vw"> 
-                  
-                    <source type="image/png"
-                            srcset="images-web/帳篷1-400.png 400w,
-                                    images-web/帳篷1-800.png 800w,
-                                    images-web/帳篷1-1200.png 1200w"
-                            sizes="(min-width: 1200px) 20vw, 33vw">
-                    
-                    <img src="images-web/帳篷1-800.webp"  
-                         alt="帳篷"                       
-                         class="zoomable-img"           
-                         width="150" height="150"        
-                         loading="lazy"                  
-                         decoding="async">               
-                  </picture>
-                </div>
-                <hr class="outdoor-divider" />
-                <h2 class="outdoor-title"> <!-- 外層 h2 維持原 class，讓 CSS/JS 能鎖定 -->
-                  <!-- 正面文字：初始顯示「積木娃包」 -->
-                  <span class="title-front">帳篷</span>
-                  <!-- 背面文字：預設旋轉 90° 隱藏，之後顯示「HS-1900」 -->
-                  <span class="title-back">SH-059</span>
-                  <!-- 原本的心願單按鈕不動 -->
-                  <button class="btn-wishlist" aria-label="加入心願單">
-                    <i class="far fa-heart"></i>
-                  </button>
-                </h2>
-                
+              <!--
+              📌 此區塊代表「產品卡片」，用於顯示一個戶外商品 (這裡是帳篷)
+              ⚠️ 注意：這段程式碼被放在 Swiper 套件的滑塊 (swiper-slide) 裡面，用於圖片輪播
+              -->
+
+              <div class="swiper-slide outdoor-item" 
+              data-aos="fade-up"            <!-- 網頁捲動到這裡時會有「向上淡入」動畫 (AOS 插件) -->
+              data-id="outdoor-tent"        <!-- 自訂商品ID，給 JavaScript 用來定位這個商品 -->
+              data-name="帳篷">             <!-- 自訂商品名稱，方便程式抓取 -->
+
+              <!-- 📌 外層圖片框，包覆圖片用，方便CSS控制大小和排列 -->
+              <div class="outdoor-img-wrapper"> 
+
+              <!-- 📌 <picture>：讓瀏覽器可自動選擇最適合的圖片格式
+                  1️⃣ 先嘗試載入 WebP (效能更好)
+                  2️⃣ 不支援 WebP 時改載入 PNG
+                  3️⃣ 根據螢幕大小 (400/800/1200px) 載入不同解析度圖片，節省流量 -->
+              <picture>
+
+              <!-- 1️⃣ WebP 版本圖片設定 -->
+              <source type="image/webp"  
+                      srcset="images-web/帳篷1-400.webp 400w,  
+                              images-web/帳篷1-800.webp 800w,  
+                              images-web/帳篷1-1200.webp 1200w" 
+                      sizes="(min-width: 1200px) 20vw, 33vw"> 
+              
+              <!-- 2️⃣ PNG 版本圖片設定 (給不支援WebP的瀏覽器) -->
+              <source type="image/png"
+                      srcset="images-web/帳篷1-400.png 400w,
+                              images-web/帳篷1-800.png 800w,
+                              images-web/帳篷1-1200.png 1200w"
+                      sizes="(min-width: 1200px) 20vw, 33vw">
+              
+              <!-- 3️⃣ 最終顯示圖片 (主要載入WebP版本，瀏覽器會自動選擇最適合解析度) -->
+              <img src="images-web/帳篷1-800.webp"   <!-- 預設載入800寬度版本 -->
+                    alt="帳篷"                       <!-- 圖片說明文字(SEO/無障礙需求) -->
+                    class="zoomable-img"             <!-- 加入縮放效果的class，點擊可放大 -->
+                    width="150" height="150"         <!-- 固定圖片尺寸避免版面跳動 -->
+                    loading="lazy"                   <!-- 延遲載入，提升頁面效能 -->
+                    decoding="async">                <!-- 非同步解碼圖片，加快載入速度 -->
+
+              </picture>
+              </div>
+
+              <!-- 分隔線 (水平線)，做圖片與標題之間的視覺區隔 -->
+              <hr class="outdoor-divider" />
+
+              <!-- 📌 商品標題區塊 -->
+              <h2 class="outdoor-title"> <!-- 維持此class，CSS與JS功能會依賴它 -->
+
+              <!-- 正面文字 (預設顯示商品名稱) -->
+              <span class="title-front">帳篷</span>
+
+              <!-- 背面文字 (用於翻轉動畫，顯示產品型號或其他資訊) -->
+              <span class="title-back">SH-059</span>
+
+              <!-- 心願單按鈕 (使用 Font Awesome 愛心圖示) -->
+              <button class="btn-wishlist" aria-label="加入心願單">
+              <i class="far fa-heart"></i>
+              </button>
+
+              </h2>
+
               </div>
             
               <div class="swiper-slide outdoor-item" data-aos="fade-up" data-id="outdoor-moon-chair" data-name="月亮椅">
@@ -2812,7 +2839,7 @@
           <h5 class="mb-1 fs-2">Contact us</h5>
           <p class="mb-4 fs-5">Tel : 02-2285-3388</p>
           <hr class="border-light opacity-25 w-75 my-4" />
-          <p class="mb-1 fs-5">交屋手冊、錦盒、鎖牌、化妝包、帆布袋、保冰袋、不織布袋、手提袋工廠</p>
+          <p class="mb-1 fs-5">專營各式禮品、贈品工廠｜提供企業客製化禮品、百貨贈品、展場宣傳品等多元選擇，少量打樣、大量生產快速交貨，助您打造高品質品牌好禮</p>
           <p class="mb-0 fs-6">© 2025 All Rights Reserved</p>
         </div>
       </div>
